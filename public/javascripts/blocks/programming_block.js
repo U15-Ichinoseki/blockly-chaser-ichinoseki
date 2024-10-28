@@ -154,4 +154,4 @@ Blockly.Blocks['infinite_loop'] = {
   }
 };
 
-Blockly.Constants.Loops.CONTROL_FLOW_IN_LOOP_CHECK_MIXIN.LOOP_TYPES.push('infinite_loop');
+Blockly.libraryBlocks.loops.loopTypes.add('infinite_loop');

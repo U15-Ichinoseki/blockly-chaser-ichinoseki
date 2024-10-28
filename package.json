@@ -7,6 +7,7 @@
     "dist-win": "node ./bin/mode-change.js true && electron-builder --win && node ./bin/mode-change.js false"
   },
   "dependencies": {
+    "blockly": "^11.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "^3.1.10",

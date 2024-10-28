@@ -241,7 +241,7 @@ function generateUiCodeAndLoadIntoInterpreter() {
   Blockly.JavaScript.STATEMENT_PREFIX = '';
   Blockly.JavaScript.INFINITE_LOOP_TRAP = '';
   
-  latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+  latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
 }
 
 function generateCodeAndLoadIntoInterpreter() {
@@ -253,7 +253,7 @@ function generateCodeAndLoadIntoInterpreter() {
     if(localStorage["LOOP_STATUS"] == "on"){
       var LoopTrap = 1000;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if(--LoopTrap == 0) throw "Infinite loop.";\n';
-      latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+      latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
       latestCode = "var LoopTrap = " + LoopTrap + ";\n" + latestCode;
     }
   }
@@ -437,7 +437,7 @@ function readSingleFile(e) {
     var xmlText = contents.toString();
     
     try {
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
       if (xmlDom) {
         Code.workspace.clear();
         Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
@@ -478,7 +478,7 @@ function initDataLoad(){
     var xmlText;
     try {
       xmlText = localStorage.getItem(queries.stage).toString();
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
       if (xmlDom) {
         Code.workspace.clear();
         Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);

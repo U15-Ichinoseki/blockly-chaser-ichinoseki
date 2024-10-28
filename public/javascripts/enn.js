@@ -230,7 +230,7 @@ Code.runJS = function(){
 
     Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
     Blockly.JavaScript.addReservedWords('highlightBlock');
-    latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+    latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
     
     var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
@@ -462,7 +462,7 @@ function readSingleFile(e) {
     var xmlText = contents.toString();
     
     try {
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
     } catch (e) {
       window.alert("ファイルの読み込みに失敗しました");
     }
@@ -499,7 +499,7 @@ function initDataLoad(){
     var xmlText;
     try {
       xmlText = localStorage.getItem(queries.loaddata).toString();
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
     }
     catch (e) {
       window.alert("ファイルの読み込みに失敗しました");

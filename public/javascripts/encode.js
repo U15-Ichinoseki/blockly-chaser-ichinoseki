@@ -261,7 +261,7 @@ function generateUiCodeAndLoadIntoInterpreter() {
   Blockly.JavaScript.STATEMENT_PREFIX = '';
   Blockly.JavaScript.INFINITE_LOOP_TRAP = '';
   
-  latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+  latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
 }
 
 function generateCodeAndLoadIntoInterpreter() {
@@ -274,7 +274,7 @@ function generateCodeAndLoadIntoInterpreter() {
     if(localStorage["LOOP_STATUS"] == "on"){
       var LoopTrap = 1000;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if(--LoopTrap == 0) throw "Infinite loop.";\n';
-      latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+      latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
       latestCode = "var LoopTrap = " + LoopTrap + ";\n" + latestCode;
     }
   }
@@ -432,7 +432,7 @@ Code.download = function(){
       if(file_name){
         if(teacher_mode){
           var save_json = {};
-          var saveCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+          var saveCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
           
           save_json.teacher_code = btoa(unescape(encodeURIComponent(saveCode)));
           var json_string = JSON.stringify(save_json)
@@ -473,7 +473,7 @@ function readSingleFile(e) {
     var xmlText = contents.toString();
     
     try {
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
     } catch (e) {
       window.alert("ファイルの読み込みに失敗しました");
     }
@@ -510,7 +510,7 @@ function initDataLoad(){
     if(localStorage[queries.loaddata]){
       try {
         xmlText = localStorage.getItem(queries.loaddata).toString();
-        xmlDom = Blockly.Xml.textToDom(xmlText);
+        xmlDom = Blockly.utils.xml.textToDom(xmlText);
       }
       catch (e) {
         window.alert("ファイルの読み込みに失敗しました");

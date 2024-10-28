@@ -7,10 +7,10 @@
   <link rel='stylesheet' href='/stylesheets/match-player.css' />
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/javascripts/blockly_compressed.js"></script>
-  <script src="/javascripts/blocks_compressed.js"></script>
+  <script src="/javascripts/blockly/blockly_compressed.js"></script>
+  <script src="/javascripts/blockly/blocks_compressed.js"></script>
   
-  <script src="/javascripts/javascript_compressed.js"></script>
+  <script src="/javascripts/blockly/generators/javascript_compressed.js"></script>
   
   <script src = "/javascripts/blocks/programming_block.js" ></script> 
   <script src = "/javascripts/generators/javascript/programming.js" ></script>
@@ -43,7 +43,7 @@
 
           var xmlText = reader.result;
           try {
-            var xml = Blockly.Xml.textToDom(xmlText);
+            var xml = Blockly.utils.xml.textToDom(xmlText);
             for(var xml_one of xml.getElementsByTagName("block")){
               if(xml_one.getAttribute("type") === "server_join"){
                 if(query_list.room_id){

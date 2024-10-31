@@ -157,19 +157,19 @@ var resultSound = new Howl({
 
 function cpu(level){
     makeTable("game_board",{"p":"hot","t":"r"});
-    var cpu_map_date = get_map_data("hot","get_ready");
+    var cpu_map_data = get_map_data("hot","get_ready");
     
     
     if(level==1){
         setTimeout(function(){
             makeTable("game_board",{"p":"hot","t":"l","d":"top"});
-            cpu_map_date = get_map_data("hot","look","top");
+            cpu_map_data = get_map_data("hot","look","top");
             setTimeout(function(){my_turn = true;},250);
         },250);
     }
     else{
         setTimeout(function(){
-            cpu_map_date = look("top","hot");
+            cpu_map_data = look("top","hot");
             my_turn = true;
         },250);
     }

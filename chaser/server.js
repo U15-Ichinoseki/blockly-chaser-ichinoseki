@@ -205,25 +205,25 @@ for(var key in server_store){
 //cpu
 function cpu(room,level,chara){
 
-    var cpu_map_date = get_ready(room,chara);
+    var cpu_map_data = get_ready(room,chara);
     const delay_time = 100;
 
-    if(cpu_map_date){
+    if(cpu_map_data){
         if(level == 0){
         setTimeout(look, delay_time, room,chara,"top");
         }
         else if(level == 1){
             var random_list = [];
-            if(cpu_map_date[1] != 2){
+            if(cpu_map_data[1] != 2){
                 random_list.push('top');
             }
-            if(cpu_map_date[3] != 2){
+            if(cpu_map_data[3] != 2){
                 random_list.push('left');
             }
-            if(cpu_map_date[5] != 2){
+            if(cpu_map_data[5] != 2){
                 random_list.push('right');
             }
-            if(cpu_map_date[7] != 2){
+            if(cpu_map_data[7] != 2){
                 random_list.push('bottom');
             }
             

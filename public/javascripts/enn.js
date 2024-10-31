@@ -270,16 +270,16 @@ Code.runJS = function(){
     }
     
 
-    if(!var_stor["map_data_hiyasinsu_kuropengin"]){
+    if(!var_stor["map_info"]){
       latestCode = 'var action_turn_hiyasinsu_kuropengin = false;\n' +  latestCode;
-      latestCode = 'var map_data_hiyasinsu_kuropengin = [];\n' +  latestCode;
+      latestCode = 'var map_info = [];\n' +  latestCode;
     }
     else{
       latestCode = 'var action_turn_hiyasinsu_kuropengin = [' + var_stor["action_turn_hiyasinsu_kuropengin"] + '];\n' +  latestCode;
-      latestCode = 'var map_data_hiyasinsu_kuropengin = [' + var_stor["map_data_hiyasinsu_kuropengin"] + '];\n' +  latestCode;
+      latestCode = 'var map_info = [' + var_stor["map_info"] + '];\n' +  latestCode;
     }
     if(my_map_data.length){
-      latestCode = latestCode + 'var_stor.map_data_hiyasinsu_kuropengin = map_data_hiyasinsu_kuropengin;\n';
+      latestCode = latestCode + 'var_stor.map_info = map_info;\n';
     }
     latestCode = latestCode + 'var_stor.action_turn_hiyasinsu_kuropengin = action_turn_hiyasinsu_kuropengin;\n';
     

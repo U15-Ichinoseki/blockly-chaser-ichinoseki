@@ -18,7 +18,7 @@ Blockly.JavaScript['server_connect'] = function(block) {
   if(my_map_data.length){
     code += 'if('+ turn_ready() +'){\n'
           + '  action_turn_hiyasinsu_kuropengin = true;\n'
-          + '  map_data_hiyasinsu_kuropengin = [' + my_map_data + '];\n'
+          + '  map_info = [' + my_map_data + '];\n'
           + statements_my_turn 
           + '}\n';    
   }
@@ -85,7 +85,7 @@ Blockly.JavaScript['look'] = function(block) {
     }
     code = 'if(action_turn_hiyasinsu_kuropengin){\n'
             +'  look("'+ dropdown_look +'");\n'
-            +'  map_data_hiyasinsu_kuropengin = [' + look_map_data + '];\n'
+            +'  map_info = [' + look_map_data + '];\n'
             +'  action_turn_hiyasinsu_kuropengin = false;\n'
             +'}\n';
   }
@@ -133,7 +133,7 @@ Blockly.JavaScript['search'] = function(block) {
     }
     code = 'if(action_turn_hiyasinsu_kuropengin){\n'
             +'  search("'+ dropdown_search +'");\n'
-            +'  map_data_hiyasinsu_kuropengin = [' + search_map_data + '];\n'
+            +'  map_info = [' + search_map_data + '];\n'
             +'  action_turn_hiyasinsu_kuropengin = false;\n'
             +'}\n';
   }
@@ -145,7 +145,7 @@ Blockly.JavaScript['get_value'] = function(block) {
   // TODO: Assemble JavaScript into code variable.
   var code = '';
   if(my_map_data.length){
-    code = 'map_data_hiyasinsu_kuropengin['+ dropdown_get_value +']';
+    code = 'map_info['+ dropdown_get_value +']';
   }
   else{
     code = 99;
@@ -161,7 +161,7 @@ Blockly.JavaScript['if_value'] = function(block) {
   // TODO: Assemble JavaScript into code variable.
   var code = '...';
   if(my_map_data.length){
-    code = 'map_data_hiyasinsu_kuropengin['+ dropdown_map_value +'] == ' + dropdown_map_item + '';
+    code = 'map_info['+ dropdown_map_value +'] == ' + dropdown_map_item + '';
   }
   else{
     code = false;

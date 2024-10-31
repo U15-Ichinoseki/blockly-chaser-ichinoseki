@@ -6,7 +6,9 @@ var runButton = document.getElementById('runButton');
 var reloadButton = document.getElementById('reloadButton');
 var myInterpreter = null;
 var runner;
-var map_data_hiyasinsu_kuropengin = false;
+var map_info = false;
+var look_info = false;
+var search_info = false;
 
 
 class ObjInterpreter extends Interpreter {
@@ -67,7 +69,7 @@ class ObjInterpreter extends Interpreter {
 function initApi(interpreter, scope) {
   // Add an API function for the alert() block, generated for "text_print" blocks.
   
-  interpreter.connectObject(scope, "map_data_hiyasinsu_kuropengin", map_data_hiyasinsu_kuropengin);
+  interpreter.connectObject(scope, "map_info", map_info);
   
   var wrapper = function(text) {
     text.toString();
@@ -275,7 +277,7 @@ function resetInterpreter() {
 
 function resetVar(){
   my_turn = false;
-  map_data_hiyasinsu_kuropengin = false;
+  map_info = false;
 }
 
 var step_flag = false;
@@ -304,7 +306,7 @@ Code.runJS = function(){
       highlightPause = false;
       generateCodeAndLoadIntoInterpreter();
       if(!satage_data["cpu"]){
-        latestCode = 'map_data_hiyasinsu_kuropengin = [' + get_map_data("cool","get_ready") + ']\n' + latestCode;
+        latestCode = 'map_info = [' + get_map_data("cool","get_ready") + ']\n' + latestCode;
       }
       myInterpreter = new ObjInterpreter(latestCode, initApi);
       runner = function() {

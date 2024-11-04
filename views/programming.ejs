@@ -10,11 +10,15 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="/javascripts/blockly/blockly_compressed.js"></script>
   <script src="/javascripts/blockly/blocks_compressed.js"></script>
-  
+ 
+  <script src="/javascripts/blocks/chaser_block.js" ></script> 
+
   <script src="/javascripts/blockly/generators/javascript_compressed.js"></script>
+  <script src="/javascripts/generators/javascript_chaser.js" ></script>
   
-  <script src = "/javascripts/blocks/programming_block.js" ></script> 
-  <script src = "/javascripts/generators/javascript/programming.js" ></script>
+  <script src="/javascripts/blockly/generators/python_compressed.js"></script>
+  <script src="/javascripts/generators/python_chaser.js" ></script>
+
   <script src="/javascripts/acorn_interpreter.js"></script>
 
   <script src="/javascripts/howler.min.js"></script>
@@ -50,6 +54,9 @@
         <button id="downloadButton" class="notext" title="<%- LNG["SAVE"] %>">
           
         </button>
+        <button id="downloadPythonButton" class="notext" title="Pythonで保存">
+          
+        </button>
         <label for="file_load" title="<%- LNG["LOAD"] %>">
           <input type="file" accept=".xml" id="file_load" style="display:none;">
         </label>
@@ -62,6 +69,7 @@
     <div class="tab_area">
       <ul class="blockly_menu">
         <li id="tab_blocks" class="tabon">プログラムブロック</li>
+        <li id="tab_python" class="taboff">python</li>
         <li id="tab_javascript" class="taboff">javascript</li>
         <li id="tab_xml" class="taboff">xml</li>
       </ul>
@@ -70,6 +78,7 @@
     <div class="blockly_area" id="content_area"></div>
     
     <div id="content_blocks" class="content"></div>
+    <textarea id="content_python" class="content" wrap="off"></textarea>
     <pre id="content_javascript" class="content lang-js"></pre>
     <textarea id="content_xml" class="content" wrap="off"></textarea>
   </div>
@@ -92,9 +101,9 @@
       <block type="server_join"></block>
       <block type="get_ready"></block>
       <block type="move_player"></block>
-      <block type="look"></block>
-      <block type="search"></block>
       <block type="put_wall"></block>
+      <block type="look"></block>
+      <block type="search"></block>      
       <block type="get_value"></block>
       <block type="get_look_value"></block>
       <block type="get_search_value"></block>

@@ -60,11 +60,15 @@ function getServarList() {
                 .appendField(Blockly.Msg["SERVER_JOIN_BEFORE"])
                 .appendField(new Blockly.FieldTextInput(""), "name")
                 .appendField(Blockly.Msg["SERVER_JOIN_AFTER"]);
+            this.appendStatementInput("main_loop_content")
+                .setCheck(null);
             this.setInputsInline(true);
-            this.setNextStatement(true, null);
             this.setColour(195);
          this.setTooltip("");
          this.setHelpUrl("");
+          },
+          getDeveloperVariables: function () {
+            return ['player'];
           }
         };
         initDataLoad();

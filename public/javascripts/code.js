@@ -148,7 +148,7 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'javascript', 'xml'];
+Code.TABS_ = ['blocks', 'javascript', 'python', 'xml'];
 
 Code.selected = 'blocks';
 
@@ -216,7 +216,7 @@ Code.renderContent = function() {
   } else if (content.id == 'content_javascript') {
     Code.attemptCodeGeneration(javascript.javascriptGenerator);
   } else if (content.id == 'content_python') {
-    Code.attemptCodeGeneration(Blockly.Python);
+    Code.attemptCodeGeneration(python.pythonGenerator);
   } else if (content.id == 'content_php') {
     Code.attemptCodeGeneration(Blockly.PHP);
   } else if (content.id == 'content_dart') {
@@ -380,13 +380,15 @@ Code.init = function() {
   Code.tabClick(Code.selected);
 
   Code.bindClick('trashButton',
-      function() {Code.discard(); Code.renderContent();});
+    function() {Code.discard(); Code.renderContent();});
   Code.bindClick('runButton', Code.runJS);
-  
+
   Code.bindClick('stopButton', Code.stopJS);
-  
+
   Code.bindClick('downloadButton', Code.download);
-  
+
+  Code.bindClick('downloadPythonButton', Code.downloadPython);
+
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
   if ('BlocklyStorage' in window) {
@@ -429,8 +431,8 @@ Code.discard = function() {
 };
 
 // Load the Code demo's language strings.
-document.write('<script src="/javascripts/blockly/msg/' + Code.LANG + '.js"></script>\n');
-// Load Blockly's language strings.
 document.write('<script src="/javascripts/msg/' + Code.LANG + '.js"></script>\n');
+// Load Blockly's language strings.
+document.write('<script src="/javascripts/blockly/msg/' + Code.LANG + '.js"></script>\n');
 
 window.addEventListener('load', Code.init);

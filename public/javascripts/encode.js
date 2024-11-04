@@ -70,6 +70,8 @@ function initApi(interpreter, scope) {
   // Add an API function for the alert() block, generated for "text_print" blocks.
   
   interpreter.connectObject(scope, "map_info", map_info);
+  interpreter.connectObject(scope, "look_info", look_info);
+  interpreter.connectObject(scope, "search_info", search_info);
   
   
   
@@ -206,7 +208,7 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
-      callback(map_info.join(''));
+      callback(look_info.join(''));
     }
   };
   interpreter.setProperty(scope, 'look',
@@ -228,14 +230,11 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
-      callback(map_info.join(''));
+      callback(search_info.join(''));
     }
   };
   interpreter.setProperty(scope, 'search',
       interpreter.createAsyncFunction(wrapper));
-      
-      
-  
 }
 
 
@@ -462,6 +461,73 @@ Code.download = function(){
 }
 
 
+Code.downloadPython = function(){
+  var pythonTextarea = document.getElementById('content_python');
+  var pythonText = python.pythonGenerator.workspaceToCode(Code.workspace);
+  
+  var userAgent = window.navigator.userAgent.toLowerCase();
+  var webbrowser_check = 0;
+  
+  if(userAgent.indexOf('msie') != -1 || userAgent.indexOf('trident') != -1){
+    webbrowser_check = 1;
+  }
+  else if(userAgent.indexOf('edge') != -1) {
+    webbrowser_check = 1;
+  }
+  else if(userAgent.indexOf('chrome') != -1) {
+    webbrowser_check = 1;
+  }
+  else if(userAgent.indexOf('safari') != -1) {
+    webbrowser_check = 0;
+  }
+  else if(userAgent.indexOf('firefox') != -1) {
+    webbrowser_check = 1;
+  }
+  else if(userAgent.indexOf('opera') != -1) {
+    webbrowser_check = 1;
+  }
+  else {
+    webbrowser_check = 0;
+  }
+  
+  if(webbrowser_check == 0){
+    window.alert("ご利用のブラウザは本機能を使用できません");
+  }
+  else{
+    var blob = new Blob([pythonText], {type: "application/octet-stream"}); 
+    
+    self_prompt("ファイル名を入力してください",function(file_name,teacher_mode=false){
+      if(file_name){
+        if(teacher_mode){
+          var save_json = {};
+          var saveCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
+          
+          save_json.teacher_code = btoa(unescape(encodeURIComponent(saveCode)));
+          var json_string = JSON.stringify(save_json)
+          blob = new Blob([json_string],{type:"text/plain"});
+
+          file_name = file_name + ".json";
+        }
+        else{
+          file_name = file_name + ".py";
+        }
+        if(window.navigator.msSaveBlob){
+            // IE
+            window.navigator.msSaveBlob(blob, file_name);
+        }else {
+            // another
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.target = '_blank';
+            a.download = file_name;
+            a.click();
+        }
+      }
+    });
+  }
+}
+
+
 function readSingleFile(e) {
   var file = e.target.files[0];
   if (!file) {
@@ -527,7 +593,8 @@ function initDataLoad(){
 
 if(localStorage["DEBUG_MODE"]){
   if(localStorage["DEBUG_MODE"] == "off"){
-    document.getElementById("tab_blocks").style.width = "100%";
+    // document.getElementById("tab_blocks").style.width = "100%";
+    // document.getElementById("tab_python").style.display = "none";
     document.getElementById("tab_javascript").style.display = "none";
     document.getElementById("tab_xml").style.display = "none";
   }

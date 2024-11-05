@@ -136,7 +136,7 @@
 
 
 #map_table{
-    width: 60%;
+    width: 67%;
     margin: 10px auto;
     margin-top: 80px;
     margin-bottom:30px;
@@ -187,26 +187,30 @@ td img{
 
 .hart_img{
     background-image: url(/images/hart.png);
-    background-repeat: no-repeat;
 }
 
 .wall_img{
     background-image: url(/images/wall.png);
 }
 
+.field_img{
+    background-image: url(/images/field.png);
+}
+
 .cool_img{
     background-image: url(/images/cool.png);
-    background-repeat: no-repeat;
 }
 
 .hot_img{
     background-image: url(/images/hot.png);
-    background-repeat: no-repeat;
 }
 
 .ch_img{
     background-image: url(/images/ch.png);
-    background-repeat: no-repeat;
+}
+
+.hc_img{
+    background-image: url(/images/hc.png);
 }
 
 #satage_map{

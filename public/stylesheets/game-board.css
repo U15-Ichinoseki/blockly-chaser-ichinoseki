@@ -10,7 +10,7 @@ table {
 }
 td {
   padding: 0;
-  border: solid 1px #6c6c6c;
+  border: solid 2px #6c6c6c;
   vertical-align: top;
   background-size: contain;
 }
@@ -325,6 +325,12 @@ td img{
 
 .wall_img{
   background-image: url(/images/wall.png);
+  background-repeat: no-repeat;
+}
+
+.field_img{
+  background-image: url(/images/field.png);
+  background-repeat: no-repeat;
 }
 
 .cool_img{
@@ -339,5 +345,10 @@ td img{
 
 .ch_img{
   background-image: url(/images/ch.png);
+  background-repeat: no-repeat;
+}
+
+.hc_img{
+  background-image: url(/images/hc.png);
   background-repeat: no-repeat;
 }

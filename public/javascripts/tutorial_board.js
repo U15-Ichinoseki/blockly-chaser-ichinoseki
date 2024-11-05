@@ -31,7 +31,10 @@ function makeTable(tableId,effect=false){
         for(j = 0; j < data[0].length; j++){
             cell=rows[i].insertCell(-1);
             
-            if(data[i][j] == 1){
+            if(data[i][j] == 0){
+                cell.classList.add("field_img");
+            }
+            else if(data[i][j] == 1){
                 cell.classList.add("wall_img");
             }
             else if(data[i][j] == 2){
@@ -55,7 +58,7 @@ function makeTable(tableId,effect=false){
                 hy = i;
             }
             else if(data[i][j] == 43){
-                cell.classList.add("ch_img");
+                cell.classList.add("hc_img");
                 cx = j;
                 cy = i;
                 hx = j;
@@ -109,12 +112,12 @@ function makeTable(tableId,effect=false){
             for(var x of x_range){
                 if(effect.p == "cool" && cx){
                     if(!(0 > (cx + x) || data[0].length-1 < (cx + x) || 0 > (cy + y) || data.length-1 < (cy + y))){
-                        table.rows[cy+y].cells[cx+x].style.backgroundColor = "rgba(3, 169, 244, 0.3)";
+                        table.rows[cy+y].cells[cx+x].style.border  = "2px solid rgba(3, 3, 244, 1.0)";
                     }
                 }
                 else if(effect.p == "hot" && hx){
                     if(!(0 > (hx + x) || data[0].length-1 < (hx + x) || 0 > (hy + y) || data.length-1 < (hy + y))){
-                        table.rows[hy+y].cells[hx+x].style.backgroundColor = "rgba(3, 169, 244, 0.3)";
+                        table.rows[hy+y].cells[hx+x].style.border = "2px solid rgba(3, 3, 244, 1.0)";
                     }
                 }
             }
@@ -128,12 +131,12 @@ function makeTable(tableId,effect=false){
                 for(var x of x_range){
                     if(effect.p == "hot" && hx){
                         if(!(0 > (hx + x) || data[0].length-1 < (hx + x) || 0 > (hy + y) || data.length-1 < (hy + y))){
-                            table.rows[hy+y].cells[hx+x].style.backgroundColor = "rgba(139, 195, 74, 0.3)";
+                            table.rows[hy+y].cells[hx+x].style.border = "2px solid rgba(3, 244, 3, 1.0)";
                         }
                     }
                     else if(effect.p == "cool" && cx){
                         if(!(0 > (cx + x) || data[0].length-1 < (cx + x) || 0 > (cy + y) || data.length-1 < (cy + y))){
-                            table.rows[cy+y].cells[cx+x].style.backgroundColor = "rgba(139, 195, 74, 0.3)";
+                            table.rows[cy+y].cells[cx+x].style.border = "2px solid rgba(3, 244, 3, 1.0)";
                         }
                     }
                 }
@@ -158,7 +161,6 @@ var resultSound = new Howl({
 function cpu(level){
     makeTable("game_board",{"p":"hot","t":"r"});
     var cpu_map_data = get_map_data("hot","get_ready");
-    
     
     if(level==1){
         setTimeout(function(){
@@ -205,6 +207,7 @@ function stage_result(status = false){
             Code.stopJS();
         }
     }
+
     
     if(satage_data["block_limit"] && result_flag){
         if(Code.workspace.remainingCapacity() < 0){
@@ -352,7 +355,7 @@ function get_ready(chara="cool"){
 function move_player(direction,chara="cool"){
     var move_x = 0;
     var move_y = 0;
-    
+
     var mapdata = satage_data["map_data"];
     var x = satage_data["map_size_x"];
     var y = satage_data["map_size_y"];
@@ -373,8 +376,8 @@ function move_player(direction,chara="cool"){
         move_x = 1;
     }
     
-    if(mapdata[py][px] == 34 || mapdata[py][px] == 43){
-        mapdata[py][px] = 4;
+    if(mapdata[py][px] == 34 || mapdata[py][px] == 43){        
+        mapdata[py][px] = chara == "cool" ? 4 : 3;
     }
     else{
         mapdata[py][px] = 0;
@@ -389,21 +392,24 @@ function move_player(direction,chara="cool"){
         else{
             if(mapdata[py + move_y][px + move_x] == 2){
                 mapdata[py][px] = 1;
-                hart_score += 1;
+                hart_score += "cool" ? 1 : 0;
             }
             
             if(mapdata[py + move_y][px + move_x] == 4){
                 mapdata[py + move_y][px + move_x] = 34;
             }
+            else if(mapdata[py + move_y][px + move_x] == 3){
+                mapdata[py + move_y][px + move_x] = 34;
+            }
             else{
-                mapdata[py + move_y][px + move_x] = 3;
+                mapdata[py + move_y][px + move_x] = chara == "cool" ? 3 : 4;
             }
             
             satage_data[chara + "_x"] = satage_data[chara + "_x"] + move_x;
             satage_data[chara + "_y"] = satage_data[chara + "_y"] + move_y;
             
             
-            if(!stage_result()){
+            if(chara=="cool" & !stage_result()){
                 makeTable("game_board");
                 next_turn();
                 return get_map_data("cool","move");

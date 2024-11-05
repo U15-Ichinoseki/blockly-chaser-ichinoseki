@@ -206,7 +206,7 @@ function resetVarStor(){
 var runspeed = 0;
 var programming_mode = "";
 try{
-  if(satage_data){
+  if(stage_data){
     runspeed = 100;
     programming_mode = "t";
   }

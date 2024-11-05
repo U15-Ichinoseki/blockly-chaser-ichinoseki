@@ -11,7 +11,7 @@
     background: linear-gradient(90deg, rgba(255,255,255,0) 40%, rgba(0,0,0,0.4) 100%);
 }
 
-#satage_list{
+#stage_list{
     position: relative;
     width:240px;
     background: rgba(255, 255, 255, 0.7);
@@ -23,20 +23,20 @@
     scrollbar-width: none;
 }
 
-#satage_list::-webkit-scrollbar {
+#stage_list::-webkit-scrollbar {
   display: none;
 }
 
-#satage_info{
+#stage_info{
     width:400px;
 }
 
-.one_satage{
+.one_stage{
     width: 100%;
     height: 80px;
 }
 
-.satage_div{
+.stage_div{
     position:relative;
     margin: 10px 20px;
     width: 200px;
@@ -47,7 +47,7 @@
     cursor: pointer;
 }
 
-.satage_level{
+.stage_level{
     position: absolute;
     font-size: 13px;
     font-weight:  bold;
@@ -67,7 +67,7 @@
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.12);
 }
 
-.satage_level:before {
+.stage_level:before {
     position: absolute;
     content: '';
     top: 0;
@@ -79,7 +79,7 @@
     border-radius: 5px 0 0 5px;
 }
 
-.satage_level:after {
+.stage_level:after {
     position: absolute;
     content: '';
     bottom: -7px;
@@ -91,7 +91,7 @@
     border-radius: 5px 0 0 5px;
 }
 
-.satage_status{
+.stage_status{
     position: absolute;
     right: 5px;
     top: 5px;
@@ -102,11 +102,11 @@
     border-radius: 7px;
 }
 
-.satage_clear{
+.stage_clear{
     background: linear-gradient(0deg, rgb(0, 195, 15) 50%, rgb(86, 255, 0) 100%);
 }
 
-.satage_clear:before{
+.stage_clear:before{
     position: absolute;
     text-align: center;
     content: "CLEAR";
@@ -118,7 +118,7 @@
     height: 14px;
 }
 
-.satage_name{
+.stage_name{
     margin-top: 20px;
     text-align: center;
     color: #fff;
@@ -126,7 +126,7 @@
     letter-spacing: 0.1em;
 }
 
-.satage_info{
+.stage_info{
     font-size: 10px;
     color: #fff;
     text-align: center;
@@ -180,7 +180,7 @@ td img{
     left: calc(50% - 40px);
 }
 
-.satage_select_on{
+.stage_select_on{
     background: #ff4e38;
     transform: scale(1.1);
 }
@@ -213,11 +213,11 @@ td img{
     background-image: url(/images/hc.png);
 }
 
-#satage_map{
+#stage_map{
 
 }
 
-#satage_info_condition{
+#stage_info_condition{
     position: relative;
     width: 80%;
     height: 100px;
@@ -228,7 +228,7 @@ td img{
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
-#satage_info_condition:after{
+#stage_info_condition:after{
     position: absolute;
     content: '';
     width: 100px;
@@ -244,7 +244,7 @@ td img{
     border-width: 0px 20px 20px 0px;
 }
 
-#satage_info_condition:before{
+#stage_info_condition:before{
     position: absolute;
     content: '';
     width: 100px;
@@ -261,7 +261,7 @@ td img{
     border-width: 0px 20px 20px 0px;
 }
 
-#satage_info_condition span{
+#stage_info_condition span{
     position: absolute;
     top: -20px;
     left: 8px;
@@ -272,7 +272,7 @@ td img{
 }
 
 
-#satage_info_name{
+#stage_info_name{
     position: absolute;
     top: 20px;
     left: 50%;
@@ -288,7 +288,7 @@ td img{
 
 
 
-.satage_info_data{
+.stage_info_data{
     padding: 5px 0;
     padding-left: 10px;
     color: #fff;
@@ -296,7 +296,7 @@ td img{
     font-size: 15px;
 }
 
-.satage_info_data:before{
+.stage_info_data:before{
     content: '';
     display: inline-block;
     font-size: 13px;
@@ -313,7 +313,7 @@ td img{
 
 
 
-#satage_join_div{
+#stage_join_div{
     position: relative;
     margin: 0 auto;
     margin-top: 20px;
@@ -325,7 +325,7 @@ td img{
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
-#satage_join_div a{
+#stage_join_div a{
     position: absolute;
     top: 0;
     left: 0;
@@ -338,7 +338,7 @@ td img{
     text-decoration: none;
 }
 
-.satage_info_data_inline{
+.stage_info_data_inline{
     display: inline-block;
 }
 

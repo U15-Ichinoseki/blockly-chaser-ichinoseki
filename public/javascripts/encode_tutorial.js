@@ -133,7 +133,7 @@ function initApi(interpreter, scope) {
       setTimeout(getDate,200);
     }
     else{
-      if (satage_data["cpu"]){
+      if (stage_data["cpu"]){
         Code.stopJS();
         return
       }
@@ -160,7 +160,7 @@ function initApi(interpreter, scope) {
       setTimeout(getDate,200);
     }
     else{
-      if (satage_data["cpu"]){
+      if (stage_data["cpu"]){
         Code.stopJS();
         return
       }
@@ -188,7 +188,7 @@ function initApi(interpreter, scope) {
       setTimeout(getDate,200);
     }
     else{
-      if (satage_data["cpu"]){
+      if (stage_data["cpu"]){
         Code.stopJS();
         return
       }
@@ -216,7 +216,7 @@ function initApi(interpreter, scope) {
       setTimeout(getDate,200);
     }
     else{
-      if (satage_data["cpu"]){
+      if (stage_data["cpu"]){
         Code.stopJS();
         return
       }
@@ -325,7 +325,7 @@ Code.runJS = function(){
     setTimeout(function() {
       highlightPause = false;
       generateCodeAndLoadIntoInterpreter();
-      if(!satage_data["cpu"]){
+      if(!stage_data["cpu"]){
         latestCode = 'map_info = [' + get_map_data("cool","get_ready") + ']\n' + latestCode;
       }
       myInterpreter = new ObjInterpreter(latestCode, initApi);

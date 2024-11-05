@@ -334,7 +334,7 @@ Code.init = function() {
     }
   }
   try{
-    blocklimit = satage_data["block_limit"];
+    blocklimit = stage_data["block_limit"];
   }
   catch(e){
     blocklimit = "";

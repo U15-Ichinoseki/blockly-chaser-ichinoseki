@@ -1,7 +1,7 @@
 
 function makeTable(tableId,effect=false){
-    var data = satage_data["map_data"];
-    var y = satage_data["map_size_y"];
+    var data = stage_data["map_data"];
+    var y = stage_data["map_size_y"];
     
     var c = document.getElementById("ready_player");
     if(c){
@@ -145,7 +145,7 @@ function makeTable(tableId,effect=false){
     }
     document.getElementById(tableId).appendChild(table);
     
-    document.getElementById('turn_now').textContent = String(satage_data["turn"]);
+    document.getElementById('turn_now').textContent = String(stage_data["turn"]);
 }
 
 var Sound_Volume = 0.5;
@@ -210,8 +210,8 @@ function cpu(level){
 }
 
 function next_turn(){
-    if(satage_data["cpu"] ){
-        cpu(satage_data["cpu"].level);
+    if(stage_data["cpu"] ){
+        cpu(stage_data["cpu"].level);
     }
     else{
         my_turn = true;
@@ -221,41 +221,41 @@ function next_turn(){
 function stage_result(status = false){
     var result_flag = false;
     
-    if(satage_data["turn"]){
-        satage_data["turn"] -= 1;
+    if(stage_data["turn"]){
+        stage_data["turn"] -= 1;
     }
     
-    if(satage_data["mode"] == "puthot" && satage_data["map_data"][satage_data["hot_y"]][satage_data["hot_x"]] == 1){
+    if(stage_data["mode"] == "puthot" && stage_data["map_data"][stage_data["hot_y"]][stage_data["hot_x"]] == 1){
         result_flag = true;
     }
     
-    if(satage_data["mode"] == "gethart" && satage_data["get_hart_value"] <= hart_score){
+    if(stage_data["mode"] == "gethart" && stage_data["get_hart_value"] <= hart_score){
         result_flag = true;
     }
     
-    if(satage_data["turn"] <= 0){
+    if(stage_data["turn"] <= 0){
         if(!result_flag){
             Code.stopJS();
         }
     }
 
     // 自滅チェック
-    var x = satage_data["map_size_x"];
-    var y = satage_data["map_size_y"];    
-    var px = satage_data["cool_x"];
-    var py = satage_data["cool_y"];
+    var x = stage_data["map_size_x"];
+    var y = stage_data["map_size_y"];    
+    var px = stage_data["cool_x"];
+    var py = stage_data["cool_y"];
         
     var ch = 1;
-    ch = ch * (0 <= py - 1 ? satage_data["map_data"][py - 1][px] : 1)
-    ch = ch * (y >  py + 1 ? satage_data["map_data"][py + 1][px] : 1)
-    ch = ch * (0 <= px - 1 ? satage_data["map_data"][py][px - 1] : 1)
-    ch = ch * (x >  px + 1 ? satage_data["map_data"][py][px + 1] : 1)
+    ch = ch * (0 <= py - 1 ? stage_data["map_data"][py - 1][px] : 1)
+    ch = ch * (y >  py + 1 ? stage_data["map_data"][py + 1][px] : 1)
+    ch = ch * (0 <= px - 1 ? stage_data["map_data"][py][px - 1] : 1)
+    ch = ch * (x >  px + 1 ? stage_data["map_data"][py][px + 1] : 1)
     if(ch == 1 && !result_flag){
         Code.stopJS();
         return
     }
     
-    if(satage_data["block_limit"] && result_flag){
+    if(stage_data["block_limit"] && result_flag){
         if(Code.workspace.remainingCapacity() < 0){
             Code.stopJS();
             result_flag = false;
@@ -288,7 +288,7 @@ function stage_result(status = false){
         
         if(localStorage["AUTO_SAVE"]){
             if(localStorage["AUTO_SAVE"] == "on"){
-                localStorage.setItem(satage_data["stage_id"], xmlText); 
+                localStorage.setItem(stage_data["stage_id"], xmlText); 
             }
         }
         
@@ -312,10 +312,10 @@ function get_map_data(chara, mode, direction = false){
     var x_range = [];
     var y_range = [];
     
-    var now_x = satage_data[chara + "_x"];
-    var now_y = satage_data[chara + "_y"];
-    var load_map_size_x = satage_data["map_size_x"];
-    var load_map_size_y = satage_data["map_size_y"];
+    var now_x = stage_data[chara + "_x"];
+    var now_y = stage_data[chara + "_y"];
+    var load_map_size_x = stage_data["map_size_x"];
+    var load_map_size_y = stage_data["map_size_y"];
     
     var chara = "cool";
     var chara_num_diff = {"cool":4,"hot":3};
@@ -355,7 +355,7 @@ function get_map_data(chara, mode, direction = false){
         y_range = [-1,0,1];
     }
     
-    var tmp_map_data = satage_data["map_data"];
+    var tmp_map_data = stage_data["map_data"];
     var return_map_data = [];
     
     for(var y of y_range){
@@ -402,12 +402,12 @@ function move_player(direction,chara="cool"){
     var move_x = 0;
     var move_y = 0;
 
-    var mapdata = satage_data["map_data"];
-    var x = satage_data["map_size_x"];
-    var y = satage_data["map_size_y"];
+    var mapdata = stage_data["map_data"];
+    var x = stage_data["map_size_x"];
+    var y = stage_data["map_size_y"];
     
-    var px = satage_data[chara + "_x"];
-    var py = satage_data[chara + "_y"];
+    var px = stage_data[chara + "_x"];
+    var py = stage_data[chara + "_y"];
     
     if(direction == "top"){
         move_y = -1;
@@ -451,8 +451,8 @@ function move_player(direction,chara="cool"){
                 mapdata[py + move_y][px + move_x] = chara == "cool" ? 3 : 4;
             }
             
-            satage_data[chara + "_x"] = satage_data[chara + "_x"] + move_x;
-            satage_data[chara + "_y"] = satage_data[chara + "_y"] + move_y;
+            stage_data[chara + "_x"] = stage_data[chara + "_x"] + move_x;
+            stage_data[chara + "_y"] = stage_data[chara + "_y"] + move_y;
             
             
             if(chara=="cool" & !stage_result()){
@@ -491,11 +491,11 @@ function put_wall(direction,chara="cool"){
     var put_check = false;
     var around_check = false;
     
-    var x = satage_data["map_size_x"];
-    var y = satage_data["map_size_y"];
+    var x = stage_data["map_size_x"];
+    var y = stage_data["map_size_y"];
     
-    var px = satage_data[chara + "_x"];
-    var py = satage_data[chara + "_y"];
+    var px = stage_data[chara + "_x"];
+    var py = stage_data[chara + "_y"];
     
     if(direction === "top"){
       if(0 <= py - 1){
@@ -523,32 +523,32 @@ function put_wall(direction,chara="cool"){
     }
     
     if(put_check){
-        satage_data["map_data"][py][px] = 1;
+        stage_data["map_data"][py][px] = 1;
         
-        var px = satage_data[chara + "_x"];
-        var py = satage_data[chara + "_y"];
+        var px = stage_data[chara + "_x"];
+        var py = stage_data[chara + "_y"];
         
         var c_t,c_b,c_r,c_l;
         if(0 <= py - 1){
-            c_t = satage_data["map_data"][py - 1][px];
+            c_t = stage_data["map_data"][py - 1][px];
         }
         else{
             c_t = 1;
         }
         if(y > py + 1){
-            c_b = satage_data["map_data"][py + 1][px];
+            c_b = stage_data["map_data"][py + 1][px];
         }
         else{
             c_b = 1;
         }
         if(0 <= px - 1){
-            c_l = satage_data["map_data"][py][px - 1];
+            c_l = stage_data["map_data"][py][px - 1];
         }
         else{
             c_l = 1;
         }
         if(x > px + 1){
-            c_r = satage_data["map_data"][py][px + 1];
+            c_r = stage_data["map_data"][py][px + 1];
         }
         else{
             c_r = 1;
@@ -579,5 +579,5 @@ var my_turn = false;
 
 function endCode(){
     hart_score = 0;
-    satage_data = JSON.parse(JSON.stringify(reset_data));
+    stage_data = JSON.parse(JSON.stringify(reset_data));
 }

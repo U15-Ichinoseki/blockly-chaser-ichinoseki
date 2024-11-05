@@ -70,6 +70,8 @@ function initApi(interpreter, scope) {
   // Add an API function for the alert() block, generated for "text_print" blocks.
   
   interpreter.connectObject(scope, "map_info", map_info);
+  interpreter.connectObject(scope, "look_info", look_info);
+  interpreter.connectObject(scope, "search_info", search_info);
   
   var wrapper = function(text) {
     text.toString();
@@ -131,6 +133,10 @@ function initApi(interpreter, scope) {
       setTimeout(getDate,200);
     }
     else{
+      if (satage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(my_map_data.join(''));
     }
   };
@@ -154,6 +160,10 @@ function initApi(interpreter, scope) {
       setTimeout(getDate,200);
     }
     else{
+      if (satage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(my_map_data.join(''));
     }
   };
@@ -178,6 +188,10 @@ function initApi(interpreter, scope) {
       setTimeout(getDate,200);
     }
     else{
+      if (satage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(my_map_data.join(''));
     }
   };
@@ -202,6 +216,10 @@ function initApi(interpreter, scope) {
       setTimeout(getDate,200);
     }
     else{
+      if (satage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(my_map_data.join(''));
     }
   };
@@ -278,6 +296,8 @@ function resetInterpreter() {
 function resetVar(){
   my_turn = false;
   map_info = false;
+  look_info = false;
+  search_info = false;
 }
 
 var step_flag = false;

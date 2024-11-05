@@ -169,6 +169,37 @@ function cpu(level){
             setTimeout(function(){my_turn = true;},250);
         },250);
     }
+    else if(level==2){
+        var random_list = [];
+        if(cpu_map_data[1] != 2){
+            random_list.push('top');
+        }
+        if(cpu_map_data[3] != 2){
+            random_list.push('left');
+        }
+        if(cpu_map_data[5] != 2){
+            random_list.push('right');
+        }
+        if(cpu_map_data[7] != 2){
+            random_list.push('bottom');
+        }
+
+        if(random_list){
+            var random = Math.floor( Math.random() * random_list.length );
+            makeTable("game_board");
+            setTimeout(function(){
+                move_player(random_list[random], "hot");
+                my_turn = true;
+            },250);
+        }
+        else{
+            setTimeout(function(){
+                makeTable("game_board",{"p":"hot","t":"s","d":"right"});
+                cpu_map_data = get_map_data("hot","search","right");
+                setTimeout(function(){my_turn = true;},250);
+            },250);
+        }      
+    }
     else{
         setTimeout(function(){
             cpu_map_data = look("top","hot");
@@ -208,6 +239,21 @@ function stage_result(status = false){
         }
     }
 
+    // 自滅チェック
+    var x = satage_data["map_size_x"];
+    var y = satage_data["map_size_y"];    
+    var px = satage_data["cool_x"];
+    var py = satage_data["cool_y"];
+        
+    var ch = 1;
+    ch = ch * (0 <= py - 1 ? satage_data["map_data"][py - 1][px] : 1)
+    ch = ch * (y >  py + 1 ? satage_data["map_data"][py + 1][px] : 1)
+    ch = ch * (0 <= px - 1 ? satage_data["map_data"][py][px - 1] : 1)
+    ch = ch * (x >  px + 1 ? satage_data["map_data"][py][px + 1] : 1)
+    if(ch == 1 && !result_flag){
+        Code.stopJS();
+        return
+    }
     
     if(satage_data["block_limit"] && result_flag){
         if(Code.workspace.remainingCapacity() < 0){

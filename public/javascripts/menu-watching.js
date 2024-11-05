@@ -109,7 +109,10 @@ function server_info(id,get_list){
     rows.push(table.insertRow(-1));
     for(j = 0; j < data[0].length; j++){
       cell=rows[i].insertCell(-1);
-      if(data[i][j] == 1){
+      if(data[i][j] == 0){
+        cell.classList.add("field_img");
+      }
+      else if(data[i][j] == 1){
         cell.classList.add("wall_img");
       }
       else if(data[i][j] == 2){
@@ -125,7 +128,7 @@ function server_info(id,get_list){
         cell.classList.add("ch_img");
       }
       else if(data[i][j] == 43){
-        cell.classList.add("ch_img");
+        cell.classList.add("hc_img");
       }
     }
   }

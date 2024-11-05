@@ -18,6 +18,8 @@ function createStageList(get_list){
     div_num = Math.ceil(h*2/80);
   }
   
+  div_num = satage_list.length;
+  
   for(var i=0; i < div_num; i++){
     var one_satage = document.createElement('div');
     one_satage.classList.add("one_satage");
@@ -89,18 +91,18 @@ function createStageList(get_list){
     document.getElementById('satage_list').appendChild(one_satage);
   }
   
-  var loop = document.getElementById('satage_list');
+  // var loop = document.getElementById('satage_list');
   
-  loop.onscroll = function(){
-    var scrollTop = this.scrollTop;
-    if(0 >= scrollTop){
-      this.scrollTo( 0, satage_list.length*80-1 ) ;
-    }
-    else if(satage_list.length*80 < scrollTop){
-      this.scrollTo( 0, 1 ) ;
-    }
-  }
-  document.getElementById('satage_list').scrollTo( 0,1 ) ;
+  // loop.onscroll = function(){
+  //   var scrollTop = this.scrollTop;
+  //   if(0 >= scrollTop){
+  //     this.scrollTo( 0, satage_list.length*80-1 ) ;
+  //   }
+  //   else if(satage_list.length*80 < scrollTop){
+  //     this.scrollTo( 0, 1 ) ;
+  //   }
+  // }
+  // document.getElementById('satage_list').scrollTo( 0,1 ) ;
 }
 
 function satage_info_create(id,get_list){

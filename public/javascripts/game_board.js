@@ -138,7 +138,10 @@ function makeTable(msg, x, y, effect, tableId){
         for(j = 0; j < data[0].length; j++){
             cell=rows[i].insertCell(-1);
             
-            if(data[i][j] == 1){
+            if(data[i][j] == 0){
+                cell.classList.add("field_img");
+            }
+            else if(data[i][j] == 1){
                 cell.classList.add("wall_img");
             }
             else if(data[i][j] == 2){
@@ -163,7 +166,7 @@ function makeTable(msg, x, y, effect, tableId){
                 hy = i;
             }
             else if(data[i][j] == 43){
-                cell.classList.add("ch_img");
+                cell.classList.add("hc_img");
                 cx = j;
                 cy = i;
                 hx = j;
@@ -217,12 +220,12 @@ function makeTable(msg, x, y, effect, tableId){
             for(var x of x_range){
                 if(msg.effect.p == "cool" && cx){
                     if(!(0 > (cx + x) || data[0].length-1 < (cx + x) || 0 > (cy + y) || data.length-1 < (cy + y))){
-                        table.rows[cy+y].cells[cx+x].style.backgroundColor = "rgba(3, 169, 244, 0.3)";
+                        table.rows[cy+y].cells[cx+x].style.border = "2px solid rgba(3, 244, 3, 1.3)";
                     }
                 }
                 else if(msg.effect.p == "hot" && hx){
                     if(!(0 > (hx + x) || data[0].length-1 < (hx + x) || 0 > (hy + y) || data.length-1 < (hy + y))){
-                        table.rows[hy+y].cells[hx+x].style.backgroundColor = "rgba(3, 169, 244, 0.3)";
+                        table.rows[hy+y].cells[hx+x].style.border = "2px solid rgba(3, 244, 3, 1.3)";
                     }
                 }
             }
@@ -233,14 +236,14 @@ function makeTable(msg, x, y, effect, tableId){
         
         for(var y of y_range){
             for(var x of x_range){
-                if(msg.effect.p == "cool" && !(hx === false)){
+                if(msg.effect.p == "hot" && !(hx === false)){
                     if(!(0 > (hx + x) || data[0].length-1 < (hx + x) || 0 > (hy + y) || data.length-1 < (hy + y))){
-                        table.rows[hy+y].cells[hx+x].style.backgroundColor = "rgba(139, 195, 74, 0.3)";
+                        table.rows[hy+y].cells[hx+x].style.border = "2px solid rgba(3, 3, 244, 1.3)";
                     }
                 }
-                else if(msg.effect.p == "hot" && !(cx === false)){
+                else if(msg.effect.p == "cool" && !(cx === false)){
                     if(!(0 > (cx + x) || data[0].length-1 < (cx + x) || 0 > (cy + y) || data.length-1 < (cy + y))){
-                        table.rows[cy+y].cells[cx+x].style.backgroundColor = "rgba(139, 195, 74, 0.3)";
+                        table.rows[cy+y].cells[cx+x].style.border = "2px solid rgba(3, 3, 244, 1.3)";
                     }
                 }
             }
@@ -374,11 +377,3 @@ function exitFullscreen() {
 		document.exitFullscreen();
 	}
 }
-
-
-
-
-
-
-
-

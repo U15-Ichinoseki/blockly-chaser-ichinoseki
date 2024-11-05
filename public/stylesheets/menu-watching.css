@@ -212,26 +212,30 @@ td img{
 
 .hart_img{
     background-image: url(/images/hart.png);
-    background-repeat: no-repeat;
 }
 
 .wall_img{
     background-image: url(/images/wall.png);
 }
 
+.field_img{
+    background-image: url(/images/field.png);
+}
+
 .cool_img{
     background-image: url(/images/cool.png);
-    background-repeat: no-repeat;
 }
 
 .hot_img{
     background-image: url(/images/hot.png);
-    background-repeat: no-repeat;
 }
 
 .ch_img{
     background-image: url(/images/ch.png);
-    background-repeat: no-repeat;
+}
+
+.hc_img{
+    background-image: url(/images/hc.png);
 }
 
 #server_info_div{

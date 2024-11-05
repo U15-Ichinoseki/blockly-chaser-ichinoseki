@@ -218,7 +218,7 @@ Code.renderContent = function() {
   } else if (content.id == 'content_javascript') {
     Code.attemptCodeGeneration(javascript.javascriptGenerator);
   } else if (content.id == 'content_python') {
-    Code.attemptCodeGeneration(Blockly.Python);
+    Code.attemptCodeGeneration(python.pythonGenerator);
   } else if (content.id == 'content_php') {
     Code.attemptCodeGeneration(Blockly.PHP);
   } else if (content.id == 'content_dart') {

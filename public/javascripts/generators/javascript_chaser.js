@@ -7,13 +7,14 @@ javascript.javascriptGenerator.forBlock['wait'] = function(block) {
 javascript.javascriptGenerator.forBlock['server_join'] = function(block) {
   var dropdown_room_id = block.getFieldValue('room_id');
   var text_name = block.getFieldValue('name');
+  var statements_main_loop_content = Blockly.JavaScript.statementToCode(block, 'main_loop_content');
   // TODO: Assemble JavaScript into code variable.
   
   if(!text_name){
       text_name = "NoName"
   }
   var code = 'join("' + dropdown_room_id + '","' + text_name + '");\n';
-  return code;
+  return code + statements_main_loop_content;
 };
 
 javascript.javascriptGenerator.forBlock['get_ready'] = function(block) {

@@ -99,7 +99,7 @@ table {
 }
 td {
   padding: 0;
-  border: solid 1px #6c6c6c;
+  border: solid 2px #6c6c6c;
   vertical-align: top;
   background-size: contain;
 }
@@ -277,7 +277,7 @@ button {
 .game_area{
   position: relative;
   width: calc(100% - 14px);
-  height: 500px;
+  height: 525px;
   margin: 6px;
   margin-bottom: 0px;
   background: #fff;
@@ -293,7 +293,7 @@ button {
 .console_area{
   display: block;
   width: calc(100% - 38px);
-  height: calc(100% - 528px);
+  height: calc(100% - 553px);
   min-height: 60px;
 
   border: none;
@@ -645,6 +645,10 @@ label {
   background-image: url(/images/wall.png);
 }
 
+.field_img{
+  background-image: url(/images/field.png);
+}
+
 .cool_img{
   background-image: url(/images/cool.png);
 }
@@ -655,4 +659,8 @@ label {
 
 .ch_img{
   background-image: url(/images/ch.png);
+}
+
+.hc_img{
+  background-image: url(/images/hc.png);
 }

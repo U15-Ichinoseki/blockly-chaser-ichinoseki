@@ -198,9 +198,66 @@ function create_map(key){
 for(var key in server_store){
     if(!server_store[key].map_data.length){
         create_map(key);
+    } else {
+        if(server_store[key].cool.x < 0 || server_store[key].cool.y < 0){
+            player_spon(key);    
+        }
     }
 }
-  
+
+
+//player spon
+function player_spon(key){
+
+    var selectable_list = [];
+
+    for(var s_x = 0; s_x < Math.floor(server_store[key].map_size_x/2)+1; s_x++){
+        for(var s_y = 0; s_y < server_store[key].map_size_y; s_y++){
+            if (server_store[key].map_data[s_y][s_x]==0 
+                && (!(s_x == Math.floor(server_store[key].map_size_x/2) && s_y >= Math.floor(server_store[key].map_size_y/2)))){
+                selectable_list.push([s_x,s_y]);
+            }
+        }
+    }
+
+    var s_xy = Math.floor(Math.random() * selectable_list.length);
+
+    var s_x = selectable_list[s_xy][0];
+    var s_y = selectable_list[s_xy][1];
+
+    server_store[key].cool.x = s_x;
+    server_store[key].cool.y = s_y;
+
+    server_store[key].map_data[s_y][s_x] = 3;
+
+
+    if (server_store[key].auto_symmetry) {
+        server_store[key].hot.x = server_store[key].map_size_x - s_x;
+        server_store[key].hot.y = server_store[key].map_size_y - s_y;
+    }
+    else {
+        var selectable_list = [];
+
+        for(var s_x = Math.floor(server_store[key].map_size_x/2)+1; s_x < server_store[key].map_size_x; s_x++){
+            for(var s_y = 0; s_y < server_store[key].map_size_y; s_y++){
+                if (server_store[key].map_data[s_y][s_x]==0 
+                    && (!(s_x == Math.floor(server_store[key].map_size_x/2) && s_y <= Math.floor(server_store[key].map_size_y/2)))){
+                    selectable_list.push([s_x,s_y]);
+                }
+            }
+        }
+    
+        var s_xy = Math.floor(Math.random() * selectable_list.length);
+    
+        var s_x = selectable_list[s_xy][0];
+        var s_y = selectable_list[s_xy][1];
+    
+        server_store[key].hot.x = s_x;
+        server_store[key].hot.y = s_y;
+    }
+
+    server_store[key].map_data[s_y][s_x] = 4;
+}
   
 //cpu
 function cpu(room,level,chara){
@@ -210,7 +267,7 @@ function cpu(room,level,chara){
 
     if(cpu_map_data){
         if(level == 0){
-        setTimeout(look, delay_time, room,chara,"top");
+            setTimeout(look, delay_time, room,chara,"top");
         }
         else if(level == 1){
             var random_list = [];
@@ -233,6 +290,43 @@ function cpu(room,level,chara){
             }
             else{
                 setTimeout(look, delay_time, room,chara,"top");
+            }
+        }
+        else if(level == 2){
+            if(cpu_map_data[1] == 1){
+                setTimeout(put_wall, delay_time, room, chara, 'top');
+            }
+            else if(cpu_map_data[3] == 1){
+                setTimeout(put_wall, delay_time, room, chara, 'left');
+            }
+            else if(cpu_map_data[5] == 1){
+                setTimeout(put_wall, delay_time, room, chara, 'right');
+            }
+            else if(cpu_map_data[7] == 1){
+                setTimeout(put_wall, delay_time, room, chara, 'bottom');
+            }
+            else{
+                var random_list = [];
+                if(cpu_map_data[1] != 2){
+                    random_list.push('top');
+                }
+                if(cpu_map_data[3] != 2){
+                    random_list.push('left');
+                }
+                if(cpu_map_data[5] != 2){
+                    random_list.push('right');
+                }
+                if(cpu_map_data[7] != 2){
+                    random_list.push('bottom');
+                }
+                
+                if(random_list){
+                    var random = Math.floor( Math.random() * random_list.length );
+                    setTimeout(move_player, delay_time, room, chara, random_list[random]);
+                }
+                else{
+                    setTimeout(look, delay_time, room,chara,"top");
+                }
             }
         }
     }
@@ -433,6 +527,10 @@ function game_server_reset(room){
 
     if(!server_store[room].map_data.length){
         create_map(room);
+    } else {
+        if(server_store[room].cool.x < 0 || server_store[room].cool.y < 0){
+            player_spon(room);    
+        }
     }
 }
   
@@ -765,26 +863,26 @@ function search(room,chara,msg,id=false){
             y_range = [0];
         }
         
-        var look_map_data = [];
+        var search_map_data = [];
         
         for(var y of y_range){
             for(var x of x_range){
                 if(0 > (now_x + x) || (load_map_size_x - 1) < (now_x + x) || 0 > (now_y + y) || (load_map_size_y - 1) < (now_y + y)){
-                    look_map_data.push(2);
+                    search_map_data.push(2);
                 }
                 else{
                     if(tmp_map_data[now_y + y][now_x + x] == chara_num_diff[chara] || tmp_map_data[now_y + y][now_x + x] == 34){
-                            look_map_data.push(1);
+                        search_map_data.push(1);
                     }
                     else{
                         if(tmp_map_data[now_y + y][now_x + x] == 0){
-                            look_map_data.push(tmp_map_data[now_y + y][now_x + x]);
+                            search_map_data.push(tmp_map_data[now_y + y][now_x + x]);
                         }
                         else if(tmp_map_data[now_y + y][now_x + x] == 1){
-                            look_map_data.push(2);
+                            search_map_data.push(2);
                         }
                         else{
-                            look_map_data.push(3);
+                            search_map_data.push(3);
                         } 
                     } 
                 }
@@ -792,13 +890,13 @@ function search(room,chara,msg,id=false){
         }
         if(id){
             io.to(id).emit('search_rec',{
-                "rec_data":look_map_data
+                "rec_data":search_map_data
             });
             game_result_check(room,chara,"s",msg);
         }
         else{
             game_result_check(room,chara,"s",msg);
-            return look_map_data;
+            return search_map_data;
         }
     }
     else{

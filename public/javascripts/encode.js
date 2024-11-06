@@ -73,8 +73,6 @@ function initApi(interpreter, scope) {
   interpreter.connectObject(scope, "look_info", look_info);
   interpreter.connectObject(scope, "search_info", search_info);
   
-  
-  
   var wrapper = function(text) {
     text.toString();
     outputArea.value = outputArea.value + '\n' + text;
@@ -135,6 +133,10 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
+      if (stage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(map_info.join(''));
     }
   };
@@ -159,6 +161,10 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
+      if (stage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(map_info.join(''));
     }
   };
@@ -208,6 +214,10 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
+      if (stage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(look_info.join(''));
     }
   };
@@ -230,6 +240,10 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
+      if (stage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(search_info.join(''));
     }
   };
@@ -313,6 +327,8 @@ function resetVar(){
   my_turn = false;
   servar_connect_status = false;
   map_info = [0,0,0,0,0,0,0,0,0];
+  look_info = [0,0,0,0,0,0,0,0,0];
+  search_info = [0,0,0,0,0,0,0,0,0];
 }
 
 var step_flag = false;

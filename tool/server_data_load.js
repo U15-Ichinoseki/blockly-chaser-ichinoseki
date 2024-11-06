@@ -204,6 +204,59 @@ const create_map = function(key){
   }
 };
 
+//player spon
+const player_spon = function(key){
+
+  var selectable_list = [];
+
+  for(var s_x = 0; s_x < Math.floor(server_store[key].map_size_x/2)+1; s_x++){
+      for(var s_y = 0; s_y < server_store[key].map_size_y; s_y++){
+          if (server_store[key].map_data[s_y][s_x]==0 
+              && (!(s_x == Math.floor(server_store[key].map_size_x/2) && s_y >= Math.floor(server_store[key].map_size_y/2)))){
+              selectable_list.push([s_x,s_y]);
+          }
+      }
+  }
+
+  var s_xy = Math.floor(Math.random() * selectable_list.length);
+
+  var s_x = selectable_list[s_xy][0];
+  var s_y = selectable_list[s_xy][1];
+
+  server_store[key].cool.x = s_x;
+  server_store[key].cool.y = s_y;
+
+  server_store[key].map_data[s_y][s_x] = 3;
+
+
+  if (server_store[key].auto_symmetry) {
+      server_store[key].hot.x = server_store[key].map_size_x - s_x;
+      server_store[key].hot.y = server_store[key].map_size_y - s_y;
+  }
+  else {
+      var selectable_list = [];
+
+      for(var s_x = Math.floor(server_store[key].map_size_x/2)+1; s_x < server_store[key].map_size_x; s_x++){
+          for(var s_y = 0; s_y < server_store[key].map_size_y; s_y++){
+              if (server_store[key].map_data[s_y][s_x]==0 
+                  && (!(s_x == Math.floor(server_store[key].map_size_x/2) && s_y <= Math.floor(server_store[key].map_size_y/2)))){
+                  selectable_list.push([s_x,s_y]);
+              }
+          }
+      }
+  
+      var s_xy = Math.floor(Math.random() * selectable_list.length);
+  
+      var s_x = selectable_list[s_xy][0];
+      var s_y = selectable_list[s_xy][1];
+  
+      server_store[key].hot.x = s_x;
+      server_store[key].hot.y = s_y;
+  }
+
+  server_store[key].map_data[s_y][s_x] = 4;
+}
+
 const load = function(room=false){
     if(room){
         /*
@@ -227,6 +280,7 @@ init();
 exports.load = load;
 exports.list_load = list_load;
 exports.create_map = create_map;
+exports.player_spon = player_spon;
 
 
 

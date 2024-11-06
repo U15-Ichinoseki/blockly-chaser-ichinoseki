@@ -16,7 +16,8 @@ function createServarList(get_list){
   else{
     div_num = Math.ceil(h*2/80);
   }
-  
+  div_num = servar_list.length;
+
   for(var i=0; i < div_num; i++){
     var one_servar_div = document.createElement('div');
     one_servar_div.classList.add("one_watching_servar");
@@ -79,18 +80,18 @@ function createServarList(get_list){
     document.getElementById('watching_list').appendChild(one_servar_div);
   }
   
-  var loop = document.getElementById('watching_list');
+  // var loop = document.getElementById('watching_list');
   
-  loop.onscroll = function(){
-    var scrollTop = this.scrollTop;
-    if(0 >= scrollTop){
-      this.scrollTo( 0, servar_list.length*80-1 ) ;
-    }
-    else if(servar_list.length*80 < scrollTop){
-      this.scrollTo( 0, 1 ) ;
-    }
-  }
-  document.getElementById('watching_list').scrollTo( 0,1 ) ;
+  // loop.onscroll = function(){
+  //   var scrollTop = this.scrollTop;
+  //   if(0 >= scrollTop){
+  //     this.scrollTo( 0, servar_list.length*80-1 ) ;
+  //   }
+  //   else if(servar_list.length*80 < scrollTop){
+  //     this.scrollTo( 0, 1 ) ;
+  //   }
+  // }
+  // document.getElementById('watching_list').scrollTo( 0,1 ) ;
   
 }
 

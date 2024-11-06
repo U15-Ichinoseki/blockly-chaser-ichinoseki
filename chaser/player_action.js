@@ -329,26 +329,26 @@ function search(room,chara,msg,id=false){
             y_range = [0];
         }
 
-        var look_map_data = [];
+        var search_map_data = [];
 
         for(var y of y_range){
             for(var x of x_range){
                 if(0 > (now_x + x) || (load_map_size_x - 1) < (now_x + x) || 0 > (now_y + y) || (load_map_size_y - 1) < (now_y + y)){
-                    look_map_data.push(2);
+                    search_map_data.push(2);
                 }
                 else{
                     if(tmp_map_data[now_y + y][now_x + x] == chara_num_diff[chara] || tmp_map_data[now_y + y][now_x + x] == 34){
-                        look_map_data.push(1);
+                        search_map_data.push(1);
                     }
                     else{
                         if(tmp_map_data[now_y + y][now_x + x] == 0){
-                            look_map_data.push(tmp_map_data[now_y + y][now_x + x]);
+                            search_map_data.push(tmp_map_data[now_y + y][now_x + x]);
                         }
                         else if(tmp_map_data[now_y + y][now_x + x] == 1){
-                            look_map_data.push(2);
+                            search_map_data.push(2);
                         }
                         else{
-                            look_map_data.push(3);
+                            search_map_data.push(3);
                         } 
                     } 
                 }
@@ -356,13 +356,13 @@ function search(room,chara,msg,id=false){
         }
         if(id){
             io.to(id).emit('search_rec',{
-                "rec_data":look_map_data
+                "rec_data":search_map_data
             });
             game_result_check(room,chara,"s",msg);
         }
         else{
             game_result_check(room,chara,"s",msg);
-            return look_map_data;
+            return search_map_data;
         }
     }
     else{

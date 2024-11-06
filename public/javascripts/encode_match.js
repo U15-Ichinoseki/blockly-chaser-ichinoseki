@@ -68,8 +68,8 @@ function initApi(interpreter, scope) {
   // Add an API function for the alert() block, generated for "text_print" blocks.
   
   interpreter.connectObject(scope, "map_info", map_info);
-  
-  
+  interpreter.connectObject(scope, "look_info", look_info);
+  interpreter.connectObject(scope, "search_info", search_info);
   
   var wrapper = function(text) {
     text.toString();
@@ -133,6 +133,10 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
+      if (stage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(map_info.join(''));
     }
   };
@@ -157,6 +161,10 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
+      if (stage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
       callback(map_info.join(''));
     }
   };
@@ -206,7 +214,11 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
-      callback(map_info.join(''));
+      if (stage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
+      callback(look_info.join(''));
     }
   };
   interpreter.setProperty(scope, 'look',
@@ -228,7 +240,11 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
-      callback(map_info.join(''));
+      if (stage_data["cpu"]){
+        Code.stopJS();
+        return
+      }
+      callback(search_info.join(''));
     }
   };
   interpreter.setProperty(scope, 'search',
@@ -307,6 +323,8 @@ function resetVar(){
   my_turn = false;
   servar_connect_status = false;
   map_info = [0,0,0,0,0,0,0,0,0];
+  look_info = [0,0,0,0,0,0,0,0,0];
+  search_info = [0,0,0,0,0,0,0,0,0];
 }
 
 var step_flag = false;
@@ -380,11 +398,6 @@ Code.stopJS = function(){
     resetStepUi(false);
   }
 };
-
-
-
-
-
 
 
 function self_prompt(message,callback){
@@ -509,5 +522,3 @@ function self_prompt_b(message,callback){
 Blockly.prompt = function(msg, defaultValue, callback){
   self_prompt_b(msg,callback)
 }
-
-

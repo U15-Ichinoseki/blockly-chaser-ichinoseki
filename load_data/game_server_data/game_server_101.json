@@ -1,12 +1,12 @@
 {
-    "name": "練習広場03",
-    "room_id": "game_server_13",
+    "name": "対戦：ランダムマップ",
+    "room_id": "room_101",
     "map_size_x": 15,
     "map_size_y": 17,
     "map_data":[],
-    "auto_block": 15,
-    "auto_point": 14,
-    "auto_symmetry": true,
+    "auto_block": 24,
+    "auto_point": 35,
+    "auto_symmetry": false,
     "cool": {
         "status": false,
         "turn": false
@@ -14,10 +14,6 @@
     "hot": {
         "status": false,
         "turn": false
-    },
-    "cpu": {
-        "level":1,
-        "turn":"hot"
     },
     "turn":100
 }

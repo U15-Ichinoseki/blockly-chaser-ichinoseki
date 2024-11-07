@@ -391,12 +391,12 @@ function game_result_check(room,chara,effect_t = "r",effect_d = false,winer = fa
                 
                 if(server_store[room].map_data[rcy][rcx] != 34 && server_store[room].map_data[rcy][rcx] != 3 && server_store[room].map_data[rhy][rhx] != 4){
                     winer = "draw";
-                    winer_info = "putにより";
+                    winer_info = "アタックにより";
                 }
                 else if(server_store[room].map_data[rcy][rcx] != 34 && server_store[room].map_data[rcy][rcx] != 3){
                     winer = "hot";
                     if(winer_info){
-                        winer_info = "putにより";
+                        winer_info = "アタックにより";
                     }
                     else{
                         winer_info = "ブロック衝突により";
@@ -405,7 +405,7 @@ function game_result_check(room,chara,effect_t = "r",effect_d = false,winer = fa
                 else if(server_store[room].map_data[rcy][rcx] != 34 && server_store[room].map_data[rhy][rhx] != 4){
                     winer = "cool";
                     if(winer_info){
-                        winer_info = "putにより";
+                        winer_info = "アタックにより";
                     }
                     else{
                         winer_info = "ブロック衝突により";

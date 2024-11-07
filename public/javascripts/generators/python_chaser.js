@@ -93,6 +93,23 @@ python.pythonGenerator.forBlock['move_player'] = function (block) {
   return code;
 };
 
+python.pythonGenerator.forBlock['random_move'] = function (block) {
+  // TODO: Assemble Python into code variable.
+  var code = '';
+  code = code + '__noblock = []\n';
+  code = code + 'if (map_info[Up] != Block):\n';
+  code = code + Blockly.Python.INDENT + '__noblock.append(Up)\n';
+  code = code + 'if (map_info[Down] != Block):\n';
+  code = code + Blockly.Python.INDENT + '__noblock.append(Down)\n';
+  code = code + 'if (map_info[Left] != Block):\n';
+  code = code + Blockly.Python.INDENT + '__noblock.append(Left)\n';
+  code = code + 'if (map_info[Right] != Block):\n';
+  code = code + Blockly.Python.INDENT + '__noblock.append(Right)\n';
+  code = code + 'player.walk(random.choice(__noblock))\n';
+
+  return code;
+};
+
 python.pythonGenerator.forBlock['put_wall'] = function (block) {
   value_put_wall = block.getFieldValue('put_wall');
 
@@ -179,6 +196,172 @@ python.pythonGenerator.forBlock['if_look_value'] = function (block) {
 python.pythonGenerator.forBlock['if_search_value'] = function (block) {
   value_map_position = block.getFieldValue('map_position').toString();
   value_map_item = block.getFieldValue('map_item').toString();
+
+  // TODO: Assemble Python into code variable.
+  if (value_map_item in NumtoItem) value_map_item = NumtoItem[value_map_item];
+  var code = 'search_info[' + value_map_position + '] == ' + value_map_item + '';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+
+// expert mode
+python.pythonGenerator.forBlock['direction4_value'] = function (block) {
+  var dropdown_direction = block.getFieldValue('direction_value').toString();
+  // TODO: Assemble Python into code variable.
+  code = JtoP[dropdown_direction];
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['position9_value'] = function (block) {
+  var dropdown_position = block.getFieldValue('position_value').toString();
+  // TODO: Assemble Python into code variable.
+  code = NumtoName[dropdown_position];
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['position9_num_value'] = function (block) {
+  var dropdown_position = block.getFieldValue('position_num_value').toString();
+  // TODO: Assemble Python into code variable.
+  code = dropdown_position;
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['item4_value'] = function (block) {
+  var dropdown_item = block.getFieldValue('item_value').toString();
+  // TODO: Assemble Python into code variable.
+  code = NumtoItem[dropdown_item];
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['move_player_exp'] = function (block) {
+  var value_move = Blockly.Python.valueToCode(block, 'move', Blockly.Python.ORDER_ATOMIC);
+
+  // TODO: Assemble Python into code variable.
+  if (value_move in JtoP) value_move = JtoP[value_move];
+  var code = 'player.walk(' + value_move + ')\n';
+  return code;
+};
+
+python.pythonGenerator.forBlock['put_wall_exp'] = function (block) {
+  var value_put_wall = Blockly.Python.valueToCode(block, 'put_wall', Blockly.Python.ORDER_ATOMIC);
+
+  // TODO: Assemble Python into code variable.
+  if (value_put_wall in JtoP) value_put_wall = JtoP[value_put_wall];
+  var code = 'player.put(' + value_put_wall + ')\n';
+  return code;
+};
+
+python.pythonGenerator.forBlock['look_exp'] = function (block) {
+  var value_look = Blockly.Python.valueToCode(block, 'look', Blockly.Python.ORDER_ATOMIC);
+
+  if (value_look in JtoP) value_look = JtoP[value_look];
+  var code = 'look_info = player.look(' + value_look + ')\n';
+  return code;
+};
+
+python.pythonGenerator.forBlock['search_exp'] = function (block) {
+  var value_search = Blockly.Python.valueToCode(block, 'search', Blockly.Python.ORDER_ATOMIC);
+
+  if (value_search in JtoP) value_search = JtoP[value_search];
+  var code = 'search_info = player.search(' + value_search + ')\n';
+  return code;
+};
+
+python.pythonGenerator.forBlock['get_ready_list'] = function (block) {
+  // TODO: Assemble Python into code variable.
+  var code = 'map_info';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['look_list'] = function (block) {
+  var code = 'look_info';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['search_list'] = function (block) {
+  var code = 'search_info';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['get_value_exp'] = function (block) {
+  var value_map_position = Blockly.Python.valueToCode(block, 'map_position', Blockly.Python.ORDER_ATOMIC);
+
+  // TODO: Assemble Python into code variable.
+  if (value_map_position in NumtoName) value_map_position = NumtoName[value_map_position];
+  var code = 'map_info[' + value_map_position + ']';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['get_look_value_exp'] = function (block) {
+  var value_map_position = Blockly.Python.valueToCode(block, 'map_position', Blockly.Python.ORDER_ATOMIC);
+
+  // TODO: Assemble Python into code variable.
+  if (value_map_position in NumtoName) value_map_position = NumtoName[value_map_position];
+  var code = 'look_info[' + value_map_position + ']';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['get_search_value_exp'] = function (block) {
+  var value_map_position = Blockly.Python.valueToCode(block, 'map_position', Blockly.Python.ORDER_ATOMIC);
+
+  // TODO: Assemble Python into code variable.
+  var code = 'search_info[' + value_map_position + ']';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+python.pythonGenerator.forBlock['if_value_exp'] = function (block) {
+  var value_map_position = Blockly.Python.valueToCode(block, 'map_position', Blockly.Python.ORDER_ATOMIC);
+  var value_map_item = Blockly.Python.valueToCode(block, 'map_item', Blockly.Python.ORDER_ATOMIC);
+
+  // TODO: Assemble Python into code variable.
+  if (value_map_position in NumtoName) value_map_position = NumtoName[value_map_position];
+  if (value_map_item in NumtoItem) value_map_item = NumtoItem[value_map_item];
+  var code = 'map_info[' + value_map_position + '] == ' + value_map_item + '';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+python.pythonGenerator.forBlock['if_look_value_exp'] = function (block) {
+  var value_map_position = Blockly.Python.valueToCode(block, 'map_position', Blockly.Python.ORDER_ATOMIC);
+  var value_map_item = Blockly.Python.valueToCode(block, 'map_item', Blockly.Python.ORDER_ATOMIC);
+
+
+  // TODO: Assemble Python into code variable.
+  if (value_map_position in NumtoName) value_map_position = NumtoName[value_map_position];
+  if (value_map_item in NumtoItem) value_map_item = NumtoItem[value_map_item];
+  var code = 'look_info[' + value_map_position + '] == ' + value_map_item + '';
+
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+python.pythonGenerator.forBlock['if_search_value_exp'] = function (block) {
+  var value_map_position = Blockly.Python.valueToCode(block, 'map_position', Blockly.Python.ORDER_ATOMIC);
+  var value_map_item = Blockly.Python.valueToCode(block, 'map_item', Blockly.Python.ORDER_ATOMIC);
 
   // TODO: Assemble Python into code variable.
   if (value_map_item in NumtoItem) value_map_item = NumtoItem[value_map_item];

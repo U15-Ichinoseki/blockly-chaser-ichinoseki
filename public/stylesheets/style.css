@@ -124,7 +124,7 @@ body {
 }
 
 .left{
-  width: 430px;
+  width: 260px;
   height: 330px;
   background: rgb(255,241,0);
   background: linear-gradient(0deg, rgba(255,241,0,0.4) 0%, rgba(0,160,230,0.4) 100%);
@@ -137,8 +137,8 @@ body {
   background: #00a0e6;
   overflow: hidden;
   position: relative;
-  -webkit-clip-path: polygon(4px 4px, calc(100% - 4px) 4px, calc(100% - 4px) calc(75% - 4px), calc(90% - 4px) calc(100% - 4px), 4px calc(100% - 4px), 4px 4px);
-  clip-path: polygon(4px 4px, calc(100% - 4px) 4px, calc(100% - 4px) calc(75% - 4px), calc(90% - 4px) calc(100% - 4px), 4px calc(100% - 4px), 4px 4px);
+  -webkit-clip-path: polygon(4px 4px, calc(100% - 4px) 4px, calc(100% - 4px) calc(90% - 4px), calc(90% - 4px) calc(100% - 4px), 4px calc(100% - 4px), 4px 4px);
+  clip-path: polygon(4px 4px, calc(100% - 4px) 4px, calc(100% - 4px) calc(90% - 4px), calc(90% - 4px) calc(100% - 4px), 4px calc(100% - 4px), 4px 4px);
 }
 
 .menu_tutorial a{
@@ -182,12 +182,10 @@ body {
 }
 
 .menu_programming{
-  height: 120px;
+  height: 270px;
   background: #ffdf00;
   overflow: hidden;
   position: relative;
-  -webkit-clip-path: polygon(4px 4px, calc(100% - 4px) 4px, calc(100% - 4px) calc(75% - 4px), calc(90% - 4px) calc(100% - 4px), 4px calc(100% - 4px), 4px 4px);
-  clip-path: polygon(4px 4px, calc(100% - 4px) 4px, calc(100% - 4px) calc(75% - 4px), calc(90% - 4px) calc(100% - 4px), 4px calc(100% - 4px), 4px 4px);
 }
 
 .menu_programming a{
@@ -240,8 +238,19 @@ body {
   box-shadow: 0px 1px 2px 1px #7d7d7d;
 }
 
+.wrapper_c{
+  height: 120px;
+  width: 155px;
+  float:left;
+  margin: 0 15px;
+  margin-top: 30px;
+  background: #FFF;
+  border-radius: 5px;
+  box-shadow: 0px 1px 2px 1px #7d7d7d;
+}
+
 .right{
-  width: 330px;
+  width: 400px;
   height: 330px;
   background: rgba(244, 67, 54, 0.2);
   border: solid 2px #FFF;
@@ -258,7 +267,7 @@ body {
 }
 
 .menu_watching{
-  height: 270px;
+  height: 120px;
   background: #F44336;
   overflow: hidden;
   position: relative;
@@ -292,7 +301,7 @@ body {
 .menu_watching_title{
   color: #FFF;
   text-shadow: 2px 2px 2px #5d5d5d;
-  padding: 70px 5px 0 5px;
+  padding: 10px 5px 0 5px;
   text-align: center;
   font-size: 30px;
   font-weight: bold;

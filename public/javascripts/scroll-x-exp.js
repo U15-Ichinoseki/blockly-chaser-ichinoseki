@@ -83,13 +83,13 @@ $(function(){
     $('.select_button').click(function() {
       var x = document.getElementsByClassName('slider-x');
       if(x[0].scrollLeft == 0){
-        window.location.href = '/programming'; 
+        window.location.href = '/programming-exp'; 
       }
       else if(x[0].scrollLeft == 250){
         //window.location.href = '/programming'; 
       }
       else if(x[0].scrollLeft == 500){
-        window.location.href = '/programming?loaddata=LastRun'; 
+        window.location.href = '/programming-exp?loaddata=LastRun'; 
       }
       else{
         
@@ -115,7 +115,7 @@ $(function(){
         }
       };
       reader.readAsText(file);
-      window.location.href = '/programming?loaddata=Local'; 
+      window.location.href = '/programming-exp?loaddata=Local'; 
     }
     
     

@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
   catch(e){
     var LNG = JSON.parse(fs.readFileSync(path.join(__dirname, '..', "language", "ja", "programming.json"), "utf-8"));
   }
-  res.render('programming', { "title": 'プログラミング',"LNG":LNG});
+  res.render('programming-exp', { "title": 'プログラミング',"LNG":LNG});
 });
 
 module.exports = router;

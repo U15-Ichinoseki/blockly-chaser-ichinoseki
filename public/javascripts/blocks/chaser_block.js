@@ -1,5 +1,5 @@
 Blockly.Blocks['wait'] = {
-  init: function() {
+  init: function () {
     this.appendDummyInput()
       .appendField(new Blockly.FieldNumber(0, 0, 60, 0.1), "seconds")
       .appendField("秒　待つ");
@@ -12,7 +12,7 @@ Blockly.Blocks['wait'] = {
   }
 };
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
   getServarList();
 })
 
@@ -24,7 +24,7 @@ function getServarList() {
     })
     .then(function (json) {
       Blockly.Blocks['server_join'] = {
-        init: function() {
+        init: function () {
           this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(json), "room_id")
             .appendField(Blockly.Msg["SERVER_JOIN_BEFORE"])
@@ -47,7 +47,7 @@ function getServarList() {
 
 
 Blockly.Blocks['get_ready'] = {
-  init: function() {
+  init: function () {
     this.appendDummyInput()
       .appendField(Blockly.Msg["WAIT_MY_TURN"]);
     this.setInputsInline(true);
@@ -65,7 +65,7 @@ Blockly.Blocks['get_ready'] = {
 // basic mode
 
 Blockly.Blocks['move_player'] = {
-  init: function() {
+  init: function () {
     this.appendDummyInput()
       .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
       [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
@@ -81,7 +81,7 @@ Blockly.Blocks['move_player'] = {
 };
 
 Blockly.Blocks['random_move'] = {
-  init: function() {
+  init: function () {
     this.appendDummyInput()
       .appendField("ランダムに移動する");
     this.setInputsInline(true);
@@ -94,7 +94,7 @@ Blockly.Blocks['random_move'] = {
 };
 
 Blockly.Blocks['put_wall'] = {
-  init: function() {
+  init: function () {
     this.appendDummyInput()
       .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
       [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
@@ -110,7 +110,7 @@ Blockly.Blocks['put_wall'] = {
 };
 
 Blockly.Blocks['look'] = {
-  init: function() {
+  init: function () {
     this.appendDummyInput()
       .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
       [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
@@ -130,7 +130,7 @@ Blockly.Blocks['look'] = {
 };
 
 Blockly.Blocks['search'] = {
-  init: function() {
+  init: function () {
     this.appendDummyInput()
       .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
       [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
@@ -150,7 +150,7 @@ Blockly.Blocks['search'] = {
 };
 
 Blockly.Blocks['get_value'] = {
-  init: function() {
+  init: function () {
     this.appendDummyInput()
       .appendField(Blockly.Msg["MYSELF"])
       .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "7"],

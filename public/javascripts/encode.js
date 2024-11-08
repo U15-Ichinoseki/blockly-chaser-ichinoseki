@@ -5,7 +5,9 @@ var outputArea = document.getElementById('output');
 var runButton = document.getElementById('runButton');
 var myInterpreter = null;
 var runner;
-var map_data_hiyasinsu_kuropengin = [0,0,0,0,0,0,0,0,0];
+var map_info = [0,0,0,0,0,0,0,0,0];
+var look_info = [0,0,0,0,0,0,0,0,0];
+var search_info = [0,0,0,0,0,0,0,0,0];
 
 
 class ObjInterpreter extends Interpreter {
@@ -67,7 +69,7 @@ Blockly.JavaScript.addLoopTrap("infinite_loop");
 function initApi(interpreter, scope) {
   // Add an API function for the alert() block, generated for "text_print" blocks.
   
-  interpreter.connectObject(scope, "map_data_hiyasinsu_kuropengin", map_data_hiyasinsu_kuropengin);
+  interpreter.connectObject(scope, "map_info", map_info);
   
   
   
@@ -120,7 +122,7 @@ function initApi(interpreter, scope) {
       look_search_data = false;
       var getDate =function(){
         if (look_search_data) {
-          map_data_hiyasinsu_kuropengin = look_search_data;
+          map_info = look_search_data;
           callback(look_search_data.join(''));
         }
         else if(myInterpreter){
@@ -131,7 +133,7 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
-      callback(map_data_hiyasinsu_kuropengin.join(''));
+      callback(map_info.join(''));
     }
   };
   interpreter.setProperty(scope, 'move_player',
@@ -144,7 +146,7 @@ function initApi(interpreter, scope) {
       look_search_data = false;
       var getDate =function(){
         if (look_search_data) {
-          map_data_hiyasinsu_kuropengin = look_search_data;
+          map_info = look_search_data;
           callback(look_search_data.join(''));
         }
         else if(myInterpreter){
@@ -155,7 +157,7 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
-      callback(map_data_hiyasinsu_kuropengin.join(''));
+      callback(map_info.join(''));
     }
   };
   interpreter.setProperty(scope, 'put_wall',
@@ -175,7 +177,7 @@ function initApi(interpreter, scope) {
     my_turn = false;
     var getDate =function(){
       if (my_turn) {
-        map_data_hiyasinsu_kuropengin = my_turn;
+        map_info = my_turn;
         callback(my_turn.join(''));
       }
       else if(myInterpreter){
@@ -193,7 +195,7 @@ function initApi(interpreter, scope) {
       look_search_data = false;
       var getDate =function(){
         if (look_search_data) {
-          map_data_hiyasinsu_kuropengin = look_search_data;
+          look_info = look_search_data;
           callback(look_search_data.join(''));
         }
         else if(myInterpreter){
@@ -204,7 +206,7 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
-      callback(map_data_hiyasinsu_kuropengin.join(''));
+      callback(map_info.join(''));
     }
   };
   interpreter.setProperty(scope, 'look',
@@ -215,7 +217,7 @@ function initApi(interpreter, scope) {
       look_search_data = false;
       var getDate =function(){
         if (look_search_data) {
-          map_data_hiyasinsu_kuropengin = look_search_data;
+          search_info = look_search_data;
           callback(look_search_data.join(''));
         }
         else if(myInterpreter){
@@ -226,7 +228,7 @@ function initApi(interpreter, scope) {
       getDate();
     }
     else{
-      callback(map_data_hiyasinsu_kuropengin.join(''));
+      callback(map_info.join(''));
     }
   };
   interpreter.setProperty(scope, 'search',
@@ -261,7 +263,7 @@ function generateUiCodeAndLoadIntoInterpreter() {
   Blockly.JavaScript.STATEMENT_PREFIX = '';
   Blockly.JavaScript.INFINITE_LOOP_TRAP = '';
   
-  latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+  latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
 }
 
 function generateCodeAndLoadIntoInterpreter() {
@@ -274,7 +276,7 @@ function generateCodeAndLoadIntoInterpreter() {
     if(localStorage["LOOP_STATUS"] == "on"){
       var LoopTrap = 1000;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if(--LoopTrap == 0) throw "Infinite loop.";\n';
-      latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+      latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
       latestCode = "var LoopTrap = " + LoopTrap + ";\n" + latestCode;
     }
   }
@@ -311,7 +313,7 @@ function resetVar(){
   }
   my_turn = false;
   servar_connect_status = false;
-  map_data_hiyasinsu_kuropengin = [0,0,0,0,0,0,0,0,0];
+  map_info = [0,0,0,0,0,0,0,0,0];
 }
 
 var step_flag = false;
@@ -432,7 +434,7 @@ Code.download = function(){
       if(file_name){
         if(teacher_mode){
           var save_json = {};
-          var saveCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+          var saveCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
           
           save_json.teacher_code = btoa(unescape(encodeURIComponent(saveCode)));
           var json_string = JSON.stringify(save_json)
@@ -473,7 +475,7 @@ function readSingleFile(e) {
     var xmlText = contents.toString();
     
     try {
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
     } catch (e) {
       window.alert("ファイルの読み込みに失敗しました");
     }
@@ -510,7 +512,7 @@ function initDataLoad(){
     if(localStorage[queries.loaddata]){
       try {
         xmlText = localStorage.getItem(queries.loaddata).toString();
-        xmlDom = Blockly.Xml.textToDom(xmlText);
+        xmlDom = Blockly.utils.xml.textToDom(xmlText);
       }
       catch (e) {
         window.alert("ファイルの読み込みに失敗しました");

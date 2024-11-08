@@ -11,28 +11,28 @@ var CONFIG_LNG_JAK = JSON.parse(fs.readFileSync(path.join(__dirname, '..', "lang
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
 
-    try{
-        if(req.cookies.lng){
-            if(req.cookies.lng == "ja"){
-                res.render('menu-tutorial', { title: 'ステージ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA});
+    try {
+        if (req.cookies.lng) {
+            if (req.cookies.lng == "ja") {
+                res.render('menu-tutorial', { title: 'ステージ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA });
             }
-            else if(req.cookies.lng == "ja-k"){
-                res.render('menu-tutorial', { title: 'ステージせんたく', LNG: LNG_JAK, C_LNG: CONFIG_LNG_JAK});
+            else if (req.cookies.lng == "ja-k") {
+                res.render('menu-tutorial', { title: 'ステージせんたく', LNG: LNG_JAK, C_LNG: CONFIG_LNG_JAK });
             }
-            else{
-                res.render('menu-tutorial', { title: 'ステージ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA});
+            else {
+                res.render('menu-tutorial', { title: 'ステージ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA });
             }
         }
-        else{
-            res.render('menu-tutorial', { title: 'ステージ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA});
+        else {
+            res.render('menu-tutorial', { title: 'ステージ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA });
         }
     }
-    catch(e){
-       res.render('menu-tutorial', { title: 'ステージ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA}); 
+    catch (e) {
+        res.render('menu-tutorial', { title: 'ステージ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA });
     }
-    
+
 });
 
 module.exports = router;

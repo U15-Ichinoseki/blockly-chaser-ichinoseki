@@ -1,0 +1,23 @@
+{
+    "name": "練習：対称【密】マップ",
+    "room_id": "room_004",
+    "map_size_x": 15,
+    "map_size_y": 17,
+    "map_data":[],
+    "auto_block": 12,
+    "auto_point": 85,
+    "auto_symmetry": true,
+    "cool": {
+        "status": false,
+        "turn": false
+    },
+    "hot": {
+        "status": false,
+        "turn": false
+    },
+    "cpu": {
+        "level":2,
+        "turn":"hot"
+    },
+    "turn":200
+}

@@ -5,7 +5,7 @@ var fs = require('fs');
 var path = require('path');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     res.render('watching');
 });
 

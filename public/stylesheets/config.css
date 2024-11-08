@@ -1,4 +1,4 @@
-#config{
+#config {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -8,18 +8,18 @@
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.2);
-    filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.5));
+    filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.5));
     opacity: 0;
     visibility: hidden;
     transition: .3s linear;
 }
 
-#config.overlay_on{
+#config.overlay_on {
     opacity: 1;
     visibility: visible;
 }
 
-#config_area{
+#config_area {
     width: 720px;
     max-width: 90%;
     height: 500px;
@@ -31,7 +31,7 @@
     clip-path: polygon(5% 0, 95% 0, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0 95%, 0 5%);
 }
 
-.config_title{
+.config_title {
     position: relative;
     text-align: center;
     font-size: 20px;
@@ -41,14 +41,14 @@
     text-shadow: 1px 1px 1px #ccc;
 }
 
-.config_item{
+.config_item {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
 
-.config_item span{
+.config_item span {
     display: block;
     width: 100%;
     margin: 0 10px;
@@ -58,12 +58,12 @@
     color: #ff3131;
 }
 
-.config_item select{
+.config_item select {
     width: calc(100% - 140px);
     margin: 0 10px;
 }
 
-#config_close{
+#config_close {
     position: absolute;
     right: 50px;
     top: 0;
@@ -76,13 +76,13 @@
     cursor: pointer;
 }
 
-#config_close:before{
-    content:"×";
+#config_close:before {
+    content: "×";
     text-align: center;
     line-height: 30px;
 }
 
-#config_close:hover{
+#config_close:hover {
     opacity: 0.5;
 }
 
@@ -92,6 +92,7 @@
     flex-wrap: wrap;
     height: calc(100% - 70px);
 }
+
 .config_tab_label {
     color: #FFF;
     background: #00a0e6;
@@ -104,12 +105,15 @@
     white-space: nowrap;
     cursor: pointer;
 }
-.config_tab_left{
+
+.config_tab_left {
     border-radius: 15px 0px 0 15px;
 }
-.config_tab_right{
+
+.config_tab_right {
     border-radius: 0 15px 15px 0;
 }
+
 .config_tab_content {
     width: 100%;
     height: calc(100% - 38px);
@@ -120,7 +124,7 @@
 }
 
 .config_tab_content::-webkit-scrollbar {
-    display:none;
+    display: none;
 }
 
 
@@ -128,16 +132,17 @@
     background: #909090;
     border: solid 1px #c1c1c1;
 }
+
 .config_tab_switch:checked+.config_tab_label+.config_tab_content {
-     display: block;
+    display: block;
 }
 
 .config_tab_switch {
     display: none;
 }
 
-.config_item_title{
-    position:relative;
+.config_item_title {
+    position: relative;
     color: #FFF;
     background: #5d5d5d;
     width: 100%;
@@ -149,7 +154,7 @@
     border-radius: 15px;
 }
 
-.config_item_sub_title{
+.config_item_sub_title {
     width: 100px;
     height: 30px;
     margin: 10px;
@@ -174,36 +179,43 @@ button {
     box-shadow: 0px 1px 2px 1px #7d7d7d;
     cursor: pointer;
 }
-button.primary {
 
-}
+button.primary {}
+
 button.primary>img {
     opacity: 1;
 }
+
 button>img {
     opacity: 0.6;
     vertical-align: text-bottom;
 }
+
 button:hover>img {
     opacity: 1;
 }
+
 button:active {
     border: 1px solid #888 !important;
 }
+
 button:hover {
     box-shadow: 2px 2px 5px #888;
 }
+
 button.disabled:hover>img {
     opacity: 0.6;
 }
+
 button.disabled {
     display: none;
 }
+
 button.notext {
     font-size: 10%;
 }
 
-#configButton{
+#configButton {
     border: 2px solid #ffffff;
     background-color: #5d5d5d;
     background-image: url(../media/config.png);
@@ -216,7 +228,7 @@ button.notext {
     box-shadow: 0px 1px 2px 1px #7d7d7d;
 }
 
-.radioArea{
+.radioArea {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -229,7 +241,7 @@ button.notext {
     display: none;
 }
 
-.radioArea input[type="radio"] + label {
+.radioArea input[type="radio"]+label {
     display: block;
     width: 120px;
     height: 30px;
@@ -245,15 +257,15 @@ button.notext {
     transition: .2s;
 }
 
-.radioArea input[type="radio"]:checked + label {
+.radioArea input[type="radio"]:checked+label {
     background: #00a0e6;
 }
 
-.radioArea input[type="radio"]:not(:checked) + label:hover {
+.radioArea input[type="radio"]:not(:checked)+label:hover {
     background: rgba(0, 160, 230, 0.40);
 }
 
-.save_data_reset{
+.save_data_reset {
     display: block;
     width: 150px;
     height: 30px;
@@ -269,7 +281,7 @@ button.notext {
     transition: .2s;
 }
 
-.save_data_reset:hover{
+.save_data_reset:hover {
     background: #ff0000;
 }
 
@@ -282,9 +294,11 @@ input[type=range] {
     border: 1px solid #909090;
     border-radius: 25px;
 }
+
 input[type=range]:focus {
     outline: none;
 }
+
 input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 20px;
@@ -294,9 +308,10 @@ input[type=range]::-webkit-slider-runnable-track {
     background: #d1d1d1;
     border: 0px solid #000101;
 }
+
 input[type=range]::-webkit-slider-thumb {
     box-shadow: -100vw 0 0 100vw #00a0e6;
-    
+
     height: 22px;
     width: 20px;
     border-radius: 2px;
@@ -304,23 +319,26 @@ input[type=range]::-webkit-slider-thumb {
     background: #FFF;
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top:-1px;
-    
+    margin-top: -1px;
+
 }
+
 input[type=range]:focus::-webkit-slider-runnable-track {
     background: #d1d1d1;
 }
+
 input[type=range]::-moz-range-track {
     width: 100%;
     height: 20px;
-    overflow:hidden;
+    overflow: hidden;
     cursor: pointer;
     animate: 0.2s;
     box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
     background: #d1d1d1;
     border: 0px solid #000101;
-    
+
 }
+
 input[type=range]::-moz-range-thumb {
     box-shadow: -100vw 0 0 100vw #00a0e6;
     border: 1px solid #909090;
@@ -331,7 +349,7 @@ input[type=range]::-moz-range-thumb {
     cursor: pointer;
 }
 
-#sound_volume_output{
+#sound_volume_output {
     width: 38px;
     height: 20px;
     line-height: 20px;
@@ -343,7 +361,7 @@ input[type=range]::-moz-range-thumb {
 }
 
 
-.about_area{
+.about_area {
     width: 100%;
     height: 150px;
     margin: 0 10px;
@@ -354,6 +372,7 @@ input[type=range]::-moz-range-thumb {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
 .about_area::-webkit-scrollbar {
-    display:none;
+    display: none;
 }

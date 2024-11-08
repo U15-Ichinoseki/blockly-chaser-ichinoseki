@@ -7,14 +7,15 @@
     "dist-win": "node ./bin/mode-change.js true && electron-builder --win && node ./bin/mode-change.js false"
   },
   "dependencies": {
+    "blockly": "^11.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "ejs": "~2.6.1",
-    "express": "~4.16.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
     "http-errors": "~1.6.3",
     "log4js": "^6.2.1",
     "morgan": "~1.9.1",
-    "socket.io": "^2.4.1"
+    "socket.io": "^4.8.1"
   },
   "main": "electron.js",
   "build": {
@@ -71,7 +72,7 @@
     }
   },
   "devDependencies": {
-    "electron": "^13.1.5",
-    "electron-builder": "^22.11.7"
+    "electron": "^33.0.2",
+    "electron-builder": "^25.1.8"
   }
 }

@@ -8,10 +8,10 @@
   <link rel="icon" href="/images/favicon.ico">
   
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/javascripts/blockly_compressed.js"></script>
-  <script src="/javascripts/blocks_compressed.js"></script>
+  <script src="/javascripts/blockly/blockly_compressed.js"></script>
+  <script src="/javascripts/blockly/blocks_compressed.js"></script>
   
-  <script src="/javascripts/javascript_compressed.js"></script>
+  <script src="/javascripts/blockly/generators/javascript_compressed.js"></script>
   
   <script src = "/javascripts/blocks/programming_block.js" ></script> 
   <script src = "/javascripts/generators/javascript/programming.js" ></script>
@@ -96,7 +96,11 @@
       <block type="search"></block>
       <block type="put_wall"></block>
       <block type="get_value"></block>
+      <block type="get_look_value"></block>
+      <block type="get_search_value"></block>
       <block type="if_value"></block>
+      <block type="if_look_value"></block>
+      <block type="if_search_value"></block>
     </category>
 
     <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">

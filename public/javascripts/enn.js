@@ -230,7 +230,7 @@ Code.runJS = function(){
 
     Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
     Blockly.JavaScript.addReservedWords('highlightBlock');
-    latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+    latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
     
     var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
@@ -270,16 +270,16 @@ Code.runJS = function(){
     }
     
 
-    if(!var_stor["map_data_hiyasinsu_kuropengin"]){
+    if(!var_stor["map_info"]){
       latestCode = 'var action_turn_hiyasinsu_kuropengin = false;\n' +  latestCode;
-      latestCode = 'var map_data_hiyasinsu_kuropengin = [];\n' +  latestCode;
+      latestCode = 'var map_info = [];\n' +  latestCode;
     }
     else{
       latestCode = 'var action_turn_hiyasinsu_kuropengin = [' + var_stor["action_turn_hiyasinsu_kuropengin"] + '];\n' +  latestCode;
-      latestCode = 'var map_data_hiyasinsu_kuropengin = [' + var_stor["map_data_hiyasinsu_kuropengin"] + '];\n' +  latestCode;
+      latestCode = 'var map_info = [' + var_stor["map_info"] + '];\n' +  latestCode;
     }
     if(my_map_data.length){
-      latestCode = latestCode + 'var_stor.map_data_hiyasinsu_kuropengin = map_data_hiyasinsu_kuropengin;\n';
+      latestCode = latestCode + 'var_stor.map_info = map_info;\n';
     }
     latestCode = latestCode + 'var_stor.action_turn_hiyasinsu_kuropengin = action_turn_hiyasinsu_kuropengin;\n';
     
@@ -462,7 +462,7 @@ function readSingleFile(e) {
     var xmlText = contents.toString();
     
     try {
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
     } catch (e) {
       window.alert("ファイルの読み込みに失敗しました");
     }
@@ -499,7 +499,7 @@ function initDataLoad(){
     var xmlText;
     try {
       xmlText = localStorage.getItem(queries.loaddata).toString();
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
     }
     catch (e) {
       window.alert("ファイルの読み込みに失敗しました");

@@ -6,7 +6,9 @@ var runButton = document.getElementById('runButton');
 var reloadButton = document.getElementById('reloadButton');
 var myInterpreter = null;
 var runner;
-var map_data_hiyasinsu_kuropengin = false;
+var map_info = false;
+var look_info = false;
+var search_info = false;
 
 
 class ObjInterpreter extends Interpreter {
@@ -67,7 +69,7 @@ class ObjInterpreter extends Interpreter {
 function initApi(interpreter, scope) {
   // Add an API function for the alert() block, generated for "text_print" blocks.
   
-  interpreter.connectObject(scope, "map_data_hiyasinsu_kuropengin", map_data_hiyasinsu_kuropengin);
+  interpreter.connectObject(scope, "map_info", map_info);
   
   var wrapper = function(text) {
     text.toString();
@@ -241,7 +243,7 @@ function generateUiCodeAndLoadIntoInterpreter() {
   Blockly.JavaScript.STATEMENT_PREFIX = '';
   Blockly.JavaScript.INFINITE_LOOP_TRAP = '';
   
-  latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+  latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
 }
 
 function generateCodeAndLoadIntoInterpreter() {
@@ -253,7 +255,7 @@ function generateCodeAndLoadIntoInterpreter() {
     if(localStorage["LOOP_STATUS"] == "on"){
       var LoopTrap = 1000;
       Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if(--LoopTrap == 0) throw "Infinite loop.";\n';
-      latestCode = Blockly.JavaScript.workspaceToCode(Code.workspace);
+      latestCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
       latestCode = "var LoopTrap = " + LoopTrap + ";\n" + latestCode;
     }
   }
@@ -275,7 +277,7 @@ function resetInterpreter() {
 
 function resetVar(){
   my_turn = false;
-  map_data_hiyasinsu_kuropengin = false;
+  map_info = false;
 }
 
 var step_flag = false;
@@ -304,7 +306,7 @@ Code.runJS = function(){
       highlightPause = false;
       generateCodeAndLoadIntoInterpreter();
       if(!satage_data["cpu"]){
-        latestCode = 'map_data_hiyasinsu_kuropengin = [' + get_map_data("cool","get_ready") + ']\n' + latestCode;
+        latestCode = 'map_info = [' + get_map_data("cool","get_ready") + ']\n' + latestCode;
       }
       myInterpreter = new ObjInterpreter(latestCode, initApi);
       runner = function() {
@@ -437,7 +439,7 @@ function readSingleFile(e) {
     var xmlText = contents.toString();
     
     try {
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
       if (xmlDom) {
         Code.workspace.clear();
         Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
@@ -478,7 +480,7 @@ function initDataLoad(){
     var xmlText;
     try {
       xmlText = localStorage.getItem(queries.stage).toString();
-      xmlDom = Blockly.Xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(xmlText);
       if (xmlDom) {
         Code.workspace.clear();
         Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);

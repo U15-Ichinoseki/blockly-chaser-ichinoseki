@@ -11,6 +11,8 @@ var usersRouter = require('./routes/users');
 
 var menuProgrammingRouter = require('./routes/menu-programming');
 var programmingRouter = require('./routes/programming');
+var menuProgrammingexpRouter = require('./routes/menu-programming-exp');
+var programmingexpRouter = require('./routes/programming-exp');
 var menuTutorialRouter = require('./routes/menu-tutorial');
 var tutorialRouter = require('./routes/tutorial');
 var menuMatchRouter = require('./routes/menu-match');
@@ -51,6 +53,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/menu-programming', menuProgrammingRouter);
 app.use('/programming', programmingRouter);
+app.use('/menu-programming-exp', menuProgrammingexpRouter);
+app.use('/programming-exp', programmingexpRouter);
 app.use('/menu-tutorial', menuTutorialRouter);
 app.use('/tutorial', tutorialRouter);
 app.use('/menu-match',menuMatchRouter);

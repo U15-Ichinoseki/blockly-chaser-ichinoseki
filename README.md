@@ -1,7 +1,8 @@
-# U15長野プロコンサーバー
+# U15一関プロコンサーバー
 Combine Google Blockly and Procon Game Server.
 
-U15長野プロコンサーバーは[U-15長野プログラミングコンテスト](https://www.nagano-cci.or.jp/u15procon/)での使用を想定したサーバです。
+U15一関プロコンサーバーは[U-15プログラミングコンテスト一関](https://procon-ichinoseki.com/)での使用を想定したサーバです。
+[U-15長野プログラミングコンテスト](https://www.nagano-cci.or.jp/u15procon/)用に開発されたU15長野プロコンサーバーを一関仕様に改良しました。
 ビジュアルプログラミングの一つである[blockly](https://github.com/google/blockly)を用いてプログラミング初学者が気軽にプログラミングコンテストに参加できる環境づくりを目指しています。
 ゲーム仕様は[AsahikawaProcon-Server](https://github.com/hal1437/AsahikawaProcon-Server)を参考にブラウザ上でゲームの実行が可能です。
 
@@ -18,7 +19,10 @@ U15長野プロコンサーバーは[U-15長野プログラミングコンテス
 	- プログラムのロード
 		- 開くボタンによる任意プログラムのロード
 		- 前回実行したプログラムのロード
-	- JavaScriptコードの表示
+	- コードの表示
+		- Python
+		- JavaScript
+	- 上級編
 - チュートリアル
 	- 操作方法等のチュートリアルページ
 - ゲーム
@@ -29,8 +33,8 @@ U15長野プロコンサーバーは[U-15長野プログラミングコンテス
 
 ## 動作環境
 ### 動作確認済み環境
-- Linux / macOS / Windows
-- Node.js 10.x,12.x,14.x
+- Windows
+- Node.js 14.x
 
 ### 推奨環境
 - 《Dockerfile掲載予定》
@@ -68,9 +72,6 @@ npm run dist-win
 - Step.2:フォルダー『dist』内にzip化されたexeファイルが生成される
 
 ## 実装予定
-
-### チュートリアルページ作成用ツールの作成
-チュートリアルページの追加用のページ作成ツールの作成。
 
 
 ## Contributing

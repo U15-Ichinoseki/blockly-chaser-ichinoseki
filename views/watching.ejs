@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Blockly CHaser</title>
@@ -8,40 +9,44 @@
   <link rel='stylesheet' href='/stylesheets/menu.css' />
   <link rel='stylesheet' href='/stylesheets/game-board.css' />
   <link rel='stylesheet' href='/stylesheets/animation.css' />
-  
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="/javascripts/jquery-3.4.1.min.js"></script>
-  
+
   <script src="/javascripts/howler.min.js"></script>
-  
+
   <script src="/javascripts/game_board.js"></script>
   <script src="/javascripts/watching.js"></script>
-  
-  
+
+
 </head>
+
 <body class="animation_stop">
   <div class="header">
-    
-    <div class = "back_page">
-      <div class = "back_button"><a href="./menu-match"></a></div>
+
+    <div class="back_page">
+      <div class="back_button"><a href="./menu-match"></a></div>
     </div>
     <div class="control_area">
-      <div class = "page_title">
-        <h1><span class = "page_title_span">観戦</span><div id = "server_name"></div></h1>
+      <div class="page_title">
+        <h1><span class="page_title_span">観戦</span>
+          <div id="server_name"></div>
+        </h1>
       </div>
-      <div class = "control_button">
+      <div class="control_button">
         <button id="fullscreenButton" onclick="reqFullscreen()" class="notext" title="最大化"></button>
       </div>
-    </div>  
-    
+    </div>
+
   </div>
   <div id="game_area">
     <div id="ready_player"></div>
     <div id="game_board"></div>
     <div id="game_info"></div>
   </div>
-  
-  
-  
+
+
+
 </body>
+
 </html>

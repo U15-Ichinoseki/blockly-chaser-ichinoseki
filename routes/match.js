@@ -9,31 +9,31 @@ const game_server = JSON.parse(JSON.stringify(server_data.load()));
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     res.render('match');
 });
 
 
-router.get('/player', function(req, res, next) {
-    if(req.query.room_id){
-        try{
-            if(game_server[req.query.room_id].cpu){
-                if(game_server[req.query.room_id].cpu.turn == req.query.chara){
+router.get('/player', function (req, res, next) {
+    if (req.query.room_id) {
+        try {
+            if (game_server[req.query.room_id].cpu) {
+                if (game_server[req.query.room_id].cpu.turn == req.query.chara) {
                     res.render('match-cpu');
                 }
-                else{
+                else {
                     res.render('match-player');
                 }
             }
-            else{
+            else {
                 res.render('match-player');
             }
         }
-        catch(e){
+        catch (e) {
             console.log(e);
         }
     }
-    else{
+    else {
         res.render('match-player');
     }
 });

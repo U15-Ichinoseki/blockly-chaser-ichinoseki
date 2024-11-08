@@ -10,25 +10,25 @@ var CONFIG_LNG_JA = JSON.parse(fs.readFileSync(path.join(__dirname, '..', "langu
 var CONFIG_LNG_JAK = JSON.parse(fs.readFileSync(path.join(__dirname, '..', "language", "ja-k", "config.json"), "utf-8"));
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    try{
-        if(req.cookies.lng){
-            if(req.cookies.lng == "ja"){
-                res.render('menu-programming', { title: 'データ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA});
+router.get('/', function (req, res, next) {
+    try {
+        if (req.cookies.lng) {
+            if (req.cookies.lng == "ja") {
+                res.render('menu-programming', { title: 'データ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA });
             }
-            else if(req.cookies.lng == "ja-k"){
-                res.render('menu-programming', { title: 'データせんたく',LNG: LNG_JAK, C_LNG: CONFIG_LNG_JAK});
+            else if (req.cookies.lng == "ja-k") {
+                res.render('menu-programming', { title: 'データせんたく', LNG: LNG_JAK, C_LNG: CONFIG_LNG_JAK });
             }
-            else{
-                res.render('menu-programming', { title: 'データ選択',LNG: LNG_JA, C_LNG: CONFIG_LNG_JA});
+            else {
+                res.render('menu-programming', { title: 'データ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA });
             }
         }
-        else{
-            res.render('menu-programming', { title: 'データ選択',LNG: LNG_JA, C_LNG: CONFIG_LNG_JA});
+        else {
+            res.render('menu-programming', { title: 'データ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA });
         }
     }
-    catch(e){
-       res.render('menu-programming', { title: 'データ選択',LNG: LNG_JA, C_LNG: CONFIG_LNG_JA}); 
+    catch (e) {
+        res.render('menu-programming', { title: 'データ選択', LNG: LNG_JA, C_LNG: CONFIG_LNG_JA });
     }
 });
 

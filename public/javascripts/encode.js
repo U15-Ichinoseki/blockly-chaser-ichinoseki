@@ -409,15 +409,7 @@ Code.stopJS = function () {
   }
 };
 
-Code.download_basic = function () {
-  Code.download("_basic");
-}
-
-Code.download_exp = function () {
-  Code.download("_exp");
-}
-
-Code.download = function (mode) {
+Code.download = function () {
   var xmlTextarea = document.getElementById('content_xml');
   var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
   var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
@@ -466,7 +458,7 @@ Code.download = function (mode) {
           file_name = file_name + ".json";
         }
         else {
-          file_name = file_name + mode + ".xml";
+          file_name = file_name + ".xml";
         }
         if (window.navigator.msSaveBlob) {
           // IE

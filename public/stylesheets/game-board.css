@@ -341,35 +341,48 @@ td img {
 
 .hart_img {
   background-image: url(/images/hart.png);
-  background-repeat: no-repeat;
 }
 
 .wall_img {
   background-image: url(/images/wall.png);
-  background-repeat: no-repeat;
 }
 
 .field_img {
   background-image: url(/images/field.png);
-  background-repeat: no-repeat;
 }
 
 .cool_img {
   background-image: url(/images/cool.png);
-  background-repeat: no-repeat;
 }
 
 .hot_img {
   background-image: url(/images/hot.png);
-  background-repeat: no-repeat;
 }
 
 .ch_img {
   background-image: url(/images/ch.png);
-  background-repeat: no-repeat;
 }
 
 .hc_img {
   background-image: url(/images/hc.png);
-  background-repeat: no-repeat;
+}
+
+.hart_dark_img {
+  background-image: url(/images/hart_dark.png);
+}
+
+.wall_dark_img {
+  background-image: url(/images/wall_dark.png);
+}
+
+.field_dark_img {
+  background-image: url(/images/field_dark.png);
+}
+
+.cool_dark_img {
+  background-image: url(/images/cool_dark.png);
+}
+
+.hot_dark_img {
+  background-image: url(/images/hot_dark.png);
 }

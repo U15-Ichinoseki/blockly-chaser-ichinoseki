@@ -302,7 +302,7 @@ button {
 .game_area {
   position: relative;
   width: calc(100% - 14px);
-  height: 525px;
+  height: 540px;
   margin: 6px;
   margin-bottom: 0px;
   background: #fff;

@@ -36,14 +36,14 @@ python.pythonGenerator.forBlock['server_join'] = function (block) {
   var text_name = block.getFieldValue('name');
   var statements_main_loop_content = Blockly.Python.statementToCode(block, 'main_loop_content');
   // TODO: Assemble Python into code variable.
-  Blockly.Python.definitions_['import_chaser'] = 'from CHaser import * # 同じディレクトリに CHaser.py';
   Blockly.Python.definitions_['import_argparse'] = 'import argparse';
+  Blockly.Python.definitions_['import_chaser'] = 'from lib.CHaser import * # lib/CHaser.py';
 
   var globals = [];
 
   var variables = Blockly.Variables.allUsedVarModels(block.workspace) || [];
   for (var i = 0, variable; variable = variables[i]; i++) {
-    globals.push(Blockly.Python.nameDB_.getName(variable.name, Blockly.Variables.NAME_TYPE));
+    globals.push(variable.name);
   }
   // Add developer variables.
   var devVarList = Blockly.Variables.allDeveloperVariables(block.workspace);
@@ -52,7 +52,6 @@ python.pythonGenerator.forBlock['server_join'] = function (block) {
   }
 
   globals = globals.length ? 'global ' + globals.join(', ') + '\n' : '';
-
 
   begin_code = 'def main(port, name, host):\n'
     + Blockly.Python.INDENT + globals + '\n\n'

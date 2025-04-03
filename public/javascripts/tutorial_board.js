@@ -1,5 +1,58 @@
-
 function makeTable(tableId, effect = false) {
+
+    var random = -1;
+    if (stage_data["spon_set"]>0) {
+        random = Math.floor( Math.random() * stage_data["spon_set"]);
+    }
+
+    if (stage_data["spon_cool"]) {
+        stage_data["spon_cool"] = false;
+        if (!stage_data["spon_set"])
+            random = Math.floor( Math.random() * stage_data["spon_cool_pos"].length);
+        stage_data["cool_x"] = stage_data["spon_cool_pos"][random][0];
+        stage_data["cool_y"] = stage_data["spon_cool_pos"][random][1];
+        stage_data["map_data"]
+            [stage_data["cool_x"]]
+            [stage_data["cool_y"]]
+             = 3;
+    }
+
+    if (stage_data["spon_hot"]) {
+        stage_data["spon_hot"] = false;
+        if (!stage_data["spon_set"])
+            random = Math.floor( Math.random() * stage_data["spon_hot_pos"].length);
+        stage_data["hot_x"] = stage_data["spon_hot_pos"][random][0];
+        stage_data["hot_y"] = stage_data["spon_hot_pos"][random][1];
+        stage_data["map_data"]
+            [stage_data["hot_x"]]
+            [stage_data["hot_y"]]
+             = 4;
+    }
+
+    if (stage_data["spon_block"]) {
+        stage_data["spon_block"] = false;
+        if (!stage_data["spon_set"])
+            random = Math.floor( Math.random() * stage_data["spon_block_pos"].length);
+        for (let i=0; i< stage_data["spon_block_pos"][random].length; i++){
+            stage_data["map_data"]
+                [stage_data["spon_block_pos"][random][i][0]]
+                [stage_data["spon_block_pos"][random][i][1]]
+                  = 1;
+        }
+    }
+
+    if (stage_data["spon_item"]) {
+        stage_data["spon_item"] = false;
+        if (!stage_data["spon_set"])
+            random = Math.floor( Math.random() * stage_data["spon_item_pos"].length);
+        for (let i=0; i< stage_data["spon_item_pos"][random].length; i++){
+            stage_data["map_data"]
+                [stage_data["spon_item_pos"][random][i][0]]
+                [stage_data["spon_item_pos"][random][i][1]]
+                  = 2;
+        }
+    }
+
     var data = stage_data["map_data"];
     var y = stage_data["map_size_y"];
 

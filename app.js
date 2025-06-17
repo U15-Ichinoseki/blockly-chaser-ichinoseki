@@ -68,17 +68,24 @@ app.use('/watching',watchingRouter);
 //init load
 const bgm_list = bgm_data.load();
 
-const game_server = JSON.parse(JSON.stringify(server_data.load()));
-const join_list = server_data.list_load();
+let game_server = JSON.parse(JSON.stringify(server_data.load()));
+
+let join_list = server_data.list_load().filter(item => !item[0].includes('room_onetime'));
 const stage_data = JSON.parse(JSON.stringify(tutorial_data.load()));
 
+
+const reloadServerData = async () => {
+  game_server = JSON.parse(JSON.stringify(server_data.load()));
+  join_list = server_data.list_load().filter(item => !item[0].includes('room_onetime'));  
+};
 
 
 app.get('/api/bgm', (req, res) => {
   res.json(bgm_list);
 });
 
-app.get('/api/game', (req, res) => {
+app.get('/api/game', async(req, res) => {
+  await reloadServerData();
   if(req.query.room_id){
     if(game_server[req.query.room_id]){
       res.json(game_server[req.query.room_id]);
@@ -96,7 +103,8 @@ app.get('/api/tutorial', (req, res) => {
   res.json(stage_data);
 });
 
-app.get('/api/join', (req, res) => {
+app.get('/api/join', async(req, res) => {
+  await reloadServerData();
   res.json(join_list);
 });
 

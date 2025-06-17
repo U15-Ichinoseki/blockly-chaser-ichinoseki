@@ -11,9 +11,11 @@ const server_data = require('../tool/server_data_load');
 //game_server_list
 var fs = require('fs');
 var path = require('path');
+const { json } = require('express/lib/response.js');
 
+const config = require('../config/config.js');
 
-const game_server = JSON.parse(JSON.stringify(server_data.load()));
+var game_server = JSON.parse(JSON.stringify(server_data.load()));
 
 
 //game_server_store
@@ -490,7 +492,9 @@ function game_result_check(room, chara, effect_t = "r", effect_d = false, winer 
                 "winer": winer,
                 "info": winer_info
             });
-            game_server_reset(room);
+            if(room in server_store){
+            	game_server_reset(room);
+            }
         }
         else {
             server_store[room][effect_chara[chara]].turn = true;
@@ -640,6 +644,10 @@ function get_ready(room, chara, id = false) {
 }
 
 function move_player(room, chara, msg, id = false) {
+    if(!server_store[room])
+    {
+        return;
+    }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
         server_store[room][chara].turn = false;
         server_store[room][chara].getready = true;
@@ -759,6 +767,9 @@ function move_player(room, chara, msg, id = false) {
 }
 
 function look(room, chara, msg, id = false) {
+    if(server_data[room]){
+        return;
+    }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
         server_store[room][chara].turn = false;
         server_store[room][chara].getready = true;
@@ -912,6 +923,10 @@ function search(room, chara, msg, id = false) {
 }
 
 function put_wall(room, chara, msg, id = false) {
+    if(!server_store[room])
+    {
+        return;
+    }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
         server_store[room][chara].turn = false;
         server_store[room][chara].getready = true;
@@ -1015,9 +1030,89 @@ function put_wall(room, chara, msg, id = false) {
 
 
 //socket.io_on
+const createMap= async (json_data = null) => {
+    if(server_store[json_data.room_id]){
+        console.log("room already exist");
+        return;
+    }
+    
+    await server_data.create_new_map(JSON.stringify(json_data));//server_data_load.jsが発火
+    game_server = JSON.parse(JSON.stringify(server_data.load()));
+    server_store[json.room_id]=JSON.parse(JSON.stringify(game_server[json_data.room_id]));
+
+    RoomTimeoutCheck();//ルームの削除判定関数を実施
+    game_server_reset(json_data.room_id);//ルームの初期化（ランダムマップじゃなければ必須じゃなさそう）
+};
+
+// マップをコピーするための関数
+const copyMapByID = async (id) =>{
+    await server_data.copy_map_by_id(id);
+    game_server = JSON.parse(JSON.stringify(server_data.load()));//サーバの更新処理
+    server_store[id] = JSON.parse(JSON.stringify(game_server[id]));//server_storeは，他のデータを傷つけない形で更新
+    game_server_reset(id);//ルームの初期化（ランダムマップの生成）
+}
+
+
+// マップを削除するための関数
+//既存マップの判定をserver_data_load.jsで実施すると，server_storeのマップ初期化で問題が発生するため，ここで判定
+const deleteMap = async (id) => {
+    //JSON内にdelete_timeが存在するかどうかで判定(onetime_roomの判別)
+    if (server_store[id].delete_time) {
+        await server_data.delete_map(id);
+        //更新処理
+        game_server = JSON.parse(JSON.stringify(server_data.load()));
+        
+        delete server_store[id];  
+    }
+}
+
+//現存するonetimeルームで制限時間を超えた場合に削除する関数
+const RoomTimeoutCheck =async () => {
+    console.log("now time",Date.now());
+    for (const room in server_store) {
+        if (server_store[room].delete_time) {
+            //使用中ではなく　or 一度も使用されていないルーム
+            if(!server_store[room].match || server_store[room].match == undefined){
+                //タイマーが現在のLinux時間を超えている
+                if (server_store[room].delete_time  < Date.now()) {
+                    console.log("time out room",server_store[room].room_id);
+                    deleteMap(room);
+                }
+            }
+        }
+    }
+}
+
+
+
+
 io.on('connection', function (socket) {
 
-    socket.on('player_join', function (msg) {
+    socket.on('create_new_map', async function (json_data) {
+        
+        if(json_data.key === config.commonKey){
+            delete json_data.key;// JSONデータからkeyを削除
+            await createMap(json_data);
+            io.emit('map_created', { status: 'success' });  
+        }else{
+            io.emit('map_created', { status: 'error' });
+        }
+    });
+
+    socket.on('player_join', async function (msg) {
+        if (!server_store[msg.room_id]) {
+            room_id_check = msg.room_id.split("?")[0];
+            //コピーもとが存在するかチェック
+            if(server_store[room_id_check]){
+                await copyMapByID(msg.room_id);//?以降を削除
+            }
+            else{
+                console.log("コピー元ルームが存在しません");
+                io.to(socket.id).emit("error", "ルームが存在しません");
+                return;//以降の処理をスキップ
+            }
+        }
+
         if (server_store[msg.room_id] && (!server_store[msg.room_id].cool.status || !server_store[msg.room_id].hot.status) && !server_store[msg.room_id].match) {
             var room_chara;
 
@@ -1094,6 +1189,12 @@ io.on('connection', function (socket) {
 
             if (server_store[msg.room_id].hot.status) {
                 var game_start_timer = function (room) {
+                    //時間差でゲームが開始されるため，マップ削除した場合はエラーの原因になっていた
+                    //正直この修正でも問題が発生する可能性がありそう
+                    if(!server_store[room]){//既に削除済みの場合は処理を行わない
+                        console.log("game_start_timer room not exist",room);
+                        return;
+                    }
                     io.in(room).emit("new_board", {
                         "map_data": server_store[room].map_data,
                         "cool_score": server_store[room].cool.score,
@@ -1116,8 +1217,6 @@ io.on('connection', function (socket) {
                 }
                 setTimeout(game_start_timer, 500, store[socket.id].room);
             }
-
-            //console.log("o:"+msg.name);
         }
         else if (!server_store[msg.room_id]) {
             io.to(socket.id).emit("error", "サーバーIDが存在しません");
@@ -1178,9 +1277,22 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('match_init', function (msg) {
+    socket.on('match_init', async function (msg) {
+        if (!server_store[msg.room_id]) {
+            room_id_check = msg.room_id.split("?")[0];
+            //コピーもとが存在するかチェック
+            if(server_store[room_id_check]){
+                await copyMapByID(msg.room_id);//?以降を削除
+            }
+            else{
+                console.log("コピー元ルームが存在しません");
+                io.to(socket.id).emit("error", "ルームが存在しません");
+                return;//以降の処理をスキップ
+            }
+        }
+
         if (server_store[msg.room_id]) {
-            if (!server_store[msg.room_id].cool.status && !server_store[msg.room_id].hot.status && !server_store[msg.room_id].match) {
+            if (!(server_store[msg.room_id].cool.status && server_store[msg.room_id].hot.status)) {
                 if (!match_room_store[socket.id]) {
                     match_room_store[socket.id] = msg.room_id;
                     server_store[msg.room_id].match = true;
@@ -1209,6 +1321,10 @@ io.on('connection', function (socket) {
 
     socket.on('match_start_check', function () {
         if (match_room_store[socket.id]) {
+            if (!server_store[match_room_store[socket.id]]) {
+                delete match_room_store[socket.id];
+                return;
+            }
             if (server_store[match_room_store[socket.id]].cool.status && server_store[match_room_store[socket.id]].hot.status) {
                 io.to(socket.id).emit("match_start_check_rec", true);
             }
@@ -1222,6 +1338,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('match_start', function (msg) {
+        clearTimeout(server_store[msg.room_id].timer);
         if (msg.room_id == match_room_store[msg.key]) {
             if (server_store[msg.room_id].cool.status && server_store[msg.room_id].hot.status) {
                 server_store[msg.room_id].match = false;
@@ -1255,7 +1372,20 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('player_join_match', function (msg) {
+    socket.on('player_join_match', async function (msg) {
+        if (!server_store[msg.room_id]) {
+            room_id_check = msg.room_id.split("?")[0];
+            //コピーもとが存在するかチェック
+            if(server_store[room_id_check]){
+                await copyMapByID(msg.room_id);//?以降を削除
+            }
+            else{
+                console.log("コピー元ルームが存在しません");
+                io.to(socket.id).emit("error", "ルームが存在しません");
+                return;//以降の処理をスキップ
+            }
+        }
+
         if (msg.room_id == match_room_store[msg.key]) {
             if (!server_store[msg.room_id].cool.status) {
                 server_store[msg.room_id].cool.name = "接続待機中";
@@ -1364,7 +1494,20 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('looker_join', function (msg) {
+    socket.on('looker_join', async function (msg) {
+        if (!server_store[msg]) {
+            room_id_check = msg.split("?")[0];
+            //コピーもとが存在するかチェック
+            if(server_store[room_id_check]){
+                await copyMapByID(msg);//?以降を削除
+            }
+            else{
+                console.log("コピー元ルームが存在しません");
+                io.to(socket.id).emit("error", "ルームが存在しません");
+                return;//以降の処理をスキップ
+            }
+        }
+
         if (server_store[msg]) {
             var usrobj = {
                 "room": msg,
@@ -1415,6 +1558,11 @@ io.on('connection', function (socket) {
         }
         if (match_room_store[socket.id]) {
             io.in(match_room_store[socket.id]).emit("error", "サーバー側から切断されました");
+            console.log("切断されたルーム", match_room_store[socket.id]);
+            if (!server_store[match_room_store[socket.id]]) {
+                delete match_room_store[socket.id];
+                return;
+            }
             if (server_store[match_room_store[socket.id]].cool.status && server_store[match_room_store[socket.id]].hot.status) {
                 game_server_reset(match_room_store[socket.id]);
             }

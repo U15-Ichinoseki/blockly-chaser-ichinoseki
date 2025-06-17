@@ -3,12 +3,16 @@ const path = require('path');
 const logger = require('../bin/logger.js');
 
 const config_load = require('../tool/config_data_load');
+const { create } = require('domain');
+const config = require('../config/config.js');
 
 var mode_path = config_load.electron_conf_load();
 
 const game_server_list = fs.readdirSync(path.join(__dirname, mode_path, '..', "load_data", "game_server_data"));
 var game_server = {};
 var join_list = [];
+
+var additional_game_server = [];
 
 const init = async function () {
   for (var gs of game_server_list) {
@@ -17,11 +21,6 @@ const init = async function () {
       if (temp_game_server.room_id) {
         game_server[temp_game_server.room_id] = temp_game_server;
         join_list.push([temp_game_server.name, temp_game_server.room_id]);
-        /*
-        if("auto_block" in game_server[temp_game_server.room_id]){
-          await create_map(temp_game_server.room_id);
-        }
-        */
       }
       else {
         logger.error('The format of the game server data is incorrect. Data to be loaded "' + gs + '"');
@@ -31,7 +30,60 @@ const init = async function () {
       logger.error('Failed to read the game server data. Data to be loaded "' + gs + '"');
     }
   }
+  for (var map of additional_game_server) {
+    game_server[map.room_id] = map;
+    join_list.push([map.name, map.room_id]);
+  }
 };
+
+
+const reload = async function(){
+  game_server = {};
+  join_list = [];
+  await init();
+
+  console.log("game_server reloaded");
+  console.log(join_list);
+};
+
+const copy_map_by_id = async function (id) {
+  for (let room_id in game_server) {
+    if (id.includes(room_id) && id.includes("?")) {
+      var copy_room_data = JSON.parse(JSON.stringify(game_server[room_id]));
+      copy_room_data.room_id = id;
+      copy_room_data.name = "room_onetime_" + copy_room_data.name;
+      create_new_map(copy_room_data);
+    }
+  }
+}
+
+const create_new_map = async function(json){
+  try {
+    var temp_game_server = typeof json === 'string' ? JSON.parse(json) : json;
+    if(temp_game_server.room_id){
+        temp_game_server.delete_time = Date.now() + 1000 * 60 * config.deleteRoomTime;
+        game_server[temp_game_server.room_id] = temp_game_server;
+        join_list.push([temp_game_server.name, temp_game_server.room_id]);
+        additional_game_server.push(temp_game_server);
+    } else {
+        logger.error('The format of the game server data is incorrect. Data: ' + json);
+    }
+  } catch(e) {
+    logger.error('Failed to read the game server data. Data: ' + json);
+  }  
+};
+
+
+const delete_map = async function(id){
+  if(game_server[id].delete_time){
+    delete game_server[id];
+    join_list = join_list.filter(item => item[1] !== id);
+  }
+  else{
+    console.log("Don't delete permanet map");
+  }  
+};
+
 
 const create_map = function (key) {
 
@@ -259,11 +311,6 @@ const player_spon = function (key) {
 
 const load = function (room = false) {
   if (room) {
-    /*
-    if("auto_block" in game_server[temp_game_server.room_id]){
-      await create_map(temp_game_server.room_id);
-    }
-    */
     return game_server[room];
   }
   else {
@@ -283,4 +330,7 @@ exports.create_map = create_map;
 exports.player_spon = player_spon;
 
 
-
+exports.reload = reload; 
+exports.create_new_map = create_new_map; 
+exports.copy_map_by_id = copy_map_by_id;
+exports.delete_map = delete_map;

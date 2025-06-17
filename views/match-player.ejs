@@ -28,7 +28,7 @@
 <body>
   <div class="uploadButton">
     <div class="uploadButton_text">ファイルを選択</div>
-    <input id="xml_input" type="file" onchange="uv.style.display='inline-block'; uv.value = this.value;" />
+    <input id="xml_input" type="file" accept=".xml" onchange="uv.style.display='inline-block'; uv.value = this.value;" />
     <input type="text" id="uv" class="uploadValue" disabled />
   </div>
   <div id="releaseButton" class="release_off">開放</div>
@@ -43,15 +43,30 @@
         var reader = new FileReader();
         reader.onload = function () {
           // Parse the XML into a tree.
-
           var xmlText = reader.result;
           try {
             var xml = Blockly.utils.xml.textToDom(xmlText);
             for (var xml_one of xml.getElementsByTagName("block")) {
               if (xml_one.getAttribute("type") === "server_join") {
                 if (query_list.room_id) {
-                  xml_one.getElementsByTagName("field")[0].textContent = query_list.room_id;
-                  break;
+                  let hasRoomToken = false;
+
+                  for (var field of xml_one.getElementsByTagName("field")) {
+                    if (field.getAttribute("name") === "room_id") {
+                      field.textContent = query_list.room_id;
+                    }
+                    if (field.getAttribute("name") === "room_token") {
+                      field.textContent = query_list.room_token;
+                      hasRoomToken = true;
+                    }
+                  }
+                  // room_token が存在しなかった場合、新規作成
+                  if (!hasRoomToken) {
+                    const newField = xml_one.ownerDocument.createElement("field");
+                    newField.setAttribute("name", "room_token");
+                    newField.textContent = query_list.room_token;
+                    xml_one.appendChild(newField);
+                  }
                 }
 
               }

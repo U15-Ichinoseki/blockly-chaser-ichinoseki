@@ -331,12 +331,7 @@ Code.init = function () {
       BlockSound = false;
     }
   }
-  try {
-    blocklimit = stage_data["block_limit"];
-  }
-  catch (e) {
-    blocklimit = "";
-  }
+  blocklimit = "";
 
   Code.workspace = Blockly.inject('content_blocks',
     {
@@ -370,6 +365,20 @@ Code.init = function () {
 
     Code.workspace.addChangeListener(onchange);
     onchange();
+  }
+  //無制限の場合の処理
+  else{
+    //チュートリアル以外では，そもそも要素が存在しないので，存在する場合のみ処理を行う
+    if(document.getElementById('capacity')){
+      document.getElementById('capacity').textContent = "目標ブロック数:" + stage_data["block_limit"];
+      function onchange(event) {
+        document.getElementById('now_block_number').textContent = "現在ブロック数:" + Code.workspace.getAllBlocks().length;
+      }
+      Code.workspace.addChangeListener(onchange);
+      onchange();
+    }
+    
+    // document.getElementById('capacity').textContent = satage_data["block_limit"];
   }
 
   // Add to reserved word list: Local variables in execution environment (runJS)

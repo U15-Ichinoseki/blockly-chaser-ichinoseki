@@ -308,10 +308,21 @@ function stage_result(status = false) {
         return
     }
 
+    //ブロック数制限を満たしているかの判定
+    //満たしていない場合はクリアのテキストを変更
+    var block_limit_flag = true;
     if (stage_data["block_limit"] && result_flag) {
-        if (Code.workspace.remainingCapacity() < 0) {
-            Code.stopJS();
-            result_flag = false;
+        if(stage_data["block_limit"] < Code.workspace.getAllBlocks().length){
+            var message_text = "次は目標ブロック数でのクリアを目指してみよう！";
+            var message_title = "ブロック数オーバー！";
+            result_flag = true;
+            block_limit_flag = false;
+        }
+        else{
+            var message_text = "他のステージにもチャレンジしてみよう！";
+            var message_title = "ステージクリア";
+            result_flag = true;
+            block_limit_flag = true;
         }
     }
 
@@ -333,13 +344,14 @@ function stage_result(status = false) {
         result.setAttribute("id", "game_result");
         var img = document.createElement('img');
         img.src = '/images/stageclear.png';
-        result.appendChild(img);
         document.getElementById("game_board").appendChild(result);
 
         var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
         var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
 
-        if (localStorage["AUTO_SAVE"]) {
+
+        //オートセーブがオンの場合、ブロック数制約を満たしている場合のみセーブ
+        if(localStorage["AUTO_SAVE"] && block_limit_flag){
             if (localStorage["AUTO_SAVE"] == "on") {
                 localStorage.setItem(stage_data["stage_id"], xmlText);
             }
@@ -347,6 +359,17 @@ function stage_result(status = false) {
 
         document.getElementById('overlay').classList.add("overlay_on");
 
+        //ブロック数の制約を満たしている場合、満たしていない場合とでメッセージを変更
+        document.getElementById("result_message_area").textContent = message_text;
+        document.getElementById("result_message_title").textContent = message_title;
+        if(block_limit_flag){
+            result.appendChild(img);
+            console.log("block_limit_flag");    
+            document.getElementById("back_menu").style.display="block";
+        }
+        else{
+            document.getElementById("back_menu").style.display="none";
+        }
 
         var cancel_button = document.getElementById('cancel');
         var overlay_off = function () {

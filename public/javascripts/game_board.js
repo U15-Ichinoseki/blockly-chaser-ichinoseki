@@ -207,12 +207,6 @@ function makeTable(msg, x, y, effect, tableId) {
                     cell.classList.add("hc_dark_img");
                 }
             }
-
-            //cell.appendChild(document.createTextNode(data[i][j]));
-
-            //cell.style.height = _y + "px";
-            //cell.style.width = _x + "px";
-
         }
     }
 

@@ -346,14 +346,13 @@ function stage_result(status = false) {
         img.src = '/images/stageclear.png';
         document.getElementById("game_board").appendChild(result);
 
-        var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
-        var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-
+        var state = Blockly.serialization.workspaces.save(Code.workspace);
+        var jsonText = JSON.stringify(state, null, 2);
 
         //オートセーブがオンの場合、ブロック数制約を満たしている場合のみセーブ
         if(localStorage["AUTO_SAVE"] && block_limit_flag){
             if (localStorage["AUTO_SAVE"] == "on") {
-                localStorage.setItem(stage_data["stage_id"], xmlText);
+                localStorage.setItem(stage_data["stage_id"], jsonText);
             }
         }
 

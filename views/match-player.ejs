@@ -28,22 +28,27 @@
 <body>
   <div class="uploadButton">
     <div class="uploadButton_text">ファイルを選択</div>
-    <input id="xml_input" type="file" accept=".xml" onchange="uv.style.display='inline-block'; uv.value = this.value;" />
+      <input id="xml_input" type="file" accept=".blch,.json,.xml" onchange="uv.style.display='inline-block'; uv.value = this.value;" />
     <input type="text" id="uv" class="uploadValue" disabled />
   </div>
   <div id="releaseButton" class="release_off">開放</div>
   <div id="content_blocks" class="none_content"></div>
 
+  <script src="/javascripts/fflate.js"></script>
   <script>
     document.getElementById("xml_input").addEventListener('change', function (e) {
-      var fileData = e.target.files[0];
-      Code.stopJS();
+      const file = e.target.files[0];
+      if (!file) return;
 
-      if (fileData.name.match('.xml')) {
-        var reader = new FileReader();
-        reader.onload = function () {
-          // Parse the XML into a tree.
-          var xmlText = reader.result;
+      Code.stopJS();
+      
+      const fileName = file.name.toLowerCase();
+      const reader = new FileReader();
+      
+      // XMLファイルとして読み込む場合
+      if (fileName.endsWith(".xml")) {
+        reader.onload = function (e) {
+          const xmlText = e.target.result.toString();
           try {
             var xml = Blockly.utils.xml.textToDom(xmlText);
             for (var xml_one of xml.getElementsByTagName("block")) {
@@ -79,33 +84,96 @@
           Blockly.Xml.domToWorkspace(xml, Code.workspace);
 
           Code.runJS();
-        }
+        };
+        reader.readAsText(file);
       }
-      else if (fileData.name.match('.json')) {
-        var reader = new FileReader();
-        reader.onload = function () {
+      // ZIP圧縮JSONとして読み込む場合（.blch や .zip）
+      else if (fileName.endsWith(".json")) {
+        reader.onload = function (e) {
+          const jsonText = e.target.result.toString();
+          let workspaceData;
 
-          var jsonText = JSON.parse(reader.result);
-          if (!jsonText.teacher_code) {
-            return;
-          }
           try {
-            var load_code = decodeURIComponent(escape(window.atob(jsonText.teacher_code)));
-            load_code = load_code.replace(/join\(".*?",".*?"\);\n/gi, 'join("' + query_list.room_id + '","CPU");\n');
+            workspaceData = JSON.parse(jsonText);
 
-            Code.runJS(load_code);
-          } catch (e) {
-            alert(e);
+            const blockArray =
+              workspaceData?.blocks?.blocks || workspaceData?.blocks || [];
+
+            if (Array.isArray(blockArray)) {
+              for (const block of blockArray) {
+                if (block.type === "server_join" && query_list.room_id) {
+                  block.fields.room_id = query_list.room_id;
+                  block.fields.room_token = query_list.room_token;
+                }
+              }
+            } else {
+              console.warn("ブロック配列が見つかりませんでした");
+            }
+          } catch (err) {
+            alert("JSONファイルの読み込みまたは解析に失敗しました");
+            console.error(err);
             return;
           }
-        }
-      }
-      else {
-        alert('セーブデータを選択してください');
-        return;
-      }
 
-      reader.readAsText(fileData);
+          // Blockly に反映して実行
+          Code.workspace.clear();
+          Blockly.serialization.workspaces.load(workspaceData, Code.workspace);
+
+          Code.runJS();
+        };
+        reader.readAsText(file);
+      }
+      // ZIP圧縮JSONとして読み込む場合（.blch や .zip）
+      else {
+        reader.onload = function (e) {
+          var jsonText
+          try {
+            const arrayBuffer = e.target.result;
+            const uint8 = new Uint8Array(arrayBuffer); 
+            const unzipped = fflate.unzipSync(uint8);
+
+            if (!unzipped["program.json"]) {
+              alert("program.json が ZIP 内に見つかりませんでした");
+              return;
+            }
+
+            jsonText = new TextDecoder("utf-8").decode(unzipped["program.json"]);
+          } catch (err) {
+            alert("ZIPファイルの展開に失敗しました");
+            console.error(err);
+          }
+
+          let workspaceData;
+          try {
+            workspaceData = JSON.parse(jsonText);
+
+            const blockArray =
+              workspaceData?.blocks?.blocks || workspaceData?.blocks || [];
+
+            if (Array.isArray(blockArray)) {
+              for (const block of blockArray) {
+                if (block.type === "server_join" && query_list.room_id) {
+                  block.fields.room_id = query_list.room_id;
+                  block.fields.room_token = query_list.room_token;
+                }
+              }
+            } else {
+              console.warn("ブロック配列が見つかりませんでした");
+            }
+          } catch (err) {
+            alert("JSONファイルの読み込みまたは解析に失敗しました");
+            console.error(err);
+            return;
+          }
+
+          // Blockly に反映して実行
+          Code.workspace.clear();
+          Blockly.serialization.workspaces.load(workspaceData, Code.workspace);
+
+          Code.runJS();
+        };
+        reader.readAsArrayBuffer(file);
+      }
     });
 
     document.getElementById("releaseButton").onclick = function () {

@@ -178,8 +178,6 @@ function initApi(interpreter, scope) {
   interpreter.setProperty(scope, 'valueNum',
     interpreter.createNativeFunction(wrapper));
 
-
-
   var wrapper = function (callback) {
     my_turn = false;
     var getDate = function () {
@@ -248,9 +246,6 @@ function initApi(interpreter, scope) {
   };
   interpreter.setProperty(scope, 'search',
     interpreter.createAsyncFunction(wrapper));
-
-
-
 }
 
 
@@ -279,7 +274,6 @@ function generateUiCodeAndLoadIntoInterpreter() {
 function generateCodeAndLoadIntoInterpreter() {
   // Generate JavaScript code and parse it.
 
-
   if (localStorage["LOOP_STATUS"]) {
     if (localStorage["LOOP_STATUS"] == "on") {
       var LoopTrap = 1000;
@@ -288,17 +282,15 @@ function generateCodeAndLoadIntoInterpreter() {
       latestCode = "var LoopTrap = " + LoopTrap + ";\n" + latestCode;
     }
   }
-
-
 }
 
 function saveCodelocalStorage() {
-  var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
-  var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+  var state = Blockly.serialization.workspaces.save(Code.workspace);
+  var jsonText = JSON.stringify(state, null, 2);
 
   if (localStorage["AUTO_SAVE"]) {
     if (localStorage["AUTO_SAVE"] == "on") {
-      localStorage.setItem("LastRun", xmlText);
+      localStorage.setItem("LastRun", jsonText);
     }
   }
 }
@@ -353,7 +345,6 @@ Code.runJS = function (t_code = false) {
         generateCodeAndLoadIntoInterpreter();
         saveCodelocalStorage();
       }
-
 
       myInterpreter = new ObjInterpreter(latestCode, initApi);
       runner = function () {
@@ -458,7 +449,6 @@ function self_prompt(message, callback) {
 
 };
 
-
 function self_prompt_b(message, callback) {
   var input_text = "";
   var pdiv = document.createElement("div");
@@ -518,6 +508,8 @@ function self_prompt_b(message, callback) {
 
 };
 
-Blockly.prompt = function (msg, defaultValue, callback) {
-  self_prompt_b(msg, callback)
+Blockly.dialog.setPrompt(function(msg, defaultValue, callback)
+{
+  self_prompt_b(msg, callback);
 }
+);

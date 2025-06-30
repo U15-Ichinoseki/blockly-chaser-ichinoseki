@@ -110,7 +110,7 @@ function initApi(interpreter, scope) {
     user.name = name;
     socket.emit("player_join", user);
 
-    servar_connect_status = true;
+    server_connect_status = true;
   };
   interpreter.setProperty(scope, 'join',
     interpreter.createNativeFunction(wrapper));
@@ -315,11 +315,11 @@ function resetInterpreter() {
 }
 
 function resetVar() {
-  if (servar_connect_status) {
+  if (server_connect_status) {
     socket.emit("leave_room");
   }
   my_turn = false;
-  servar_connect_status = false;
+  server_connect_status = false;
   map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];

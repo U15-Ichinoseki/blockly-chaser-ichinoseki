@@ -98,26 +98,74 @@ $(function () {
 
 
   function readSingleFile(e) {
-    var file = e.target.files[0];
-    if (!file) {
-      return;
-    }
-    console.log(e);
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      var contents = e.target.result;
-      var xmlText = contents.toString();
+    const file = e.target.files[0];
+    if (!file) return;
 
-      try {
-        localStorage.setItem("Local", xmlText);
-      } catch (e) {
-        window.alert("ファイルの読み込みに失敗しました");
-      }
-    };
-    reader.readAsText(file);
+    const fileName = file.name.toLowerCase();
+    const reader = new FileReader();
+
+    // XMLファイルとして読み込む場合
+    if (fileName.endsWith(".xml")) {
+      reader.onload = function (e) {
+        const xmlText = e.target.result.toString();
+        let xmlDom;
+
+        try {
+          localStorage.setItem("Local", xmlText);
+        } catch (err) {
+          console.error(err);
+          alert("XMLファイルの読み込みに失敗しました");
+          localStorage.removeItem("Local");
+        }
+
+        if (xmlDom) {
+          Code.workspace.clear();
+          Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ── 非圧縮JSONファイルの処理 ──
+    else if (fileName.endsWith(".json")) {
+      reader.onload = function (e) {
+        try {
+          const jsonText = e.target.result.toString();
+          localStorage.setItem("Local", jsonText);
+        } catch (err) {
+          console.error(err);
+          alert("JSONファイルの読み込みまたは解析に失敗しました");
+          localStorage.removeItem("Local");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ZIP圧縮JSONとして読み込む場合（.blch や .zip）
+    else {
+      reader.onload = function (e) {
+        try {
+          const arrayBuffer = e.target.result;
+          const uint8 = new Uint8Array(arrayBuffer);
+          const unzipped = fflate.unzipSync(uint8);
+
+          if (!unzipped["program.json"]) {
+            alert("program.json が ZIP 内に見つかりませんでした");
+            localStorage.removeItem("Local");
+          }
+
+          const jsonText = new TextDecoder("utf-8").decode(unzipped["program.json"]);
+          localStorage.setItem("Local", jsonText);
+        } catch (err) {
+          console.error(err);
+          alert("ZIPファイルの展開または読み込みに失敗しました");
+          localStorage.removeItem("Local");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }  
     window.location.href = '/programming-exp?loaddata=Local';
   }
-
 
   document.getElementById('file_load').addEventListener('change', readSingleFile, false);
 });

@@ -134,43 +134,78 @@ function makeTable(msg, x, y, effect, tableId) {
     var hy = false;
 
     for (i = 0; i < data.length; i++) {
-        rows.push(table.insertRow(-1));
         for (j = 0; j < data[0].length; j++) {
-            cell = rows[i].insertCell(-1);
-
-            if (data[i][j] == 0) {
-                cell.classList.add("field_img");
-            }
-            else if (data[i][j] == 1) {
-                cell.classList.add("wall_img");
-            }
-            else if (data[i][j] == 2) {
-                cell.classList.add("hart_img");
+            if (data[i][j] == 2) {
                 item_num += 1;
             }
             else if (data[i][j] == 3) {
-                cell.classList.add("cool_img");
                 cx = j;
                 cy = i;
             }
             else if (data[i][j] == 4) {
-                cell.classList.add("hot_img");
                 hx = j;
                 hy = i;
             }
-            else if (data[i][j] == 34) {
-                cell.classList.add("ch_img");
+            else if ((data[i][j] == 34) || (data[i][j] == 43)) {
                 cx = j;
                 cy = i;
                 hx = j;
                 hy = i;
             }
-            else if (data[i][j] == 43) {
-                cell.classList.add("hc_img");
-                cx = j;
-                cy = i;
-                hx = j;
-                hy = i;
+        }
+    }
+
+    for (i = 0; i < data.length; i++) {
+        rows.push(table.insertRow(-1));
+        for (j = 0; j < data[0].length; j++) {
+            cell = rows[i].insertCell(-1);
+
+            if (((cx !== false) && ((cy - 1 <= i) && (i <= cy + 1)) && ((cx - 1 <= j) && (j <= cx + 1))) ||
+                ((hx !== false) && ((hy - 1 <= i) && (i <= hy + 1)) && ((hx - 1 <= j) && (j <= hx + 1)))) {
+                if (data[i][j] == 0) {
+                    cell.classList.add("field_img");
+                }
+                else if (data[i][j] == 1) {
+                    cell.classList.add("wall_img");
+                }
+                else if (data[i][j] == 2) {
+                    cell.classList.add("hart_img");
+                }
+                else if (data[i][j] == 3) {
+                    cell.classList.add("cool_img");
+                }
+                else if (data[i][j] == 4) {
+                    cell.classList.add("hot_img");
+                }
+                else if (data[i][j] == 34) {
+                    cell.classList.add("ch_img");
+                }
+                else if (data[i][j] == 43) {
+                    cell.classList.add("hc_img");
+                }
+            }
+            else {
+                if (data[i][j] == 0) {
+                    cell.classList.add("field_dark_img");
+                }
+                else if (data[i][j] == 1) {
+                    cell.classList.add("wall_dark_img");
+                }
+                else if (data[i][j] == 2) {
+                    cell.classList.add("hart_dark_img");
+                }
+                else if (data[i][j] == 3) {
+                    cell.classList.add("cool_dark_img");
+                }
+                else if (data[i][j] == 4) {
+                    cell.classList.add("hot_dark_img");
+                }
+                else if (data[i][j] == 34) {
+                    cell.classList.add("ch_dark_img");
+                }
+                else if (data[i][j] == 43) {
+                    cell.classList.add("hc_dark_img");
+                }
             }
 
             //cell.appendChild(document.createTextNode(data[i][j]));
@@ -218,32 +253,33 @@ function makeTable(msg, x, y, effect, tableId) {
 
         for (var y of y_range) {
             for (var x of x_range) {
-                if (msg.effect.p == "cool" && cx) {
-                    if (!(0 > (cx + x) || data[0].length - 1 < (cx + x) || 0 > (cy + y) || data.length - 1 < (cy + y))) {
-                        table.rows[cy + y].cells[cx + x].style.border = "2px solid rgba(3, 244, 3, 1.3)";
-                    }
+                vx = -1;
+                vy = -1;
+                if (msg.effect.p == "cool" && !(cx === false)) {
+                    vx = cx + x;
+                    vy = cy + y;
                 }
-                else if (msg.effect.p == "hot" && hx) {
-                    if (!(0 > (hx + x) || data[0].length - 1 < (hx + x) || 0 > (hy + y) || data.length - 1 < (hy + y))) {
-                        table.rows[hy + y].cells[hx + x].style.border = "2px solid rgba(3, 244, 3, 1.3)";
-                    }
+                else if (msg.effect.p == "hot" && !(hx === false)) {
+                    vx = hx + x;
+                    vy = hy + y;
                 }
-            }
-        }
-
-        x_range = [-1, 0, 1];
-        y_range = [-1, 0, 1];
-
-        for (var y of y_range) {
-            for (var x of x_range) {
-                if (msg.effect.p == "hot" && !(hx === false)) {
-                    if (!(0 > (hx + x) || data[0].length - 1 < (hx + x) || 0 > (hy + y) || data.length - 1 < (hy + y))) {
-                        table.rows[hy + y].cells[hx + x].style.border = "2px solid rgba(3, 3, 244, 1.3)";
+   
+                if (!(0 > vx || data[0].length - 1 < vx || 0 > vy || data.length - 1 < vy)) {
+                    table.rows[vy].cells[vx].style.border = "2px solid rgba(244, 3, 3, 1.3)";
+                    if (data[vy][vx] == 0) {
+                        table.rows[vy].cells[vx].setAttribute("class", "field_img");
                     }
-                }
-                else if (msg.effect.p == "cool" && !(cx === false)) {
-                    if (!(0 > (cx + x) || data[0].length - 1 < (cx + x) || 0 > (cy + y) || data.length - 1 < (cy + y))) {
-                        table.rows[cy + y].cells[cx + x].style.border = "2px solid rgba(3, 3, 244, 1.3)";
+                    else if (data[vy][vx] == 1) {
+                        table.rows[vy].cells[vx].setAttribute("class", "wall_img");
+                    }
+                    else if (data[vy][vx] == 2) {
+                        table.rows[vy].cells[vx].setAttribute("class", "hart_img");
+                    }
+                    else if (data[vy][vx] == 3) {
+                        table.rows[vy].cells[vx].setAttribute("class", "cool_img");
+                    }
+                    else if (data[vy][vx] == 4) {
+                        table.rows[vy].cells[vx].setAttribute("class", "hot_img");
                     }
                 }
             }

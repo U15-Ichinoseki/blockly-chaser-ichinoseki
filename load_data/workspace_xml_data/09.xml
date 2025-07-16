@@ -1,15 +1,20 @@
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    
-    <block type="move_player"></block>
-    
-    <block type="search"></block>
 
+    <block type="get_ready"></block>
+    <block type="move_player"></block>
+    <block type="look"></block>
+    <block type="search"></block>
     <block type="if_value"></block>
+    <block type="if_look_value"></block>
     <block type="if_search_value"></block>
-    
+
     <block type="controls_if">
       <mutation else="1"/>
     </block>
     
     <block type="infinite_loop"></block>
+    
+    <block type="logic_compare"></block>
+    <block type="logic_operation"></block>
+    <block type="logic_negate"></block>
 </xml>

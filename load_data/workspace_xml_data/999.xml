@@ -1,106 +1,6 @@
-<!DOCTYPE html>
-<html>
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="google" value="notranslate">
-
-  <title>Blockly CHaser</title>
-  <link rel="icon" href="/images/favicon.ico">
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/javascripts/blockly/blockly_compressed.js"></script>
-  <script src="/javascripts/blockly/blocks_compressed.js"></script>
-
-  <script src="/javascripts/blocks/chaser_block.js"></script>
-
-  <script src="/javascripts/blockly/generators/javascript_compressed.js"></script>
-  <script src="/javascripts/generators/javascript_chaser.js"></script>
-
-  <script src="/javascripts/blockly/generators/python_compressed.js"></script>
-  <script src="/javascripts/generators/python_chaser.js"></script>
-
-  <script src="/javascripts/acorn_interpreter.js"></script>
-
-  <script src="/javascripts/howler.min.js"></script>
-
-  <script src="/javascripts/code.js"></script>
-  <script src="/javascripts/game_server_client.js"></script>
-
-
-
-  <link rel='stylesheet' href='/stylesheets/blockly.css' />
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-  <link rel='stylesheet' href='/stylesheets/animation.css' />
-</head>
-
-<body>
-  <div class="header">
-    <div class="back_page">
-      <div class="back_button"><a href="/menu-programming-exp"></a></div>
-    </div>
-    <div class="control_area">
-      <div class="page_title">
-        <h1><span class="page_title_span">プログラミング</span><%- title %>【上級】</h1>
-      </div>
-      <div class="control_button">
-        <button id="runButton" class="notext" title="<%- LNG[" RUN"] %>">
-
-        </button>
-        <button id="stopButton" class="notext" title="<%- LNG[" STOP"] %>">
-
-        </button>
-        <button id="trashButton" class="notext" title="<%- LNG[" TRASH"] %>">
-
-        </button>
-        <button id="downloadButton" class="notext" title="<%- LNG[" SAVE"] %>">
-
-        </button>
-        <button id="downloadPythonButton" class="notext" title="Pythonで保存">
-
-        </button>
-        <label for="file_load" title="<%- LNG[" LOAD"] %>">
-          <input type="file" accept=".xml" id="file_load" style="display:none;">
-        </label>
-      </div>
-    </div>
-
-
-  </div>
-  <div class="left_area">
-    <div class="tab_area">
-      <ul class="blockly_menu">
-        <li id="tab_blocks" class="tabon">プログラムブロック</li>
-        <li id="tab_python" class="taboff">python</li>
-        <li id="tab_javascript" class="taboff">javascript</li>
-        <li id="tab_xml" class="taboff">xml</li>
-      </ul>
-    </div>
-
-    <div class="blockly_area" id="content_area"></div>
-
-    <div id="content_blocks" class="content"></div>
-    <textarea id="content_python" class="content" wrap="off"></textarea>
-    <pre id="content_javascript" class="content lang-js"></pre>
-    <textarea id="content_xml" class="content" wrap="off"></textarea>
-  </div>
-
-  <div class="right_area">
-
-    <div class="game_area">
-      <div id="game_board"></div>
-      <div id="game_info"></div>
-    </div>
-    <textarea class="console_area" id="output" disabled="disabled"></textarea>
-
-  </div>
-
-
-  <script src="/javascripts/encode.js"></script>
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-
-    <category name="%{BKY_GAME_SERVAR}" colour="#5b93a5">
-      <block type="server_join"></block>
+     <category name="%{BKY_GAME_SERVAR}" colour="#5b93a5">
       <block type="get_ready"></block>
       <block type="direction4_value"></block>
 
@@ -477,8 +377,4 @@
     <sep></sep>
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
-  </xml>
-
-</body>
-
-</html>
+ </xml>

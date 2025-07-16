@@ -708,4 +708,4 @@ function self_prompt_b(message, callback) {
 
 };
 
-window.prompt = self_prompt;
+// window.prompt = self_prompt;

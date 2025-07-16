@@ -1,15 +1,33 @@
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <block type="get_ready"></block>
-    <block type="move_player"></block>
-    <block type="put_wall"></block>
-    <block type="if_value"></block>
     
+    <block type="move_player"></block>
+    
+    <block type="search"></block>
+
+    <block type="search_list"></block>
+
+    <block type="lists_indexOf">
+      <value name="VALUE">
+        <shadow type="search_list">
+        </shadow>
+      </value>
+      <value name="FIND">
+        <shadow type="item4_value">
+        </shadow>
+      </value>
+    </block>
+
+    <block type="item4_value"></block>
+
+    <block type="math_number">
+      <field name="NUM">0</field>
+    </block>
+
+    <block type="logic_compare"></block>
+
     <block type="controls_if">
       <mutation else="1"/>
     </block>
     
     <block type="infinite_loop"></block>
-    
-    
-    
 </xml>

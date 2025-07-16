@@ -152,6 +152,14 @@ pre.content {
   overflow: scroll;
 }
 
+#content_json {
+  resize: none;
+  outline: none;
+  border: 1px solid #ccc;
+  font-family: monospace;
+  overflow: scroll;
+}
+
 #languageMenu {
   vertical-align: top;
   margin-left: 15px;

@@ -1,31 +1,31 @@
-function createServarList(get_list) {
+function createserverList(get_list) {
 
-  var servar_list = [];
+  var server_list = [];
 
   for (var server in get_list) {
-    servar_list.push(server);
+    server_list.push(server);
   }
 
-  div_num = servar_list.length;
+  div_num = server_list.length;
 
   for (var i = 0; i < div_num; i++) {
-    if (get_list[servar_list[i % servar_list.length]].name.includes('room_onetime'))
+    if (get_list[server_list[i % server_list.length]].name.includes('room_onetime'))
       continue;
-    var one_servar_div = document.createElement('div');
-    one_servar_div.classList.add("one_watching_servar");
+    var one_server_div = document.createElement('div');
+    one_server_div.classList.add("one_watching_server");
 
     var vs = "player";
-    if (get_list[servar_list[i % servar_list.length]].cpu) {
+    if (get_list[server_list[i % server_list.length]].cpu) {
       vs = "cpu"
     }
 
 
-    var servar_div = document.createElement('div');
-    if (i / servar_list.length < 1) {
-      one_servar_div.setAttribute("id", "link_id_" + get_list[servar_list[i % servar_list.length]].room_id);
+    var server_div = document.createElement('div');
+    if (i / server_list.length < 1) {
+      one_server_div.setAttribute("id", "link_id_" + get_list[server_list[i % server_list.length]].room_id);
     }
-    servar_div.classList.add(get_list[servar_list[i % servar_list.length]].room_id);
-    servar_div.classList.add("watching_server_div");
+    server_div.classList.add(get_list[server_list[i % server_list.length]].room_id);
+    server_div.classList.add("watching_server_div");
 
     var server_vs = document.createElement('div');
     if (vs == "player") {
@@ -40,22 +40,22 @@ function createServarList(get_list) {
     var server_name = document.createElement('div');
     server_name.classList.add("server_name");
 
-    var serverName = get_list[servar_list[i % servar_list.length]].name.replace("room_onetime_","");
+    var serverName = get_list[server_list[i % server_list.length]].name.replace("room_onetime_","");
     newContent = document.createTextNode(serverName);    
     server_name.appendChild(newContent);
 
     var server_id = document.createElement('div');
     server_id.classList.add("server_id");
-    newContent = document.createTextNode(get_list[servar_list[i % servar_list.length]].room_id);
+    newContent = document.createTextNode(get_list[server_list[i % server_list.length]].room_id);
     server_id.appendChild(newContent);
 
-    servar_div.appendChild(server_vs);
-    servar_div.appendChild(server_name);
-    servar_div.appendChild(server_id);
+    server_div.appendChild(server_vs);
+    server_div.appendChild(server_name);
+    server_div.appendChild(server_id);
 
-    servar_div.onclick = function (e) {
+    server_div.onclick = function (e) {
       var serverId = this.classList[0];
-      for (var select_id of servar_list) {
+      for (var select_id of server_list) {
         for (var select_class_list of document.getElementsByClassName(select_id)) {
           if (serverId == select_id) {
             select_class_list.classList.add("server_select_on");
@@ -69,9 +69,9 @@ function createServarList(get_list) {
       e.stopPropagation();
     };
 
-    one_servar_div.appendChild(servar_div);
+    one_server_div.appendChild(server_div);
 
-    document.getElementById('watching_list').appendChild(one_servar_div);
+    document.getElementById('watching_list').appendChild(one_server_div);
   }
 }
 
@@ -241,17 +241,17 @@ function server_info(id, get_list) {
 
 
 window.addEventListener('load', function () {
-  getServarList();
+  getserverList();
 })
 
-function getServarList() {
+function getserverList() {
   var url = './../api/game';
   fetch(url)
     .then(function (data) {
       return data.json();
     })
     .then(function (json) {
-      createServarList(json);
+      createserverList(json);
     });
 }
 

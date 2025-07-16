@@ -26,6 +26,9 @@ function getServarList() {
       Blockly.Blocks['server_join'] = {
         init: function () {
           this.appendDummyInput()
+            .appendField("合言葉")
+            .appendField(new Blockly.FieldTextInput, "room_token")
+            .appendField("で")
             .appendField(new Blockly.FieldDropdown(json), "room_id")
             .appendField(Blockly.Msg["SERVER_JOIN_BEFORE"])
             .appendField(new Blockly.FieldTextInput(""), "name")

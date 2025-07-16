@@ -757,8 +757,8 @@ function self_prompt_b(message, callback) {
 
 };
 
-Blockly.prompt = function (msg, defaultValue, callback) {
-  self_prompt_b(msg, callback)
+Blockly.dialog.setPrompt(function(msg, defaultValue, callback)
+{
+  self_prompt_b(msg, callback);
 }
-
-
+);

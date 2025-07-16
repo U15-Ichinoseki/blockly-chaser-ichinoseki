@@ -6,16 +6,32 @@ javascript.javascriptGenerator.forBlock['wait'] = function (block) {
 
 javascript.javascriptGenerator.forBlock['server_join'] = function (block) {
   var dropdown_room_id = block.getFieldValue('room_id');
+  var text_room_token = block.getFieldValue('room_token');
   var text_name = block.getFieldValue('name');
   var statements_main_loop_content = Blockly.JavaScript.statementToCode(block, 'main_loop_content');
   // TODO: Assemble JavaScript into code variable.
 
+  if (!text_room_token) {
+    text_room_token = random_string(8);
+  }
   if (!text_name) {
     text_name = "NoName"
   }
-  var code = 'join("' + dropdown_room_id + '","' + text_name + '");\n';
+
+  code = 'join("' + dropdown_room_id + "?" + text_room_token + '", "' + text_name + '");\n';
   return code + statements_main_loop_content;
 };
+
+function random_string(length) {
+  console.log("test randam string");
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
 
 javascript.javascriptGenerator.forBlock['get_ready'] = function (block) {
   // TODO: Assemble JavaScript into code variable.

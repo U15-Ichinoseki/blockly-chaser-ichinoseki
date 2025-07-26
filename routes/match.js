@@ -5,7 +5,10 @@ var fs = require('fs');
 var path = require('path');
 var server_data = require('../tool/server_data_load');
 
-const game_server = JSON.parse(JSON.stringify(server_data.load()));
+const reloadServerData = async () => {    
+    return JSON.parse(JSON.stringify(server_data.load()));
+};
+let game_server = reloadServerData();
 
 
 /* GET home page. */
@@ -14,7 +17,8 @@ router.get('/', function (req, res, next) {
 });
 
 
-router.get('/player', function (req, res, next) {
+router.get('/player', async function(req, res, next) {
+    game_server = await reloadServerData();
     if (req.query.room_id) {
         try {
             if (game_server[req.query.room_id].cpu) {

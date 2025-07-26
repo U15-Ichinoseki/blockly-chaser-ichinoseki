@@ -7,16 +7,6 @@ function createStageList(get_list) {
     stage_list.push(stage);
   }
 
-  var h = document.getElementById('stage_list').clientHeight;
-  var div_num = Math.ceil(h / 80);
-
-
-  if (stage_list.length >= div_num) {
-    div_num = stage_list.length * 2;
-  }
-  else {
-    div_num = Math.ceil(h * 2 / 80);
-  }
 
   div_num = stage_list.length;
 
@@ -91,18 +81,7 @@ function createStageList(get_list) {
     document.getElementById('stage_list').appendChild(one_stage);
   }
 
-  // var loop = document.getElementById('stage_list');
 
-  // loop.onscroll = function(){
-  //   var scrollTop = this.scrollTop;
-  //   if(0 >= scrollTop){
-  //     this.scrollTo( 0, stage_list.length*80-1 ) ;
-  //   }
-  //   else if(stage_list.length*80 < scrollTop){
-  //     this.scrollTo( 0, 1 ) ;
-  //   }
-  // }
-  // document.getElementById('stage_list').scrollTo( 0,1 ) ;
 }
 
 function stage_info_create(id, get_list) {
@@ -190,8 +169,8 @@ function stage_info_create(id, get_list) {
   stage_join_div.appendChild(stage_join_link);
 
 
+  document.getElementById("stage_info").prepend(stage_join_div);
   document.getElementById("stage_map").appendChild(table);
-  document.getElementById("stage_info").appendChild(stage_join_div);
 
   document.getElementById("stage_map").classList.remove("display_off");
   document.getElementById("stage_info_condition").classList.remove("display_off");

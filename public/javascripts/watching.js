@@ -23,7 +23,7 @@ if (query_list.room_id) {
         })
         .then(function (json) {
             if (json) {
-                socket.emit('looker_join', json.room_id);
+                socket.emit('looker_join', query_list.room_id + "?" + query_list.room_token);
                 document.getElementById('server_name').textContent = String(json.name);
             }
             else {
@@ -32,7 +32,6 @@ if (query_list.room_id) {
         });
 
 }
-
 
 
 socket.on("joined_room", function (msg) {

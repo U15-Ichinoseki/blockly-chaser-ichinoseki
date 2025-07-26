@@ -13,10 +13,10 @@ Blockly.Blocks['wait'] = {
 };
 
 window.addEventListener('load', function () {
-  getServarList();
+  getServerList();
 })
 
-function getServarList() {
+function getServerList() {
   var url = './../api/join';
   fetch(url)
     .then(function (data) {

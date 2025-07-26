@@ -36,7 +36,6 @@ class ObjInterpreter extends Interpreter {
       else {
         return this.createPrimitive(member); // return primitve typ
       }
-
     }
   }
 
@@ -111,7 +110,7 @@ function initApi(interpreter, scope) {
     user.name = name;
     socket.emit("player_join", user);
 
-    servar_connect_status = true;
+    server_connect_status = true;
   };
   interpreter.setProperty(scope, 'join',
     interpreter.createNativeFunction(wrapper));
@@ -178,8 +177,6 @@ function initApi(interpreter, scope) {
   };
   interpreter.setProperty(scope, 'valueNum',
     interpreter.createNativeFunction(wrapper));
-
-
 
   var wrapper = function (callback) {
     my_turn = false;
@@ -284,7 +281,6 @@ function generateCodeAndLoadIntoInterpreter() {
   Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
   Blockly.JavaScript.addReservedWords('highlightBlock');
 
-
   if (localStorage["LOOP_STATUS"]) {
     if (localStorage["LOOP_STATUS"] == "on") {
       var LoopTrap = 1000;
@@ -293,17 +289,15 @@ function generateCodeAndLoadIntoInterpreter() {
       latestCode = "var LoopTrap = " + LoopTrap + ";\n" + latestCode;
     }
   }
-
-
 }
 
 function saveCodelocalStorage() {
-  var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
-  var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+  var state = Blockly.serialization.workspaces.save(Code.workspace);
+  var jsonText = JSON.stringify(state, null, 2);
 
   if (localStorage["AUTO_SAVE"]) {
     if (localStorage["AUTO_SAVE"] == "on") {
-      localStorage.setItem("LastRun", xmlText);
+      localStorage.setItem("LastRun", jsonText);
     }
   }
 }
@@ -321,11 +315,11 @@ function resetInterpreter() {
 }
 
 function resetVar() {
-  if (servar_connect_status) {
+  if (server_connect_status) {
     socket.emit("leave_room");
   }
   my_turn = false;
-  servar_connect_status = false;
+  server_connect_status = false;
   map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -393,7 +387,6 @@ Code.runJS = function () {
   }
 };
 
-
 Code.stopJS = function () {
   if (myInterpreter) {
     clearTimeout();
@@ -410,9 +403,8 @@ Code.stopJS = function () {
 };
 
 Code.download = function () {
-  var xmlTextarea = document.getElementById('content_xml');
-  var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
-  var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+  var state = Blockly.serialization.workspaces.save(Code.workspace);
+  var jsonText = JSON.stringify(state, null, 2);
 
   var userAgent = window.navigator.userAgent.toLowerCase();
   var webbrowser_check = 0;
@@ -427,7 +419,7 @@ Code.download = function () {
     webbrowser_check = 1;
   }
   else if (userAgent.indexOf('safari') != -1) {
-    webbrowser_check = 0;
+    webbrowser_check = 1;
   }
   else if (userAgent.indexOf('firefox') != -1) {
     webbrowser_check = 1;
@@ -435,39 +427,53 @@ Code.download = function () {
   else if (userAgent.indexOf('opera') != -1) {
     webbrowser_check = 1;
   }
-  else {
-    webbrowser_check = 0;
-  }
 
   if (webbrowser_check == 0) {
     window.alert("ご利用のブラウザは本機能を使用できません");
   }
   else {
-    var blob = new Blob([xmlText], { type: "application/octet-stream" });
+    const version = "4.1.0"; // リリース時に更新
+    
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    const ss = String(date.getSeconds()).padStart(2, '0');
 
-    self_prompt("ファイル名を入力してください", function (file_name, teacher_mode = false) {
+    const timestamp = `${yyyy}/${mm}/${dd} ${hh}:${min}:${ss}`;
+
+    // info.json に格納するオブジェクト
+    const info = {
+      savedAt: timestamp,
+      version: version
+    };
+
+    // JSON バイト列に変換
+    const infoJsonBytes = new TextEncoder().encode(JSON.stringify(info, null, 2));
+
+    // JSON テキストをバイト列に変換
+    const jsonBytes = new TextEncoder().encode(jsonText);
+
+    // ZIP形式でアーカイブ
+    const zipped = fflate.zipSync({
+      "program.json": jsonBytes,
+      "info.json": infoJsonBytes
+    });
+
+    // Blobとして保存
+    const blob = new Blob([zipped], { type: "application/zip" });
+
+    self_prompt("ファイル名を入力してください", function (file_name) {
       if (file_name) {
-        if (teacher_mode) {
-          var save_json = {};
-          var saveCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
+        file_name += ".blch";
 
-          save_json.teacher_code = btoa(unescape(encodeURIComponent(saveCode)));
-          var json_string = JSON.stringify(save_json)
-          blob = new Blob([json_string], { type: "text/plain" });
-
-          file_name = file_name + ".json";
-        }
-        else {
-          file_name = file_name + ".xml";
-        }
         if (window.navigator.msSaveBlob) {
-          // IE
           window.navigator.msSaveBlob(blob, file_name);
         } else {
-          // another
-          var a = document.createElement("a");
+          const a = document.createElement("a");
           a.href = URL.createObjectURL(blob);
-          a.target = '_blank';
           a.download = file_name;
           a.click();
         }
@@ -494,16 +500,13 @@ Code.downloadPython = function () {
     webbrowser_check = 1;
   }
   else if (userAgent.indexOf('safari') != -1) {
-    webbrowser_check = 0;
+    webbrowser_check = 1;
   }
   else if (userAgent.indexOf('firefox') != -1) {
     webbrowser_check = 1;
   }
   else if (userAgent.indexOf('opera') != -1) {
     webbrowser_check = 1;
-  }
-  else {
-    webbrowser_check = 0;
   }
 
   if (webbrowser_check == 0) {
@@ -512,21 +515,9 @@ Code.downloadPython = function () {
   else {
     var blob = new Blob([pythonText], { type: "application/octet-stream" });
 
-    self_prompt("ファイル名を入力してください", function (file_name, teacher_mode = false) {
+    self_prompt("ファイル名を入力してください", function (file_name) {
       if (file_name) {
-        if (teacher_mode) {
-          var save_json = {};
-          var saveCode = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
-
-          save_json.teacher_code = btoa(unescape(encodeURIComponent(saveCode)));
-          var json_string = JSON.stringify(save_json)
-          blob = new Blob([json_string], { type: "text/plain" });
-
-          file_name = file_name + ".json";
-        }
-        else {
-          file_name = file_name + ".py";
-        }
+        file_name += ".py";
         if (window.navigator.msSaveBlob) {
           // IE
           window.navigator.msSaveBlob(blob, file_name);
@@ -545,29 +536,74 @@ Code.downloadPython = function () {
 
 
 function readSingleFile(e) {
-  var file = e.target.files[0];
-  if (!file) {
-    return;
-  }
-  var reader = new FileReader();
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const fileName = file.name.toLowerCase();
+  const reader = new FileReader();
+
+  // XMLファイルとして読み込む場合
+  if (fileName.endsWith(".xml")) {
   reader.onload = function (e) {
-    var contents = e.target.result;
-    var xmlTextarea = document.getElementById('content_xml');
-    var xmlDom;
-    var xmlText = contents.toString();
+      const xmlText = e.target.result.toString();
+      let xmlDom;
 
     try {
       xmlDom = Blockly.utils.xml.textToDom(xmlText);
-    } catch (e) {
-      window.alert("ファイルの読み込みに失敗しました");
+      } catch (err) {
+        alert("XMLファイルの読み込みに失敗しました");
+        return;
     }
+
     if (xmlDom) {
       Code.workspace.clear();
       Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
     }
+    };
+    reader.readAsText(file);
+  }
 
+  // ── 非圧縮JSONファイルの処理 ──
+  else if (fileName.endsWith(".json")) {
+    reader.onload = function (e) {
+      try {
+        const jsonText = e.target.result.toString();
+        const workspaceData = JSON.parse(jsonText);
+        Code.workspace.clear();
+        Blockly.serialization.workspaces.load(workspaceData, Code.workspace);
+      } catch (err) {
+        alert("JSONファイルの読み込みまたは解析に失敗しました");
+        console.error(err);
+      }
   };
   reader.readAsText(file);
+}
+
+  // ZIP圧縮JSONとして読み込む場合（.blch や .zip）
+  else {
+    reader.onload = function (e) {
+      try {
+        const arrayBuffer = e.target.result;
+        const uint8 = new Uint8Array(arrayBuffer);
+        const unzipped = fflate.unzipSync(uint8);
+
+        if (!unzipped["program.json"]) {
+          alert("program.json が ZIP 内に見つかりませんでした");
+          return;
+        }
+
+        const jsonText = new TextDecoder("utf-8").decode(unzipped["program.json"]);
+        const workspaceData = JSON.parse(jsonText);
+
+        Code.workspace.clear();
+        Blockly.serialization.workspaces.load(workspaceData, Code.workspace);
+      } catch (err) {
+        console.error(err);
+        alert("ZIPファイルの展開または読み込みに失敗しました");
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
 }
 
 
@@ -575,26 +611,28 @@ document.getElementById('file_load').addEventListener('change', readSingleFile, 
 
 
 function initDataLoad() {
+  const queryStr = window.location.search.slice(1);
+  const queries = {};
 
-  var queryStr = window.location.search.slice(1);
-  queries = {};
+  if (!queryStr) return queries;
 
-  if (!queryStr) {
-    return queries;
-  }
-
-  queryStr.split('&').forEach(function (queryStr) {
-    var queryArr = queryStr.split('=');
-    queries[queryArr[0]] = queryArr[1];
+  queryStr.split('&').forEach(q => {
+    const [key, val] = q.split('=');
+    queries[key] = val;
   });
-  if (queries.loaddata) {
-    var xmlTextarea = document.getElementById('content_xml');
+
+  const fileKey = queries.loaddata;
+  if (!fileKey || !localStorage[fileKey]) return;
+
+  // データ本体をチェックして自動識別
+  const data = localStorage.getItem(fileKey).toString();
+  const isXML = data.trim().startsWith("<");
+
+  if (isXML) {
+    // XML処理
     var xmlDom;
-    var xmlText;
-    if (localStorage[queries.loaddata]) {
       try {
-        xmlText = localStorage.getItem(queries.loaddata).toString();
-        xmlDom = Blockly.utils.xml.textToDom(xmlText);
+      xmlDom = Blockly.utils.xml.textToDom(data);
       }
       catch (e) {
         window.alert("ファイルの読み込みに失敗しました");
@@ -603,6 +641,20 @@ function initDataLoad() {
         Code.workspace.clear();
         Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
       }
+  } else  {
+    // JSON処理
+    var workspaceData;
+    try {
+      workspaceData = JSON.parse(data);
+    } catch (err) {
+      window.alert("JSONの解析に失敗しました");
+      return;
+    }
+    try {
+      Code.workspace.clear();
+      Blockly.serialization.workspaces.load(workspaceData, Code.workspace);
+    } catch (e) {
+      window.alert("ワークスペースの復元に失敗しました");
     }
   }
 }
@@ -612,6 +664,7 @@ if (localStorage["DEBUG_MODE"]) {
     // document.getElementById("tab_blocks").style.width = "100%";
     // document.getElementById("tab_python").style.display = "none";
     document.getElementById("tab_javascript").style.display = "none";
+    document.getElementById("tab_json").style.display = "none";
     document.getElementById("tab_xml").style.display = "none";
   }
 }
@@ -670,25 +723,6 @@ function self_prompt(message, callback) {
   pcdiv.addEventListener('click', input_text_cancel, true);
   pcdiv.addEventListener('touchend', input_text_cancel, true);
 
-  var ptdiv = document.createElement("div");
-  ptdiv.setAttribute("id", "input_text_ok");
-  var newContent = document.createTextNode("教師データ");
-  ptdiv.appendChild(newContent);
-
-  var input_text_teacher = function () {
-    input_text = "" + document.getElementById("input_text_form").value;
-    var c = document.getElementById("input_text_area");
-    if (c) {
-      c.parentNode.removeChild(c);
-    }
-    callback(input_text, "teacher");
-  }
-  ptdiv.addEventListener('click', input_text_teacher, true);
-  ptdiv.addEventListener('touchend', input_text_teacher, true);
-
-  if (localStorage["DEBUG_MODE"] == "on") {
-    pddiv.appendChild(ptdiv);
-  }
   pddiv.appendChild(podiv);
   pddiv.appendChild(pcdiv);
   pdiv.appendChild(pddiv);
@@ -696,7 +730,6 @@ function self_prompt(message, callback) {
   document.body.appendChild(pdiv);
 
 };
-
 
 function self_prompt_b(message, callback) {
   var input_text = "";

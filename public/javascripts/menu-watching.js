@@ -1,39 +1,31 @@
-function createServarList(get_list) {
+function createserverList(get_list) {
 
-  var servar_list = [];
+  var server_list = [];
 
   for (var server in get_list) {
-    servar_list.push(server);
+    server_list.push(server);
   }
 
-  var h = document.getElementById('watching_list').clientHeight;
-  var div_num = Math.ceil(h / 80);
-
-
-  if (servar_list.length >= div_num) {
-    div_num = servar_list.length * 2;
-  }
-  else {
-    div_num = Math.ceil(h * 2 / 80);
-  }
-  div_num = servar_list.length;
+  div_num = server_list.length;
 
   for (var i = 0; i < div_num; i++) {
-    var one_servar_div = document.createElement('div');
-    one_servar_div.classList.add("one_watching_servar");
+    if (get_list[server_list[i % server_list.length]].name.includes('room_onetime'))
+      continue;
+    var one_server_div = document.createElement('div');
+    one_server_div.classList.add("one_watching_server");
 
     var vs = "player";
-    if (get_list[servar_list[i % servar_list.length]].cpu) {
+    if (get_list[server_list[i % server_list.length]].cpu) {
       vs = "cpu"
     }
 
 
-    var servar_div = document.createElement('div');
-    if (i / servar_list.length < 1) {
-      one_servar_div.setAttribute("id", "link_id_" + get_list[servar_list[i % servar_list.length]].room_id);
+    var server_div = document.createElement('div');
+    if (i / server_list.length < 1) {
+      one_server_div.setAttribute("id", "link_id_" + get_list[server_list[i % server_list.length]].room_id);
     }
-    servar_div.classList.add(get_list[servar_list[i % servar_list.length]].room_id);
-    servar_div.classList.add("watching_server_div");
+    server_div.classList.add(get_list[server_list[i % server_list.length]].room_id);
+    server_div.classList.add("watching_server_div");
 
     var server_vs = document.createElement('div');
     if (vs == "player") {
@@ -47,21 +39,23 @@ function createServarList(get_list) {
 
     var server_name = document.createElement('div');
     server_name.classList.add("server_name");
-    newContent = document.createTextNode(get_list[servar_list[i % servar_list.length]].name);
+
+    var serverName = get_list[server_list[i % server_list.length]].name.replace("room_onetime_","");
+    newContent = document.createTextNode(serverName);    
     server_name.appendChild(newContent);
 
     var server_id = document.createElement('div');
     server_id.classList.add("server_id");
-    newContent = document.createTextNode(get_list[servar_list[i % servar_list.length]].room_id);
+    newContent = document.createTextNode(get_list[server_list[i % server_list.length]].room_id);
     server_id.appendChild(newContent);
 
-    servar_div.appendChild(server_vs);
-    servar_div.appendChild(server_name);
-    servar_div.appendChild(server_id);
+    server_div.appendChild(server_vs);
+    server_div.appendChild(server_name);
+    server_div.appendChild(server_id);
 
-    servar_div.onclick = function (e) {
+    server_div.onclick = function (e) {
       var serverId = this.classList[0];
-      for (var select_id of servar_list) {
+      for (var select_id of server_list) {
         for (var select_class_list of document.getElementsByClassName(select_id)) {
           if (serverId == select_id) {
             select_class_list.classList.add("server_select_on");
@@ -75,24 +69,10 @@ function createServarList(get_list) {
       e.stopPropagation();
     };
 
-    one_servar_div.appendChild(servar_div);
+    one_server_div.appendChild(server_div);
 
-    document.getElementById('watching_list').appendChild(one_servar_div);
+    document.getElementById('watching_list').appendChild(one_server_div);
   }
-
-  // var loop = document.getElementById('watching_list');
-
-  // loop.onscroll = function(){
-  //   var scrollTop = this.scrollTop;
-  //   if(0 >= scrollTop){
-  //     this.scrollTo( 0, servar_list.length*80-1 ) ;
-  //   }
-  //   else if(servar_list.length*80 < scrollTop){
-  //     this.scrollTo( 0, 1 ) ;
-  //   }
-  // }
-  // document.getElementById('watching_list').scrollTo( 0,1 ) ;
-
 }
 
 function server_info(id, get_list) {
@@ -155,6 +135,10 @@ function server_info(id, get_list) {
     c.parentNode.removeChild(c);
   }
 
+  c = document.getElementById("server_access_div");
+  if (c) {
+    c.parentNode.removeChild(c);
+  }
 
   var server_info_name = document.createElement('div');
   server_info_name.setAttribute("id", "server_info_name");
@@ -211,46 +195,63 @@ function server_info(id, get_list) {
   server_info_div.appendChild(server_info_turn);
 
 
-  var server_join_div = document.createElement('div');
-  server_join_div.setAttribute("id", "server_join_div");
+  var server_access_div = document.createElement('div');
+  server_access_div.setAttribute("id", "server_access_div");
 
-  var server_join_link = document.createElement('a');
-  server_join_link.classList.add("server_join_link");
-  server_join_link.href = "/match?room_id=" + id;
-  server_join_link.innerText = lng_list["MATCH"];
-  server_join_div.appendChild(server_join_link);
+  var server_match_button = document.createElement('button');
+  server_match_button.setAttribute("id", "server_match_button");
+  server_match_button.classList.add("server_match_button");
+  server_match_button.innerText = lng_list["MATCH"];
+  server_match_button.addEventListener('click', function() {
+      var additionalText = encodeURIComponent(server_token_input.value);
+      if (additionalText == "") {
+          additionalText = "no_token";
+      }
+      window.location.href = '/match?room_id=' + id + '&room_token=' + additionalText;
+  });
 
-  var server_watch_div = document.createElement('div');
-  server_watch_div.setAttribute("id", "server_watch_div");
+  var server_watch_button = document.createElement('button');
+  server_watch_button.setAttribute("id", "server_watch_button");
+  server_watch_button.classList.add("server_watch_button");
+  server_watch_button.innerText = lng_list["WATCHING"];
+  server_watch_button.addEventListener('click', function() {
+      var additionalText = encodeURIComponent(server_token_input.value);
+      if (additionalText == "") {
+          additionalText = "no_token";
+      }
+      window.location.href = '/watching?room_id=' + id + '&room_token=' + additionalText;
+  });
 
-  var server_watch_link = document.createElement('a');
-  server_watch_link.classList.add("server_join_link");
-  server_watch_link.href = "/watching?room_id=" + id;
-  server_watch_link.innerText = lng_list["WATCHING"];
-  server_watch_div.appendChild(server_watch_link);
+  var server_token_input = document.createElement('input');
+  server_token_input.setAttribute("id", "server_token_input");
+  server_token_input.classList.add("server_token_input");
+  server_token_input.type = 'text';
+  server_token_input.placeholder = '合言葉を入力';
 
+  server_access_div.appendChild(server_match_button);
+  server_access_div.appendChild(server_watch_button);
+  server_access_div.appendChild(server_token_input);
 
   document.getElementById("watching_info").appendChild(table);
   document.getElementById("watching_info").appendChild(server_info_div);
-  document.getElementById("watching_info").appendChild(server_join_div);
-  document.getElementById("watching_info").appendChild(server_watch_div);
+  document.getElementById("watching_info").appendChild(server_access_div);
   document.getElementById("menu_area").appendChild(server_info_name);
   document.getElementById("menu_area").classList.add("select_back");
 }
 
 
 window.addEventListener('load', function () {
-  getServarList();
+  getserverList();
 })
 
-function getServarList() {
+function getserverList() {
   var url = './../api/game';
   fetch(url)
     .then(function (data) {
       return data.json();
     })
     .then(function (json) {
-      createServarList(json);
+      createserverList(json);
     });
 }
 

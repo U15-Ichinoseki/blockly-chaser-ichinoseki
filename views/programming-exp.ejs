@@ -60,7 +60,7 @@
 
         </button>
         <label for="file_load" title="<%- LNG[" LOAD"] %>">
-          <input type="file" accept=".xml" id="file_load" style="display:none;">
+          <input type="file" accept=".blch,.json,.xml" id="file_load" style="display:none;">
         </label>
       </div>
     </div>
@@ -73,6 +73,7 @@
         <li id="tab_blocks" class="tabon">プログラムブロック</li>
         <li id="tab_python" class="taboff">python</li>
         <li id="tab_javascript" class="taboff">javascript</li>
+        <li id="tab_json" class="taboff">json</li>
         <li id="tab_xml" class="taboff">xml</li>
       </ul>
     </div>
@@ -80,9 +81,10 @@
     <div class="blockly_area" id="content_area"></div>
 
     <div id="content_blocks" class="content"></div>
-    <textarea id="content_python" class="content" wrap="off"></textarea>
+    <pre id="content_python" class="content" wrap="off"></pre>
     <pre id="content_javascript" class="content lang-js"></pre>
-    <textarea id="content_xml" class="content" wrap="off"></textarea>
+    <pre id="content_json" class="content" wrap="off"></pre>
+    <pre id="content_xml" class="content" wrap="off"></pre>
   </div>
 
   <div class="right_area">
@@ -95,11 +97,11 @@
 
   </div>
 
-
+  <script src="/javascripts/fflate.js"></script>
   <script src="/javascripts/encode.js"></script>
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
 
-    <category name="%{BKY_GAME_SERVAR}" colour="#5b93a5">
+    <category name="%{BKY_GAME_SERVER}" colour="#5b93a5">
       <block type="server_join"></block>
       <block type="get_ready"></block>
       <block type="direction4_value"></block>

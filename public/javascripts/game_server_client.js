@@ -292,7 +292,7 @@ var resultSound = new Howl({
 
 
 var socket = io();
-var servar_connect_status = false;
+var server_connect_status = false;
 var timeId = null;
 var my_turn = false;
 var look_search_data = false;
@@ -311,7 +311,7 @@ var next_my_trun = false;
 
 
 socket.on("joined_room", function (msg) {
-    servar_connect_status = true;
+    server_connect_status = true;
     load_map_size_x = msg.x_size;
     load_map_size_y = msg.y_size;
     if (msg.cool_name) {

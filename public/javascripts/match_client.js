@@ -1,6 +1,6 @@
 
 var socket = io();
-var servar_connect_status = false;
+var server_connect_status = false;
 var timeId = null;
 var my_turn = false;
 var look_search_data = false;

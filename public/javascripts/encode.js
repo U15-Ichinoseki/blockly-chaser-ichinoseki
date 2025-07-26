@@ -110,7 +110,7 @@ function initApi(interpreter, scope) {
     user.name = name;
     socket.emit("player_join", user);
 
-    servar_connect_status = true;
+    server_connect_status = true;
   };
   interpreter.setProperty(scope, 'join',
     interpreter.createNativeFunction(wrapper));
@@ -315,11 +315,11 @@ function resetInterpreter() {
 }
 
 function resetVar() {
-  if (servar_connect_status) {
+  if (server_connect_status) {
     socket.emit("leave_room");
   }
   my_turn = false;
-  servar_connect_status = false;
+  server_connect_status = false;
   map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -432,13 +432,34 @@ Code.download = function () {
     window.alert("ご利用のブラウザは本機能を使用できません");
   }
   else {
-    const encoder = new TextEncoder();
-    const jsonBytes = encoder.encode(jsonText);
+    const version = "4.1.0"; // リリース時に更新
+    
+    const date = new Date();
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    const ss = String(date.getSeconds()).padStart(2, '0');
 
-    // ZIP形式でアーカイブ（ファイル名: program.json）
+    const timestamp = `${yyyy}/${mm}/${dd} ${hh}:${min}:${ss}`;
+
+    // info.json に格納するオブジェクト
+    const info = {
+      savedAt: timestamp,
+      version: version
+    };
+
+    // JSON バイト列に変換
+    const infoJsonBytes = new TextEncoder().encode(JSON.stringify(info, null, 2));
+
+    // JSON テキストをバイト列に変換
+    const jsonBytes = new TextEncoder().encode(jsonText);
+
+    // ZIP形式でアーカイブ
     const zipped = fflate.zipSync({
       "program.json": jsonBytes,
-      "meta.txt": new TextEncoder().encode("saved at: " + new Date().toISOString())
+      "info.json": infoJsonBytes
     });
 
     // Blobとして保存

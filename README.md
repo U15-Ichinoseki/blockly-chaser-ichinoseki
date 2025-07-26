@@ -6,7 +6,7 @@ U15一関プロコンサーバーは[U-15プログラミングコンテスト一
 ビジュアルプログラミングの一つである[blockly](https://github.com/google/blockly)を用いてプログラミング初学者が気軽にプログラミングコンテストに参加できる環境づくりを目指しています。
 ゲーム仕様は[AsahikawaProcon-Server](https://github.com/hal1437/AsahikawaProcon-Server)を参考にブラウザ上でゲームの実行が可能です。
 
-<img width="960" alt="procon_git_img01" src="https://user-images.githubusercontent.com/51484579/73644558-f6659280-46b8-11ea-956d-44511b02e9e1.png">
+<img width="960" alt="Screen_Shot" src="./ScreenShot.png">
 
 ## 機能
 - プログラミング
@@ -14,7 +14,7 @@ U15一関プロコンサーバーは[U-15プログラミングコンテスト一
 	- ゲーム用ブロックの追加
 	- エラー表示
 	- プログラムの保存
-		- 保存ボタンによる手動保存
+		- 保存ボタンによる手動保存(JSON圧縮形式)
 		- プログラム実行時の自動保存
 	- プログラムのロード
 		- 開くボタンによる任意プログラムのロード
@@ -33,7 +33,7 @@ U15一関プロコンサーバーは[U-15プログラミングコンテスト一
 
 ## 動作環境
 ### 動作確認済み環境
-- Windows
+- Windows 11 / macOS 14
 - Node.js 14.x
 
 ### 推奨環境
@@ -43,7 +43,7 @@ U15一関プロコンサーバーは[U-15プログラミングコンテスト一
 - Step.0:Node.js,npm インストール
 - Step.1:任意の場所でGitのリポジトリをクローン
 ```bash
-git clone https://github.com/kuropengin/blockly-procon.git 
+git clone https://github.com/U15-Ichinoseki/blockly-chaser-ichinoseki.git
 ```
 
 - Step.2:ダウンロードしたフォルダに移動後、パッケージをインストール
@@ -60,16 +60,19 @@ npm start
 ## 動作確認
 - ブラウザから `http://<IPaddress>:<Port(default:3000)>/` にアクセス
 
-## exe化方法
-- Step.0:windowsアプリケーションをビルド可能な環境であることを確認
-(Linux環境でビルドを行う場合はwineのインストールが必要)
+## アプリ化方法
+- Step.0:アプリケーションをビルド可能な環境であることを確認
+  - Linux環境でビルドを行う場合はwineのインストールが必要
+  - macOS版はmacOSが必要
 
 - Step.1:スクリプトの実行
-```bash
-npm run dist-win
-```
 
-- Step.2:フォルダー『dist』内にzip化されたexeファイルが生成される
+|OS|コマンド|
+|--|--|
+|Windows|`npm run dist-win`|
+|macOS|`npm run dist-mac`|
+
+- Step.2:フォルダー『dist』内にアプリ化されたファイルが生成される
 
 ## 実装予定
 

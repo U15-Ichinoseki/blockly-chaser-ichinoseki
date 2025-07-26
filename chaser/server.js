@@ -1226,7 +1226,7 @@ io.on('connection', function (socket) {
         }
 
         if (server_store[msg.room_id]) {
-            if (!(server_store[msg.room_id].cool.status && server_store[msg.room_id].hot.status)) {
+            if (!(server_store[msg.room_id].cool.status || server_store[msg.room_id].hot.status)) {
                 if (!match_room_store[socket.id]) {
                     match_room_store[socket.id] = msg.room_id;
                     server_store[msg.room_id].match = true;

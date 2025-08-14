@@ -1,38 +1,32 @@
 function makeTable(tableId, effect = false) {
 
     var random = -1;
-    if (stage_data["spon_set"]>0) {
-        random = Math.floor( Math.random() * stage_data["spon_set"]);
-    }
 
     if (stage_data["spon_cool"]) {
         stage_data["spon_cool"] = false;
-        if (!stage_data["spon_set"])
-            random = Math.floor( Math.random() * stage_data["spon_cool_pos"].length);
+        random = Math.floor(Math.random() * stage_data["spon_cool_pos"].length);
         stage_data["cool_x"] = stage_data["spon_cool_pos"][random][0];
         stage_data["cool_y"] = stage_data["spon_cool_pos"][random][1];
         stage_data["map_data"]
-            [stage_data["cool_x"]]
             [stage_data["cool_y"]]
+            [stage_data["cool_x"]]
              = 3;
     }
 
     if (stage_data["spon_hot"]) {
         stage_data["spon_hot"] = false;
-        if (!stage_data["spon_set"])
-            random = Math.floor( Math.random() * stage_data["spon_hot_pos"].length);
+        random = Math.floor( Math.random() * stage_data["spon_hot_pos"].length);
         stage_data["hot_x"] = stage_data["spon_hot_pos"][random][0];
         stage_data["hot_y"] = stage_data["spon_hot_pos"][random][1];
         stage_data["map_data"]
-            [stage_data["hot_x"]]
             [stage_data["hot_y"]]
+            [stage_data["hot_x"]]
              = 4;
     }
 
     if (stage_data["spon_block"]) {
         stage_data["spon_block"] = false;
-        if (!stage_data["spon_set"])
-            random = Math.floor( Math.random() * stage_data["spon_block_pos"].length);
+        random = Math.floor( Math.random() * stage_data["spon_block_pos"].length);
         for (let i=0; i< stage_data["spon_block_pos"][random].length; i++){
             stage_data["map_data"]
                 [stage_data["spon_block_pos"][random][i][0]]
@@ -43,8 +37,7 @@ function makeTable(tableId, effect = false) {
 
     if (stage_data["spon_item"]) {
         stage_data["spon_item"] = false;
-        if (!stage_data["spon_set"])
-            random = Math.floor( Math.random() * stage_data["spon_item_pos"].length);
+        random = Math.floor( Math.random() * stage_data["spon_item_pos"].length);
         for (let i=0; i< stage_data["spon_item_pos"][random].length; i++){
             stage_data["map_data"]
                 [stage_data["spon_item_pos"][random][i][0]]
@@ -648,6 +641,14 @@ function put_wall(direction, chara = "cool") {
 
 
 var my_map_data = [];
+var hart_score = 0;
+var my_turn = false;
+
+
+function endCode() {
+    hart_score = 0;
+    stage_data = JSON.parse(JSON.stringify(reset_data));
+}
 var hart_score = 0;
 var my_turn = false;
 

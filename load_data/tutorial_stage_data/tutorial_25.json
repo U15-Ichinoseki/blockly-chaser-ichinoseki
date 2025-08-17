@@ -1,6 +1,6 @@
 {
-    "name": "チュートリアル25",
-    "stage_id": "tutorial_112",
+    "name": "ステージ 7-3",
+    "stage_id": "tutorial_25",
     "info" : "行き止まりを回避しよう",
     "level" : 8,
     "mode" : "gethart",

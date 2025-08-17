@@ -1,7 +1,7 @@
 {
-    "name": "チュートリアル13",
-    "stage_id": "tutorial_13",
-    "info" : "周りを見てみよう4",
+    "name": "ステージ 3-3",
+    "stage_id": "tutorial_112",
+    "info" : "アイテムをだどってみよう",
     "level" : 4,
     "mode" : "gethart",
     "get_hart_value" : 28,

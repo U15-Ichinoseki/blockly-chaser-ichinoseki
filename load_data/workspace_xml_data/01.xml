@@ -1,3 +1,14 @@
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <block type="move_player"></block>
+    <block type="move_player">
+      <field name="move">"top"</field>
+    </block>
+    <block type="move_player">
+      <field name="move">"bottom"</field>
+    </block>
+    <block type="move_player">
+      <field name="move">"left"</field>
+    </block>
+    <block type="move_player">
+      <field name="move">"right"</field>
+    </block>
 </xml>

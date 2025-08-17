@@ -1,7 +1,7 @@
 {
-    "name": "チュートリアル19",
+    "name": "ステージ 6-2",
     "stage_id": "tutorial_19",
-    "info" : "相手にブロックを置いてみよう2",
+    "info" : "相手にブロックを置いてみよう２",
     "level" : 5,
     "mode" : "puthot",
     "get_hart_value" : 0,

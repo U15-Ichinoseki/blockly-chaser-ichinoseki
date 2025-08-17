@@ -1,7 +1,7 @@
 {
-    "name": "チュートリアル04",
+    "name": "ステージ 1-4",
     "stage_id": "tutorial_04",
-    "info" : "操作に慣れよう4",
+    "info" : "移動の順序を考えよう",
     "level" : 1,
     "mode" : "gethart",
     "get_hart_value" : 1,

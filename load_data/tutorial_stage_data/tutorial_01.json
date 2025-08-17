@@ -1,7 +1,7 @@
 {
-    "name": "チュートリアル01",
+    "name": "ステージ 1-1",
     "stage_id": "tutorial_1",
-    "info" : "操作に慣れよう1",
+    "info" : "キャラクターを移動させよう１",
     "level" : 1,
     "mode" : "gethart",
     "get_hart_value" : 1,

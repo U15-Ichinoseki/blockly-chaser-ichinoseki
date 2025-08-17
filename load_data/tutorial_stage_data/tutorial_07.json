@@ -1,7 +1,7 @@
 {
-    "name": "チュートリアル07",
+    "name": "ステージ 2-3",
     "stage_id": "tutorial_07",
-    "info" : "繰り返しを覚えよう3",
+    "info" : "繰り返すところを考えよう１",
     "level" : 2,
     "mode" : "gethart",
     "get_hart_value" : 7,

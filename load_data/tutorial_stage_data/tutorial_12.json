@@ -1,7 +1,7 @@
 {
-    "name": "チュートリアル12",
+    "name": "ステージ 3-4",
     "stage_id": "tutorial_12",
-    "info" : "周りを見てみよう3",
+    "info" : "周りだけじゃわからない？",
     "level" : 4,
     "mode" : "gethart",
     "get_hart_value" : 1,

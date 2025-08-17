@@ -1,7 +1,7 @@
 {
-    "name": "チュートリアル17",
+    "name": "ステージ 5-2",
     "stage_id": "tutorial_17",
-    "info" : "相手の番を待ってみよう2",
+    "info" : "自分の番を待ってみよう２",
     "level" : 5,
     "mode" : "gethart",
     "get_hart_value" : 2,

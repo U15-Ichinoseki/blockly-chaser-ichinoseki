@@ -1,5 +1,7 @@
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
 
+    <block type="move_player"></block>
+    
     <block type="look"></block>
     <block type="search"></block>
     <block type="if_value"></block>

@@ -366,6 +366,7 @@ Code.reloadJS = function () {
   reloadButton.classList.toggle("Button_hidden");
 }
 Code.bindClick('reloadButton', Code.reloadJS);
+Code.bindClick('resetButton', Code.reloadJS);
 
 Code.stopJS = function () {
   if (myInterpreter) {
@@ -412,7 +413,7 @@ Code.download = function () {
     window.alert("ご利用のブラウザは本機能を使用できません");
   }
   else {
-    const version = "4.2.2"; // リリース時に更新
+    const version = "4.3.0"; // リリース時に更新
     
     const date = new Date();
     const yyyy = date.getFullYear();

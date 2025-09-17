@@ -28,6 +28,7 @@
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],
     "cool_x": 7,
     "cool_y": 8,
+    "variant_stage": true,
     "spon_block": true,
     "spon_block_pos": [
                 [

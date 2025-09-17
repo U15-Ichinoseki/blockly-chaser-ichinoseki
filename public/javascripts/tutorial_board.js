@@ -308,13 +308,16 @@ function stage_result(status = false) {
         if(stage_data["block_limit"] < Code.workspace.getAllBlocks().length){
             var message_text = "次は目標ブロック数でのクリアを目指してみよう！";
             var message_title = "ブロック数オーバー！";
-            result_flag = true;
             block_limit_flag = false;
         }
-        else{
-            var message_text = "他のステージにもチャレンジしてみよう！";
+        else if (stage_data["variant_stage"]) {
+            var message_text = "違う配置でも試してみよう！";
             var message_title = "ステージクリア";
-            result_flag = true;
+            block_limit_flag = true;
+        }
+        else {
+            var message_text = "他のステージにもチャレンジしてみよう！";
+            var message_title = "ステージクリア！";
             block_limit_flag = true;
         }
     }
@@ -363,12 +366,12 @@ function stage_result(status = false) {
             document.getElementById("back_menu").style.display="none";
         }
 
-        var cancel_button = document.getElementById('cancel');
+        var reset_button = document.getElementById('resetButton');
         var overlay_off = function () {
             document.getElementById('overlay').classList.remove("overlay_on");
         }
-        cancel_button.addEventListener('click', overlay_off, true);
-        cancel_button.addEventListener('touchend', overlay_off, true);
+        reset_button.addEventListener('click', overlay_off, true);
+        reset_button.addEventListener('touchend', overlay_off, true);
 
     }
 

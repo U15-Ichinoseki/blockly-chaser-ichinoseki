@@ -366,6 +366,7 @@ Code.reloadJS = function () {
   reloadButton.classList.toggle("Button_hidden");
 }
 Code.bindClick('reloadButton', Code.reloadJS);
+Code.bindClick('resetButton', Code.reloadJS);
 
 Code.stopJS = function () {
   if (myInterpreter) {

@@ -25,6 +25,7 @@ if (query_list.room_id) {
             if (json) {
                 socket.emit('looker_join', query_list.room_id + "?" + query_list.room_token);
                 document.getElementById('server_name').textContent = String(json.name);
+                document.title += " - " + document.getElementById('server_name').textContent;                
             }
             else {
                 document.getElementById('server_name').textContent = "存在しないサーバー";

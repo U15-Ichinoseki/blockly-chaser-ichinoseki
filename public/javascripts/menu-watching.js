@@ -227,6 +227,9 @@ function server_info(id, get_list) {
   server_token_input.classList.add("server_token_input");
   server_token_input.type = 'text';
   server_token_input.placeholder = '合言葉を入力';
+  server_token_input.addEventListener('input', function() {
+    this.value = this.value.replace(/[^\x00-\x7F]/g, '');
+  });
 
   server_access_div.appendChild(server_match_button);
   server_access_div.appendChild(server_watch_button);

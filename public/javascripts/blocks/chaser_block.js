@@ -27,7 +27,9 @@ function getServerList() {
         init: function () {
           this.appendDummyInput()
             .appendField("合言葉")
-            .appendField(new Blockly.FieldTextInput, "room_token")
+            .appendField(new Blockly.FieldTextInput('', function(newValue) {
+              return /^[\x00-\x7F]*$/.test(newValue) ? newValue : '';
+            }), "room_token")
             .appendField("で")
             .appendField(new Blockly.FieldDropdown(json), "room_id")
             .appendField(Blockly.Msg["SERVER_JOIN_BEFORE"])

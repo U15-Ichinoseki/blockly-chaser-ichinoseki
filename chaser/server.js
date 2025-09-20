@@ -459,7 +459,7 @@ function game_server_reset(room) {
         }
     }
 
-    if (server_store[room].timer) {
+    if (server_store[room] && server_store[room].timer) {
         clearTimeout(server_store[room].timer);
         delete server_store[room].timer;
     }
@@ -477,6 +477,10 @@ function game_server_reset(room) {
 
 //player action
 function get_ready(room, chara, id = false) {
+    if(!server_store[room])
+    {
+        return;
+    }
     if (server_store[room][chara].turn && server_store[room][chara].getready) {
         var my_map_data = [];
         var tmp_map_data = Array.from(server_store[room].map_data);
@@ -782,6 +786,10 @@ function look(room, chara, msg, id = false) {
 }
 
 function search(room, chara, msg, id = false) {
+    if(!server_store[room])
+    {
+        return;
+    }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
         server_store[room][chara].turn = false;
         server_store[room][chara].getready = true;

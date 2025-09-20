@@ -75,7 +75,7 @@ const create_new_map = async function(json){
 
 
 const delete_map = async function(id){
-  if(game_server[id].delete_time){
+  if(game_server[id] && game_server[id].delete_time){
     delete game_server[id];
     join_list = join_list.filter(item => item[1] !== id);
   }

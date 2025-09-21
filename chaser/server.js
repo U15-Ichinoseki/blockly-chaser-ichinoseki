@@ -459,7 +459,7 @@ function game_server_reset(room) {
         }
     }
 
-    if (server_store[room].timer) {
+    if (server_store[room] && server_store[room].timer) {
         clearTimeout(server_store[room].timer);
         delete server_store[room].timer;
     }
@@ -477,6 +477,10 @@ function game_server_reset(room) {
 
 //player action
 function get_ready(room, chara, id = false) {
+    if(!server_store[room])
+    {
+        return;
+    }
     if (server_store[room][chara].turn && server_store[room][chara].getready) {
         var my_map_data = [];
         var tmp_map_data = Array.from(server_store[room].map_data);
@@ -782,6 +786,10 @@ function look(room, chara, msg, id = false) {
 }
 
 function search(room, chara, msg, id = false) {
+    if(!server_store[room])
+    {
+        return;
+    }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
         server_store[room][chara].turn = false;
         server_store[room][chara].getready = true;
@@ -1469,7 +1477,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', function () {
-        if (store[socket.id]) {
+        if (store[socket.id] && server_store[store[socket.id].room]) {
             if (server_store[store[socket.id].room].cool.status && server_store[store[socket.id].room].hot.status && !server_store[store[socket.id].room].match) {
                 if (store[socket.id].chara == "cool") {
                     game_result_check(store[socket.id].room, store[socket.id].chara, "r", false, "hot", "切断より");
@@ -1514,7 +1522,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('leave_room', function () {
-        if (store[socket.id]) {
+        if (store[socket.id] && server_store[store[socket.id].room]) {
             if (server_store[store[socket.id].room].cool.status && server_store[store[socket.id].room].hot.status && !server_store[store[socket.id].room].match) {
                 if (store[socket.id].chara == "cool") {
                     game_result_check(store[socket.id].room, store[socket.id].chara, "r", false, "hot", "切断より");

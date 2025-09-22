@@ -43,7 +43,7 @@ python.pythonGenerator.forBlock['server_join'] = function (block) {
 
   var variables = Blockly.Variables.allUsedVarModels(block.workspace) || [];
   for (var i = 0, variable; variable = variables[i]; i++) {
-    globals.push(variable.name);
+    globals.push(Blockly.Python.nameDB_.getName(variable.name, Blockly.Variables.NAME_TYPE));
   }
   // Add developer variables.
   var devVarList = Blockly.Variables.allDeveloperVariables(block.workspace);

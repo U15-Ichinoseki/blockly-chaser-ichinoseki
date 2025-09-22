@@ -432,7 +432,7 @@ Code.download = function () {
     window.alert("ご利用のブラウザは本機能を使用できません");
   }
   else {
-    const version = "4.3.3"; // リリース時に更新
+    const version = "4.3.4"; // リリース時に更新
     
     const date = new Date();
     const yyyy = date.getFullYear();

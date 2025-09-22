@@ -557,3 +557,15 @@ Blockly.Blocks['if_search_value_exp'] = {
 };
 
 Blockly.libraryBlocks.loops.loopTypes.add('infinite_loop');
+
+Blockly.Blocks['comment_block'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("コメント"), "COMMENT");
+    this.setColour('#FFF9C4');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip("コードには影響しないコメントブロック");
+    this.setHelpUrl("");
+  }
+};

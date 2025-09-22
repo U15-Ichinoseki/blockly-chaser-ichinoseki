@@ -379,3 +379,9 @@ python.pythonGenerator.forBlock['infinite_loop'] = function (block) {
   var code = 'while True:\n' + statements_infinite_loop_content;
   return code;
 };
+
+python.pythonGenerator.forBlock['comment_block'] = function(block) {
+  const comment = block.getFieldValue('COMMENT');
+  const code = `# ${comment}\n`;
+  return code;
+};

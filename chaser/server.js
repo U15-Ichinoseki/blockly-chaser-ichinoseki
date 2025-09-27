@@ -463,7 +463,12 @@ function game_server_reset(room) {
         clearTimeout(server_store[room].timer);
         delete server_store[room].timer;
     }
-    server_store[room] = JSON.parse(JSON.stringify(game_server[room]));
+    if (game_server[room]) {
+        server_store[room] = JSON.parse(JSON.stringify(game_server[room]));
+    } else {
+        console.error(`Error: game_server is undefined for room "${room ?? 'unknown'}"`);
+        return;
+    }
 
     if (!server_store[room].map_data.length) {
         create_map(room);
@@ -479,6 +484,7 @@ function game_server_reset(room) {
 function get_ready(room, chara, id = false) {
     if(!server_store[room])
     {
+        console.error(`Error in get_ready:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
     if (server_store[room][chara].turn && server_store[room][chara].getready) {
@@ -586,6 +592,7 @@ function get_ready(room, chara, id = false) {
 function move_player(room, chara, msg, id = false) {
     if(!server_store[room])
     {
+        console.error(`Error in move_player:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
@@ -707,7 +714,8 @@ function move_player(room, chara, msg, id = false) {
 }
 
 function look(room, chara, msg, id = false) {
-    if(server_data[room]){
+    if(!server_store[room]){
+        console.error(`Error in look:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
@@ -788,6 +796,7 @@ function look(room, chara, msg, id = false) {
 function search(room, chara, msg, id = false) {
     if(!server_store[room])
     {
+        console.error(`Error in search:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
@@ -869,6 +878,7 @@ function search(room, chara, msg, id = false) {
 function put_wall(room, chara, msg, id = false) {
     if(!server_store[room])
     {
+        console.error(`Error in put_wall:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {

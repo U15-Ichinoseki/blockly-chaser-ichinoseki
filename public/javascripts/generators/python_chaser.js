@@ -35,9 +35,57 @@ python.pythonGenerator.forBlock['server_join'] = function (block) {
   var dropdown_room_id = block.getFieldValue('room_id');
   var text_name = block.getFieldValue('name');
   var statements_main_loop_content = Blockly.Python.statementToCode(block, 'main_loop_content');
+
   // TODO: Assemble Python into code variable.
   Blockly.Python.definitions_['import_argparse'] = 'import argparse';
   Blockly.Python.definitions_['import_chaser'] = 'from lib.CHaser import * # lib/CHaser.py';
+
+  Blockly.Python.definitions_['usage_comment'] = '"""\n'
+    + '【ライブラリの配置方法】\n'
+    + '    同じフォルダ内に「lib」フォルダを作成し、その中に「CHaser.py」ファイルを配置してください。\n\n'
+
+    + '【サーバーとの接続方法】\n'
+    + '    Client クラスの引数に port, name, host を指定します。\n'
+    + '    指定しない場合は、実行時に入力を求められます。\n'
+    + '    例： player = Client(2010, "Cool", "localhost")\n\n'
+
+    + '    プログラムの末尾にある以下の記述により、コマンドライン引数を使って接続情報を指定できます。\n\n'
+
+    + '        parser.add_argument(\'-p\', \'--port\', default=2010)\n'
+    + '        parser.add_argument(\'-n\', \'--name\', default=\'sample\')\n'
+    + '        parser.add_argument(\'-i\', \'--host\', default=\'localhost\')\n'
+
+    + '    default の値を変更することで、引数を省略した場合に使用される初期値を変更できます。\n\n'
+
+    + '    【使用例】\n\n'
+
+    + '        python sample.py -p 2010 -n Cool -i localhost\n'
+    + '        python sample.py --port 2010 --name Cool --host localhost\n'
+    + '        python sample.py -n Cool\n\n\n'
+
+
+    + '【行動関数の記述形式】\n'
+    + '    行動関数は「行動(方向)」の形式で記述します。\n'
+    + '     行動は「walk」「look」「search」「put」の4種類\n'
+    + '     方向は「Right」「Up」「Left」「Down」の4種類\n'
+    + '    例： walk(Up), search(Right) など\n\n'
+
+    + '【マスの情報】\n'
+    + '    行動関数が返すマップ情報は、以下のいずれかの種類です。\n'
+    + '    「Floor」:なしもない\n'
+    + '    「Enemy」:相手\n'
+    + '    「Block」:ブロック\n'
+    + '    「Item」 :アイテム\n\n'
+
+    + '【マップ情報の構造】\n'
+    + '    行動関数は、行動後の周囲9マスの情報を以下の順番でリストとして返します。\n\n'
+
+    + '    「UpLeft」  |  「Up」   |「UpRight」\n'
+    + '    -----------+-----------+-----------\n'
+    + '    「Left」    |「Center」 |  「Right」\n'
+    + '    -----------+-----------+-----------\n'
+    + '    「DownLeft」| 「Down」  |「DownRight」\n'
+    + '"""\n\n';
 
   var globals = [];
 

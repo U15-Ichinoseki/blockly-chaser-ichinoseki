@@ -20,7 +20,11 @@ const init = async function () {
       var temp_game_server = JSON.parse(fs.readFileSync(path.join(__dirname, mode_path, '..', 'load_data', 'game_server_data', gs), 'utf8'));
       if (temp_game_server.room_id) {
         game_server[temp_game_server.room_id] = temp_game_server;
-        join_list.push([temp_game_server.name, temp_game_server.room_id]);
+        if (!temp_game_server.cpu){
+          join_list.push(["VS: " + temp_game_server.name, temp_game_server.room_id]);
+        } else {
+          join_list.push(["AUTO: " + temp_game_server.name, temp_game_server.room_id]);
+        }
       }
       else {
         logger.error('The format of the game server data is incorrect. Data to be loaded "' + gs + '"');

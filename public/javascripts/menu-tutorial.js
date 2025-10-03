@@ -1,87 +1,114 @@
-
 function createStageList(get_list) {
-
-  var stage_list = [];
-
-  for (stage in get_list) {
-    stage_list.push(stage);
+  // ステージ名でグルーピング
+  const groupMap = {};
+  for (const key in get_list) {
+    const stage = get_list[key];
+    let groupName = stage.name;
+    const match = groupName.match(/^(ステージ\s*\d+)/);
+    if (match) {
+      groupName = match[1];
+    }
+    if (!groupMap[groupName]) {
+      groupMap[groupName] = [];
+    }
+    groupMap[groupName].push(stage);
   }
 
+  const stageListElem = document.getElementById('stage_list');
+  stageListElem.innerHTML = '';
 
-  div_num = stage_list.length;
-
-  for (var i = 0; i < div_num; i++) {
-    var one_stage = document.createElement('div');
-    one_stage.classList.add("one_stage");
-
-    var level = false;
-    if (get_list[stage_list[i % stage_list.length]].level) {
-      level = get_list[stage_list[i % stage_list.length]].level;
-    }
-
-
-    var stage_div = document.createElement('div');
-    if (i / stage_list.length < 1) {
-      one_stage.setAttribute("id", "link_id_" + get_list[stage_list[i % stage_list.length]].stage_id);
-    }
-    stage_div.classList.add(get_list[stage_list[i % stage_list.length]].stage_id);
-    stage_div.classList.add("stage_div");
-
-    var stage_level = document.createElement('div');
-    if (level) {
-      stage_level.classList.add("stage_level");
-    }
-    var newContent = document.createTextNode("Level " + level);
-    stage_level.appendChild(newContent);
-
-    var stage_clear = document.createElement('div');
-    stage_clear.classList.add("stage_status");
-    if (localStorage[get_list[stage_list[i % stage_list.length]].stage_id]) {
-      stage_clear.classList.add("stage_clear");
-    }
-
-    var stage_name = document.createElement('div');
-    stage_name.classList.add("stage_name");
-    newContent = document.createTextNode(get_list[stage_list[i % stage_list.length]].name);
-    stage_name.appendChild(newContent);
-
-    var stage_info = document.createElement('div');
-    stage_info.classList.add("stage_info");
-    if (get_list[stage_list[i % stage_list.length]].info) {
-      newContent = document.createTextNode(get_list[stage_list[i % stage_list.length]].info);
-    }
-    else {
-      newContent = document.createTextNode("");
-    }
-    stage_info.appendChild(newContent);
-
-    stage_div.appendChild(stage_level);
-    stage_div.appendChild(stage_clear);
-    stage_div.appendChild(stage_name);
-    stage_div.appendChild(stage_info);
-
-    stage_div.onclick = function (e) {
-      var stageId = this.classList[0];
-      for (var select_id of stage_list) {
-        for (var select_class_list of document.getElementsByClassName(select_id)) {
-          if (stageId == select_id) {
-            select_class_list.classList.add("stage_select_on");
-          }
-          else if (select_class_list.classList.contains("stage_select_on")) {
-            select_class_list.classList.remove("stage_select_on");
-          }
-        }
+  // ステージ名でソート
+  Object.keys(groupMap)
+    .sort((a, b) => {
+      const aMatch = a.match(/(\d+)/);
+      const bMatch = b.match(/(\d+)/);
+      if (aMatch && bMatch) {
+        return parseInt(aMatch[1], 10) - parseInt(bMatch[1], 10);
       }
-      stage_info_create(stageId, get_list);
-      e.stopPropagation();
-    };
+      return a.localeCompare(b, 'ja', {numeric: true});
+    })
+    .forEach((groupName, groupIdx) => {
+      const groupDiv = document.createElement('div');
+      groupDiv.classList.add('stage_group');
 
-    one_stage.appendChild(stage_div);
+      const groupTitle = document.createElement('div');
+      groupTitle.classList.add('stage_group_title');
+      groupTitle.textContent = groupName;
+      groupDiv.appendChild(groupTitle);
 
-    document.getElementById('stage_list').appendChild(one_stage);
-  }
+      const rowDiv = document.createElement('div');
+      rowDiv.classList.add('stage_row');
 
+      // ステージ番号でソート
+      groupMap[groupName].sort((a, b) => {
+        const aMatch = a.name.match(/-(\d+)$/);
+        const bMatch = b.name.match(/-(\d+)$/);
+        if (aMatch && bMatch) {
+          return parseInt(aMatch[1], 10) - parseInt(bMatch[1], 10);
+        }
+        return a.name.localeCompare(b.name, 'ja', {numeric: true});
+      });
 
+      groupMap[groupName].forEach((stage, i) => {
+        const one_stage = document.createElement('div');
+        one_stage.classList.add("one_stage");
+        one_stage.setAttribute("id", "link_id_" + stage.stage_id);
+
+        const level = stage.level || false;
+
+        const stage_div = document.createElement('div');
+        stage_div.classList.add(stage.stage_id);
+        stage_div.classList.add("stage_div");
+
+        const stage_level = document.createElement('div');
+        if (level) {
+          stage_level.classList.add("stage_level");
+        }
+        let newContent = document.createTextNode("Level " + level);
+        stage_level.appendChild(newContent);
+
+        const stage_clear = document.createElement('div');
+        stage_clear.classList.add("stage_status");
+        if (localStorage[stage.stage_id]) {
+          stage_clear.classList.add("stage_clear");
+        }
+
+        const stage_name = document.createElement('div');
+        stage_name.classList.add("stage_name");
+        newContent = document.createTextNode(stage.name);
+        stage_name.appendChild(newContent);
+
+        const stage_info = document.createElement('div');
+        stage_info.classList.add("stage_info");
+        if (stage.info) {
+          newContent = document.createTextNode(stage.info);
+        } else {
+          newContent = document.createTextNode("");
+        }
+        stage_info.appendChild(newContent);
+
+        stage_div.appendChild(stage_level);
+        stage_div.appendChild(stage_clear);
+        stage_div.appendChild(stage_name);
+        stage_div.appendChild(stage_info);
+
+        stage_div.onclick = function (e) {
+          var stageId = this.classList[0];
+          document.querySelectorAll('.stage_div').forEach(div => {
+            div.classList.remove("stage_select_on");
+          });
+          this.classList.add("stage_select_on");
+          stage_info_create(stageId, get_list);
+          e.stopPropagation();
+        };
+
+        one_stage.appendChild(stage_div);
+        rowDiv.appendChild(one_stage);
+      });
+
+      groupDiv.appendChild(rowDiv);
+      stageListElem.appendChild(groupDiv);
+    });
 }
 
 function stage_info_create(id, get_list) {

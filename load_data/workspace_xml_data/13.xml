@@ -1,0 +1,354 @@
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+
+  <block type="get_ready"></block>
+  <block type="move_player_exp"></block>
+  <block type="infinite_loop"></block>
+  <block type="controls_if"></block>
+  <block type="logic_compare">
+    <field name="OP">EQ</field>
+  </block>
+  <block type="procedures_defreturn">
+    <field name="NAME">アイテム方向</field>
+  </block>
+  <block type="procedures_defreturn">
+    <field name="NAME">ランダム方向</field>
+  </block>
+  <block type="variables_get">
+    <field name="VAR">進行方向</field>
+  </block>
+  <block type="variables_set">
+    <field name="VAR">進行方向</field>
+    <value name="VALUE">
+      <block type="procedures_callreturn">
+        <mutation name="アイテム方向"></mutation>
+      </block>
+    </value>
+  </block>
+  <block type="variables_set">
+    <field name="VAR">進行方向</field>
+    <value name="VALUE">
+      <block type="procedures_callreturn">
+        <mutation name="ランダム方向"></mutation>
+      </block>
+    </value>
+  </block>
+  <block type="variables_get">
+    <field name="VAR">アイテム方向</field>
+  </block>
+  <block type="lists_getIndex">
+    <mutation statement="false" at="false"></mutation>
+    <field name="MODE">GET</field>
+    <field name="WHERE">RANDOM</field>
+    <value name="VALUE">
+      <block type="variables_get">
+        <field name="VAR">ブロックのない方向</field>
+      </block>
+    </value>
+  </block>
+  <block type="logic_null"></block>
+  <block type="comment_block">
+    <field name="COMMENT">アイテム発見</field>
+    <next>
+      <block type="variables_set">
+        <field name="VAR">アイテム方向</field>
+        <value name="VALUE">
+          <block type="logic_null"></block>
+        </value>
+        <next>
+          <block type="controls_if">
+            <mutation elseif="3"></mutation>
+            <value name="IF0">
+              <block type="if_value_exp">
+                <value name="map_position">
+                  <shadow type="position9_value">
+                    <field name="position_value">1</field>
+                  </shadow>
+                  <block type="position9_value">
+                    <field name="position_value">1</field>
+                  </block>
+                </value>
+                <value name="map_item">
+                  <shadow type="item4_value">
+                    <field name="item_value">3</field>
+                  </shadow>
+                  <block type="item4_value">
+                    <field name="item_value">3</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set">
+                <field name="VAR">アイテム方向</field>
+                <value name="VALUE">
+                  <block type="direction4_value">
+                    <field name="direction_value">"top"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <value name="IF1">
+              <block type="if_value_exp">
+                <value name="map_position">
+                  <shadow type="position9_value">
+                    <field name="position_value">1</field>
+                  </shadow>
+                  <block type="position9_value">
+                    <field name="position_value">7</field>
+                  </block>
+                </value>
+                <value name="map_item">
+                  <shadow type="item4_value">
+                    <field name="item_value">3</field>
+                  </shadow>
+                  <block type="item4_value">
+                    <field name="item_value">3</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO1">
+              <block type="variables_set">
+                <field name="VAR">アイテム方向</field>
+                <value name="VALUE">
+                  <block type="direction4_value">
+                    <field name="direction_value">"bottom"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <value name="IF2">
+              <block type="if_value_exp">
+                <value name="map_position">
+                  <shadow type="position9_value">
+                    <field name="position_value">1</field>
+                  </shadow>
+                  <block type="position9_value">
+                    <field name="position_value">3</field>
+                  </block>
+                </value>
+                <value name="map_item">
+                  <shadow type="item4_value">
+                    <field name="item_value">3</field>
+                  </shadow>
+                  <block type="item4_value">
+                    <field name="item_value">3</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO2">
+              <block type="variables_set">
+                <field name="VAR">アイテム方向</field>
+                <value name="VALUE">
+                  <block type="direction4_value">
+                    <field name="direction_value">"left"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <value name="IF3">
+              <block type="if_value_exp">
+                <value name="map_position">
+                  <shadow type="position9_value">
+                    <field name="position_value">1</field>
+                  </shadow>
+                  <block type="position9_value">
+                    <field name="position_value">5</field>
+                  </block>
+                </value>
+                <value name="map_item">
+                  <shadow type="item4_value">
+                    <field name="item_value">3</field>
+                  </shadow>
+                  <block type="item4_value">
+                    <field name="item_value">3</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO3">
+              <block type="variables_set">
+                <field name="VAR">アイテム方向</field>
+                <value name="VALUE">
+                  <block type="direction4_value">
+                    <field name="direction_value">"right"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+  <block type="comment_block">
+    <field name="COMMENT">ランダム移動</field>
+    <next>
+      <block type="variables_set">
+        <field name="VAR">ブロックのない方向</field>
+        <value name="VALUE">
+          <block type="lists_create_with">
+            <mutation items="0"></mutation>
+          </block>
+        </value>
+        <next>
+          <block type="controls_if">
+            <value name="IF0">
+              <block type="logic_negate">
+                <value name="BOOL">
+                  <block type="if_value_exp">
+                    <value name="map_position">
+                      <block type="position9_value">
+                        <field name="position_value">1</field>
+                      </block>
+                    </value>
+                    <value name="map_item">
+                      <block type="item4_value">
+                        <field name="item_value">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="lists_setIndex">
+                <mutation at="false"></mutation>
+                <field name="MODE">INSERT</field>
+                <field name="WHERE">LAST</field>
+                <value name="LIST">
+                  <block type="variables_get">
+                    <field name="VAR">ブロックのない方向</field>
+                  </block>
+                </value>
+                <value name="TO">
+                  <block type="direction4_value">
+                    <field name="direction_value">"top"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <next>
+              <block type="controls_if">
+                <value name="IF0">
+                  <block type="logic_negate">
+                    <value name="BOOL">
+                      <block type="if_value_exp">
+                        <value name="map_position">
+                          <block type="position9_value">
+                            <field name="position_value">7</field>
+                          </block>
+                        </value>
+                        <value name="map_item">
+                          <block type="item4_value">
+                            <field name="item_value">2</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="lists_setIndex">
+                    <mutation at="false"></mutation>
+                    <field name="MODE">INSERT</field>
+                    <field name="WHERE">LAST</field>
+                    <value name="LIST">
+                      <block type="variables_get">
+                        <field name="VAR">ブロックのない方向</field>
+                      </block>
+                    </value>
+                    <value name="TO">
+                      <block type="direction4_value">
+                        <field name="direction_value">"bottom"</field>
+                      </block>
+                    </value>
+                  </block>
+                </statement>
+                <next>
+                  <block type="controls_if">
+                    <value name="IF0">
+                      <block type="logic_negate">
+                        <value name="BOOL">
+                          <block type="if_value_exp">
+                            <value name="map_position">
+                              <block type="position9_value">
+                                <field name="position_value">3</field>
+                              </block>
+                            </value>
+                            <value name="map_item">
+                              <block type="item4_value">
+                                <field name="item_value">2</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="lists_setIndex">
+                        <mutation at="false"></mutation>
+                        <field name="MODE">INSERT</field>
+                        <field name="WHERE">LAST</field>
+                        <value name="LIST">
+                          <block type="variables_get">
+                            <field name="VAR">ブロックのない方向</field>
+                          </block>
+                        </value>
+                        <value name="TO">
+                          <block type="direction4_value">
+                            <field name="direction_value">"left"</field>
+                          </block>
+                        </value>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="controls_if">
+                        <value name="IF0">
+                          <block type="logic_negate">
+                            <value name="BOOL">
+                              <block type="if_value_exp">
+                                <value name="map_position">
+                                  <block type="position9_value">
+                                    <field name="position_value">5</field>
+                                  </block>
+                                </value>
+                                <value name="map_item">
+                                  <block type="item4_value">
+                                    <field name="item_value">2</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="lists_setIndex">
+                            <mutation at="false"></mutation>
+                            <field name="MODE">INSERT</field>
+                            <field name="WHERE">LAST</field>
+                            <value name="LIST">
+                              <block type="variables_get">
+                                <field name="VAR">ブロックのない方向</field>
+                              </block>
+                            </value>
+                            <value name="TO">
+                              <block type="direction4_value">
+                                <field name="direction_value">"right"</field>
+                              </block>
+                            </value>
+                          </block>
+                        </statement>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>

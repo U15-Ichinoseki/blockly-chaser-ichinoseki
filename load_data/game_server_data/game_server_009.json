@@ -1,5 +1,5 @@
 {
-    "name": "練習：迷路マップ",
+    "name": "迷路マップ",
     "room_id": "room_009",
     "map_size_x": 15,
     "map_size_y": 17,

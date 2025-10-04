@@ -1,78 +1,87 @@
 function createserverList(get_list) {
+  // グループ分け: 対戦/自動
+  const groupMap = {
+    "対戦": [],
+    "自動": []
+  };
 
-  var server_list = [];
-
-  for (var server in get_list) {
-    server_list.push(server);
+  for (var key in get_list) {
+    const server = get_list[key];
+    if (server.name.includes('room_onetime')) continue;
+    if (!server.cpu) {
+      groupMap["対戦"].push(server);
+    } else {
+      groupMap["自動"].push(server);
+    }
   }
 
-  div_num = server_list.length;
+  const watchingListElem = document.getElementById('watching_list');
+  watchingListElem.innerHTML = '';
 
-  for (var i = 0; i < div_num; i++) {
-    if (get_list[server_list[i % server_list.length]].name.includes('room_onetime'))
-      continue;
-    var one_server_div = document.createElement('div');
-    one_server_div.classList.add("one_watching_server");
+  Object.keys(groupMap).forEach(groupName => {
+    const groupDiv = document.createElement('div');
+    groupDiv.classList.add('server_group');
 
-    var vs = "player";
-    if (get_list[server_list[i % server_list.length]].cpu) {
-      vs = "cpu"
-    }
+    const groupTitle = document.createElement('div');
+    groupTitle.classList.add('server_group_title');
+    groupTitle.textContent = groupName;
+    groupDiv.appendChild(groupTitle);
 
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('server_row');
 
-    var server_div = document.createElement('div');
-    if (i / server_list.length < 1) {
-      one_server_div.setAttribute("id", "link_id_" + get_list[server_list[i % server_list.length]].room_id);
-    }
-    server_div.classList.add(get_list[server_list[i % server_list.length]].room_id);
-    server_div.classList.add("watching_server_div");
+    groupMap[groupName].forEach(server => {
+      const one_server_div = document.createElement('div');
+      one_server_div.classList.add("one_watching_server");
+      one_server_div.setAttribute("id", "link_id_" + server.room_id);
 
-    var server_vs = document.createElement('div');
-    if (vs == "player") {
-      server_vs.classList.add("server_vs_player");
-    }
-    else {
-      server_vs.classList.add("server_vs_cpu");
-    }
-    var newContent = document.createTextNode("VS " + vs);
-    server_vs.appendChild(newContent);
+      const vs = !server.cpu ? "VS" : "AUTO";
 
-    var server_name = document.createElement('div');
-    server_name.classList.add("server_name");
+      const server_div = document.createElement('div');
+      server_div.classList.add(server.room_id);
+      server_div.classList.add("watching_server_div");
 
-    var serverName = get_list[server_list[i % server_list.length]].name.replace("room_onetime_","");
-    newContent = document.createTextNode(serverName);    
-    server_name.appendChild(newContent);
-
-    var server_id = document.createElement('div');
-    server_id.classList.add("server_id");
-    newContent = document.createTextNode(get_list[server_list[i % server_list.length]].room_id);
-    server_id.appendChild(newContent);
-
-    server_div.appendChild(server_vs);
-    server_div.appendChild(server_name);
-    server_div.appendChild(server_id);
-
-    server_div.onclick = function (e) {
-      var serverId = this.classList[0];
-      for (var select_id of server_list) {
-        for (var select_class_list of document.getElementsByClassName(select_id)) {
-          if (serverId == select_id) {
-            select_class_list.classList.add("server_select_on");
-          }
-          else if (select_class_list.classList.contains("server_select_on")) {
-            select_class_list.classList.remove("server_select_on");
-          }
-        }
+      const server_vs = document.createElement('div');
+      if (vs == "VS") {
+        server_vs.classList.add("server_vs_player");
+      } else {
+        server_vs.classList.add("server_vs_auto");
       }
-      server_info(serverId, get_list);
-      e.stopPropagation();
-    };
+      let newContent = document.createTextNode(vs);
+      server_vs.appendChild(newContent);
 
-    one_server_div.appendChild(server_div);
+      const server_name = document.createElement('div');
+      server_name.classList.add("server_name");
+      const serverName = server.name.replace("room_onetime_", "");
+      newContent = document.createTextNode(serverName);
+      server_name.appendChild(newContent);
 
-    document.getElementById('watching_list').appendChild(one_server_div);
-  }
+      const server_id = document.createElement('div');
+      server_id.classList.add("server_id");
+      newContent = document.createTextNode(server.room_id);
+      server_id.appendChild(newContent);
+
+      server_div.appendChild(server_vs);
+      server_div.appendChild(server_name);
+      server_div.appendChild(server_id);
+
+      server_div.onclick = function (e) {
+        var serverId = this.classList[0];
+        document.querySelectorAll('.watching_server_div').forEach(div => {
+          div.classList.remove("server_select_on");
+        });
+        this.classList.add("server_select_on");
+        server_info(serverId, get_list);
+        e.stopPropagation();
+      };
+
+      one_server_div.appendChild(server_div);
+      rowDiv.appendChild(one_server_div);
+    });
+
+    groupDiv.appendChild(rowDiv);
+    watchingListElem.appendChild(groupDiv);
+  });
 }
 
 function server_info(id, get_list) {

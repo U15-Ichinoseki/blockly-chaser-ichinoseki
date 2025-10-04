@@ -30,8 +30,13 @@ if (query_list.room_id) {
             if (json) {
                 socket.emit('looker_join', query_list.room_id + "?" + query_list.room_token);
                 document.getElementById('server_name').textContent = String(json.name);
-                document.title += " - " + document.getElementById('server_name').textContent;                
-
+                if (json.cpu) {
+                    buttle_mode = "（テスト）";
+                } else {
+                    buttle_mode = "";
+                }
+                document.title += " - " + document.getElementById('server_name').textContent + buttle_mode;
+                
                 var server_init = {};
                 server_init.room_id = query_list.room_id + "?" + query_list.room_token;
                 socket.emit("match_init", server_init);

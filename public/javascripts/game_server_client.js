@@ -53,6 +53,31 @@ function ready_game(elementId) {
 
 }
 
+var Sound_Volume = 0.5;
+if (localStorage["SOUND_VOLUME"]) {
+    Sound_Volume = localStorage["SOUND_VOLUME"] / 100;
+}
+
+var gameBgmFile = "sound/01.mp3";
+var resultSoundFile = "sound/02.mp3";
+if (localStorage["GAME_BGM"]) {
+    gameBgmFile = "bgm/" + localStorage["GAME_BGM"];
+}
+if (localStorage["RESULT_BGM"]) {
+    resultSoundFile = "bgm/" + localStorage["RESULT_BGM"];
+}
+
+
+var gameBgm = new Howl({
+    src: [gameBgmFile],
+    loop: true,
+    volume: Sound_Volume
+});
+var resultSound = new Howl({
+    src: [resultSoundFile],
+    volume: Sound_Volume
+});
+
 function makeTable(msg, y, effect, tableId) {
     var data = msg.map_data;
     var c = document.getElementById("ready_player");
@@ -76,7 +101,30 @@ function makeTable(msg, y, effect, tableId) {
     var _y = (450 - (4 * y)) / y;
     _y = _y.toString();
 
-    var cx = false, cy = false, hx = false, hy = false;
+
+    var cx = false;
+    var cy = false;
+    var hx = false;
+    var hy = false;
+
+    for (i = 0; i < data.length; i++) {
+        for (j = 0; j < data[0].length; j++) {
+            if (data[i][j] == 3) {
+                cx = j;
+                cy = i;
+            }
+            else if (data[i][j] == 4) {
+                hx = j;
+                hy = i;
+            }
+            else if ((data[i][j] == 34) || (data[i][j] == 43)) {
+                cx = j;
+                cy = i;
+                hx = j;
+                hy = i;
+            }
+        }
+    }
 
     for (i = 0; i < data.length; i++) {
         rows.push(table.insertRow(-1));
@@ -94,27 +142,15 @@ function makeTable(msg, y, effect, tableId) {
             }
             else if (data[i][j] == 3) {
                 cell.classList.add("cool_img");
-                cx = j;
-                cy = i;
             }
             else if (data[i][j] == 4) {
                 cell.classList.add("hot_img");
-                hx = j;
-                hy = i;
             }
             else if (data[i][j] == 34) {
                 cell.classList.add("ch_img");
-                cx = j;
-                cy = i;
-                hx = j;
-                hy = i;
             }
             else if (data[i][j] == 43) {
                 cell.classList.add("hc_img");
-                cx = j;
-                cy = i;
-                hx = j;
-                hy = i;
             }
 
             //cell.appendChild(document.createTextNode(data[i][j]));
@@ -262,31 +298,6 @@ function makeTable(msg, y, effect, tableId) {
     document.getElementById(tableId).appendChild(table);
     document.getElementById("game_info").appendChild(odiv);
 }
-
-var Sound_Volume = 0.5;
-if (localStorage["SOUND_VOLUME"]) {
-    Sound_Volume = localStorage["SOUND_VOLUME"] / 100;
-}
-
-var gameBgmFile = "sound/01.mp3";
-var resultSoundFile = "sound/02.mp3";
-if (localStorage["GAME_BGM"]) {
-    gameBgmFile = "bgm/" + localStorage["GAME_BGM"];
-}
-if (localStorage["RESULT_BGM"]) {
-    resultSoundFile = "bgm/" + localStorage["RESULT_BGM"];
-}
-
-
-var gameBgm = new Howl({
-    src: [gameBgmFile],
-    loop: true,
-    volume: Sound_Volume
-});
-var resultSound = new Howl({
-    src: [resultSoundFile],
-    volume: Sound_Volume
-});
 
 
 

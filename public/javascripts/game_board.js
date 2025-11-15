@@ -80,8 +80,6 @@ var resultSound = new Howl({
     volume: Sound_Volume
 });
 
-
-
 function makeTable(msg, x, y, effect, tableId) {
     if (game_bgm_flag) {
         game_bgm_flag = false;
@@ -118,7 +116,6 @@ function makeTable(msg, x, y, effect, tableId) {
     var h = document.getElementById(tableId).clientHeight;
     var w = document.getElementById("game_area").clientWidth;
     var _x = (h / y) * x;
-
 
     if (w > _x) {
         _x = _x.toString();

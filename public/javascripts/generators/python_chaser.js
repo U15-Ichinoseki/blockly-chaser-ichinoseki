@@ -1,20 +1,22 @@
 var JtoP = {
   '"top"': 'Up',
   '"bottom"': 'Down',
+  '"right"': 'Right',
   '"left"': 'Left',
-  '"right"': 'Right'
+  '"topright"': 'UpRight',
+  '"bottomright"': 'DownRight',
+  '"topleft"': 'UpLeft',
+  '"bottomleft"': 'DownLeft'
 };
 
 var NumtoName = [
-  'UpLeft',
   'Up',
   'UpRight',
-  'Left',
-  'Center',
-  'Right',
-  'DownLeft',
+  'DownRight',
   'Down',
-  'DownRight'
+  'DownLeft',
+  'UpLeft',
+  'Center'
 ];
 
 var NumtoItem = [
@@ -67,8 +69,8 @@ python.pythonGenerator.forBlock['server_join'] = function (block) {
     + '【行動関数の記述形式】\n'
     + '    行動関数は「行動(方向)」の形式で記述します。\n'
     + '     行動は「walk」「look」「search」「put」の4種類\n'
-    + '     方向は「Right」「Up」「Left」「Down」の4種類\n'
-    + '    例： walk(Up), search(Right) など\n\n'
+    + '     方向は「Up」「Down」「UpRight」「DownRight」「UpLeft」「DownLeft」の6種類\n'
+    + '    例： walk(Up), search(DownRight) など\n\n'
 
     + '【マスの情報】\n'
     + '    行動関数が返すマップ情報は、以下のいずれかの種類です。\n'
@@ -78,13 +80,17 @@ python.pythonGenerator.forBlock['server_join'] = function (block) {
     + '    「Item」 :アイテム\n\n'
 
     + '【マップ情報の構造】\n'
-    + '    行動関数は、行動後の周囲9マスの情報を以下の順番でリストとして返します。\n\n'
+    + '    行動関数は、行動後の周囲7マスの情報を以下の順番でリストとして返します。\n'
+    + '    例： [Up, UpRight, DownRight, Down, DownLeft, UpLeft, Center]\n\n'
 
-    + '    「UpLeft」  |  「Up」   |「UpRight」\n'
-    + '    -----------+-----------+-----------\n'
-    + '    「Left」    |「Center」 |  「Right」\n'
-    + '    -----------+-----------+-----------\n'
-    + '    「DownLeft」| 「Down」  |「DownRight」\n'
+    + '                +-----------+             \n'
+    + '     -----------+  「Up」   +-----------  \n'
+    + '    「UpLeft」  +-----------+「UpRight」  \n'
+    + '     -----------+「Center」 +-----------  \n'
+    + '    「DownLeft」+-----------+「DownRight」\n'
+    + '     -----------+  「Down」 +-----------  \n'
+    + '                +-----------+             \n'
+
     + '"""\n\n';
 
   var globals = [];
@@ -147,12 +153,16 @@ python.pythonGenerator.forBlock['random_move'] = function (block) {
   code = code + '__noblock = []\n';
   code = code + 'if (map_info[Up] != Block):\n';
   code = code + Blockly.Python.INDENT + '__noblock.append(Up)\n';
+  code = code + 'if (map_info[UpRight] != Block):\n';
+  code = code + Blockly.Python.INDENT + '__noblock.append(UpRight)\n';
+  code = code + 'if (map_info[DownRight] != Block):\n';
+  code = code + Blockly.Python.INDENT + '__noblock.append(DownRight)\n';
   code = code + 'if (map_info[Down] != Block):\n';
   code = code + Blockly.Python.INDENT + '__noblock.append(Down)\n';
-  code = code + 'if (map_info[Left] != Block):\n';
-  code = code + Blockly.Python.INDENT + '__noblock.append(Left)\n';
-  code = code + 'if (map_info[Right] != Block):\n';
-  code = code + Blockly.Python.INDENT + '__noblock.append(Right)\n';
+  code = code + 'if (map_info[DownLeft] != Block):\n';
+  code = code + Blockly.Python.INDENT + '__noblock.append(DownLeft)\n';
+  code = code + 'if (map_info[UpLeft] != Block):\n';
+  code = code + Blockly.Python.INDENT + '__noblock.append(UpLeft)\n';
   code = code + 'player.walk(random.choice(__noblock))\n';
 
   return code;
@@ -256,7 +266,7 @@ python.pythonGenerator.forBlock['if_search_value'] = function (block) {
 
 
 // expert mode
-python.pythonGenerator.forBlock['direction4_value'] = function (block) {
+python.pythonGenerator.forBlock['direction6_value'] = function (block) {
   var dropdown_direction = block.getFieldValue('direction_value').toString();
   // TODO: Assemble Python into code variable.
   code = JtoP[dropdown_direction];
@@ -265,7 +275,7 @@ python.pythonGenerator.forBlock['direction4_value'] = function (block) {
   return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
-python.pythonGenerator.forBlock['position9_value'] = function (block) {
+python.pythonGenerator.forBlock['position7_value'] = function (block) {
   var dropdown_position = block.getFieldValue('position_value').toString();
   // TODO: Assemble Python into code variable.
   code = NumtoName[dropdown_position];
@@ -274,7 +284,7 @@ python.pythonGenerator.forBlock['position9_value'] = function (block) {
   return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
-python.pythonGenerator.forBlock['position9_num_value'] = function (block) {
+python.pythonGenerator.forBlock['position7_num_value'] = function (block) {
   var dropdown_position = block.getFieldValue('position_num_value').toString();
   // TODO: Assemble Python into code variable.
   code = dropdown_position;

@@ -60,11 +60,11 @@
             <value name="IF0">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">1</field>
+                  <block type="position7_value">
+                    <field name="position_value">0</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -81,7 +81,7 @@
               <block type="variables_set">
                 <field name="VAR">アイテム方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"top"</field>
                   </block>
                 </value>
@@ -90,10 +90,10 @@
             <value name="IF1">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
+                  <block type="position7_value">
                     <field name="position_value">7</field>
                   </block>
                 </value>
@@ -111,7 +111,7 @@
               <block type="variables_set">
                 <field name="VAR">アイテム方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"bottom"</field>
                   </block>
                 </value>
@@ -120,10 +120,10 @@
             <value name="IF2">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
+                  <block type="position7_value">
                     <field name="position_value">3</field>
                   </block>
                 </value>
@@ -141,7 +141,7 @@
               <block type="variables_set">
                 <field name="VAR">アイテム方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"left"</field>
                   </block>
                 </value>
@@ -150,10 +150,10 @@
             <value name="IF3">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
+                  <block type="position7_value">
                     <field name="position_value">5</field>
                   </block>
                 </value>
@@ -171,7 +171,7 @@
               <block type="variables_set">
                 <field name="VAR">アイテム方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"right"</field>
                   </block>
                 </value>
@@ -199,8 +199,8 @@
                 <value name="BOOL">
                   <block type="if_value_exp">
                     <value name="map_position">
-                      <block type="position9_value">
-                        <field name="position_value">1</field>
+                      <block type="position7_value">
+                        <field name="position_value">0</field>
                       </block>
                     </value>
                     <value name="map_item">
@@ -223,7 +223,7 @@
                   </block>
                 </value>
                 <value name="TO">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"top"</field>
                   </block>
                 </value>
@@ -236,7 +236,7 @@
                     <value name="BOOL">
                       <block type="if_value_exp">
                         <value name="map_position">
-                          <block type="position9_value">
+                          <block type="position7_value">
                             <field name="position_value">7</field>
                           </block>
                         </value>
@@ -260,7 +260,7 @@
                       </block>
                     </value>
                     <value name="TO">
-                      <block type="direction4_value">
+                      <block type="direction6_value">
                         <field name="direction_value">"bottom"</field>
                       </block>
                     </value>
@@ -273,7 +273,7 @@
                         <value name="BOOL">
                           <block type="if_value_exp">
                             <value name="map_position">
-                              <block type="position9_value">
+                              <block type="position7_value">
                                 <field name="position_value">3</field>
                               </block>
                             </value>
@@ -297,7 +297,7 @@
                           </block>
                         </value>
                         <value name="TO">
-                          <block type="direction4_value">
+                          <block type="direction6_value">
                             <field name="direction_value">"left"</field>
                           </block>
                         </value>
@@ -310,7 +310,7 @@
                             <value name="BOOL">
                               <block type="if_value_exp">
                                 <value name="map_position">
-                                  <block type="position9_value">
+                                  <block type="position7_value">
                                     <field name="position_value">5</field>
                                   </block>
                                 </value>
@@ -334,7 +334,7 @@
                               </block>
                             </value>
                             <value name="TO">
-                              <block type="direction4_value">
+                              <block type="direction6_value">
                                 <field name="direction_value">"right"</field>
                               </block>
                             </value>

@@ -3,12 +3,18 @@
       <field name="move">"top"</field>
     </block>
     <block type="move_player">
+      <field name="move">"topright"</field>
+    </block>
+    <block type="move_player">
+      <field name="move">"bottomright"</field>
+    </block>
+    <block type="move_player">
       <field name="move">"bottom"</field>
     </block>
     <block type="move_player">
-      <field name="move">"left"</field>
+      <field name="move">"bottomleft"</field>
     </block>
     <block type="move_player">
-      <field name="move">"right"</field>
+      <field name="move">"topleft"</field>
     </block>
 </xml>

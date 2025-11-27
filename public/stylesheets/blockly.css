@@ -102,26 +102,6 @@ html[dir=rtl] td.tabmax {
   text-align: left;
 }
 
-table {
-  border-collapse: separate;
-  border-spacing: 1px;
-  margin: 0 auto;
-  padding: 0;
-  border: none;
-  font-size: 0px;
-}
-
-td {
-  padding: 0;
-  border: solid 2px #6c6c6c;
-  vertical-align: top;
-  background-size: contain;
-}
-
-td img {
-  width: 100%;
-}
-
 .content {
   visibility: hidden;
   margin: 0;
@@ -516,6 +496,7 @@ label {
 
 #game_info_div {
   display: flex;
+  margin-top: 12px;
 }
 
 #cool_info_div {
@@ -629,6 +610,22 @@ label {
   content: "point";
   font-size: 11px;
   border-left: solid #fff;
+}
+
+#game_board_hex {
+  position: relative;
+  margin: 0 auto;
+  box-Sizing: border-box;
+}
+
+.hex {
+  position: absolute;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  -webkit-clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); /* Safari対応 */
+  box-sizing: border-box;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: inline-block;
 }
 
 #game_result img {

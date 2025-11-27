@@ -1,5 +1,5 @@
 function ready_game(elementId) {
-    var c = document.getElementById("game_board_table");
+    var c = document.getElementById("game_board_hex");
     if (c) {
         c.parentNode.removeChild(c);
     }
@@ -78,153 +78,257 @@ var resultSound = new Howl({
     volume: Sound_Volume
 });
 
+
+function neighbor(i) {
+    switch (i) {
+        case 0: return "top";
+        case 1: return "topright";
+        case 2: return "bottomright";
+        case 3: return "bottom";
+        case 4: return "bottomleft";
+        case 5: return "topleft";
+        default: return null;
+    }
+}
+
+function neighbors() {
+    return ["top", "topright", "bottomright", "bottom", "bottomleft", "topleft"];
+}
+
+// へクス隣接 delta (flat-top, even-q offset)
+// 方向名を top, topright, bottomright, bottom, bottomleft, topleft に統一
+function hexDirectionDelta(dir, col) {
+    const col_is_even = (col % 2) === 0;
+    switch (dir) {
+        case "top":          return { dx:  0, dy: -1 };
+        case "bottom":       return { dx:  0, dy:  1 };
+        case "topright":     return { dx:  1, dy: (col_is_even ? 0 :  -1) }
+        case "bottomright":  return { dx:  1, dy: (col_is_even ? 1 :   0) }
+        case "topleft":      return { dx: -1, dy: (col_is_even ? 0 :  -1) }
+        case "bottomleft":   return { dx: -1, dy: (col_is_even ? 1 :   0) }
+        default:             return { dx:  0, dy: 0 };
+    }
+}
+
+// 中心セル(cx,cy)を基準に center + 6近傍 の7要素を判定
+function isSurround7(cx, cy, x, y) {
+    if (cx == x && cy == y) 
+        return true;
+
+    const neigh = neighbors();
+    for (let dname of neigh) {
+        const d = hexDirectionDelta(dname, cx);
+        const nx = cx + d.dx;
+        const ny = cy + d.dy;
+
+        if (nx == x && ny == y) 
+            return true;
+    }
+
+    return false;
+}
+
+// makeTable をflat-top hex レイアウトに差し替え
 function makeTable(msg, y, effect, tableId) {
-    var data = msg.map_data;
+
+    // 既存 UI 要素をクリア
     var c = document.getElementById("ready_player");
-    if (c) {
-        c.parentNode.removeChild(c);
-    }
+    if (c) c.parentNode.removeChild(c);
     c = document.getElementById("game_result");
-    if (c) {
-        c.parentNode.removeChild(c);
-    }
+    if (c) c.parentNode.removeChild(c);
 
-    var rows = [];
-    var table = document.createElement("table");
-    table.setAttribute("id", "game_board_table");
+    // 古い hex コンテナがあれば削除
+    var oldHex = document.getElementById("game_board_hex");
+    if (oldHex) oldHex.parentNode.removeChild(oldHex);
 
-    c = document.getElementById("game_board_table");
-    if (c) {
-        c.parentNode.removeChild(c);
-    }
+    var data = msg.map_data;
+    var item_num = 0;
+    
+    var rows = data.length;
+    var cols = data[0].length;
 
-    var _y = (450 - (4 * y)) / y;
-    _y = _y.toString();
-
-
-    var cx = false;
-    var cy = false;
-    var hx = false;
-    var hy = false;
-
-    for (i = 0; i < data.length; i++) {
-        for (j = 0; j < data[0].length; j++) {
-            if (data[i][j] == 3) {
-                cx = j;
-                cy = i;
-            }
-            else if (data[i][j] == 4) {
-                hx = j;
-                hy = i;
-            }
-            else if ((data[i][j] == 34) || (data[i][j] == 43)) {
-                cx = j;
-                cy = i;
-                hx = j;
-                hy = i;
-            }
+     // アイテム数とプレイヤー座標を取得
+    var cx = false, cy = false, hx = false, hy = false;
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            if (data[i][j] == 2) item_num++;
+            else if (data[i][j] == 3) { cx = j; cy = i; }
+            else if (data[i][j] == 4) { hx = j; hy = i; }
+            else if (data[i][j] == 34 || data[i][j] == 43) { cx = j; cy = i; hx = j; hy = i; }
         }
     }
 
-    for (i = 0; i < data.length; i++) {
-        rows.push(table.insertRow(-1));
-        for (j = 0; j < data[0].length; j++) {
-            cell = rows[i].insertCell(-1);
+    // 表示領域取得（フォールバックあり）
+    var parentEl = document.getElementById(tableId) || document.body;
+    var containerWidth  = parentEl.clientWidth  ? parentEl.clientWidth  : 450;
+    var containerHeight = parentEl.clientHeight ? parentEl.clientHeight : containerWidth;
+    // 最小限のサイズ保証
+    containerWidth  = Math.max(450, containerWidth);
+    containerHeight = Math.max(450, containerHeight);
 
-            if (data[i][j] == 0) {
-                cell.classList.add("field_img");
-            }
-            else if (data[i][j] == 1) {
-                cell.classList.add("wall_img");
-            }
-            else if (data[i][j] == 2) {
-                cell.classList.add("hart_img");
-            }
-            else if (data[i][j] == 3) {
-                cell.classList.add("cool_img");
-            }
-            else if (data[i][j] == 4) {
-                cell.classList.add("hot_img");
-            }
-            else if (data[i][j] == 34) {
-                cell.classList.add("ch_img");
-            }
-            else if (data[i][j] == 43) {
-                cell.classList.add("hc_img");
-            }
+    // flat-top hex レイアウト（隙間なく）
+    // size = 半径 (center->corner)
+    // width = 2 * size, height = sqrt(3) * size
+    // 横方向中心間隔 = 1.5 * size, 縦方向中心間隔 = height
+    const maxSizeFromWidth = containerWidth / (1.5 * cols + 0.5);
+    const maxSizeFromHeight = containerHeight / (Math.sqrt(3) * (rows + 0.5));
+    const size = Math.max(4, Math.min(maxSizeFromWidth, maxSizeFromHeight));
+    const hexWidth = 2 * size;
+    const hexHeight = Math.sqrt(3) * size;
+    const stepX = 1.5 * size;
+    const stepY = hexHeight;
+    const colOffsetY = hexHeight / 2;
 
-            //cell.appendChild(document.createTextNode(data[i][j]));
+    // 親コンテナ
+    var boardContainer = document.createElement("div");
+    boardContainer.id = "game_board_hex";
+    boardContainer.style.width = containerWidth + "px";
+    boardContainer.style.height = containerHeight + "px";
 
-            cell.style.height = _y + "px";
-            cell.style.width = _y + "px";
+    // マップタイルヘルパ
+    function getMapTile(v, bright) {
+        if (bright) {
+            if (v == 0) return "field_img";
+            if (v == 1) return "wall_img";
+            if (v == 2) return "hart_img";
+            if (v == 3) return "cool_img";
+            if (v == 4) return "hot_img";
+            if (v == 34) return "ch_img";
+            if (v == 43) return "hc_img";
+        } else {
+            if (v == 0) return "field_dark_img";
+            if (v == 1) return "wall_dark_img";
+            if (v == 2) return "hart_dark_img";
+            if (v == 3) return "cool_dark_img";
+            if (v == 4) return "hot_dark_img";
+            if (v == 34) return "ch_dark_img";
+            if (v == 43) return "hc_dark_img";
+        }
+        return bright ? "field_img" : "field_dark_img";
+    }
 
+    // 中央寄せ基点（中心座標原点）
+    const boardPixelWidth = stepX * (cols - 1) + hexWidth;
+    const boardPixelHeight = stepY * rows;
+    const originX = (containerWidth - boardPixelWidth) / 2 + hexWidth / 2;
+    const originY = (containerHeight - boardPixelHeight) / 2 + hexHeight / 2;
+
+    const inMapCool = (cx !== false && cy !== false && cx >= 0 && cx < cols && cy >= 0 && cy < rows);
+    const inMapHot  = (hx !== false && hy !== false && hx >= 0 && hx < cols && hy >= 0 && hy < rows);
+
+    // 六角セル生成
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            const val = data[r][c];
+            const hex = document.createElement("div");
+            hex.classList.add("hex");
+            // 明るさ判定（プレイヤー周囲6マスは明るく）
+            let bright = false;
+            bright = (inMapCool && isSurround7(cx, cy, c, r)) 
+                  || (inMapHot  && isSurround7(hx, hy, c, r));
+            hex.classList.add(getMapTile(val, bright));
+
+            // flat-top クリップパス（左右が平らな六角形）
+            hex.style.width = hexWidth + "px";
+            hex.style.height = hexHeight + "px";
+
+            hex.id = `hex_${r}_${c}`;
+
+            // 中心座標算出（flat-top, even-q）
+            const centerX = originX + c * stepX;
+            const centerY = originY + r * stepY + ((c % 2 === 0) ? colOffsetY : 0);
+            hex.style.left = (centerX - hexWidth / 2) + "px";
+            hex.style.top = (centerY - hexHeight / 2) + "px";
+
+            boardContainer.appendChild(hex);
         }
     }
 
-    var x_range = [];
-    var y_range = [];
+    // DOM 挿入
+    parentEl.appendChild(boardContainer);
 
-    if (msg.effect) {
-        if (msg.effect.t == "l") {
-            if (msg.effect.d == "top") {
-                x_range = [-1, 0, 1];
-                y_range = [-3, -2, -1];
-            } else if (msg.effect.d == "bottom") {
-                x_range = [1, 0, -1];
-                y_range = [3, 2, 1];
-            } else if (msg.effect.d == "left") {
-                x_range = [-3, -2, -1];
-                y_range = [1, 0, -1];
-            } else {
-                x_range = [3, 2, 1];
-                y_range = [-1, 0, 1];
-            }
-        }
-        else if (msg.effect.t == "s") {
-            if (msg.effect.d == "top") {
-                x_range = [0];
-                y_range = [-1, -2, -3, -4, -5, -6, -7, -8, -9];
-            } else if (msg.effect.d == "bottom") {
-                x_range = [0];
-                y_range = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-            } else if (msg.effect.d == "left") {
-                x_range = [-1, -2, -3, -4, -5, -6, -7, -8, -9];
-                y_range = [0];
-            } else {
-                x_range = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-                y_range = [0];
+    // 効果表示（outline）対応
+    const eff = msg.effect || effect;
+    if (eff) {
+        function markHex(rr, cc, color) {
+            const el = document.getElementById(`hex_${rr}_${cc}`);
+            if (el) {
+                el.style.outline = `2px solid ${color}`;
+                el.style.outlineOffset = "-2px";
+                const vv = data[rr][cc];
+                el.className = "hex " + getMapTile(vv, true);
             }
         }
 
-        for (var y of y_range) {
-            for (var x of x_range) {
-                if (msg.effect.p == "cool" && cx) {
-                    if (!(0 > (cx + x) || data[0].length - 1 < (cx + x) || 0 > (cy + y) || data.length - 1 < (cy + y))) {
-                        table.rows[cy + y].cells[cx + x].style.border = "2px solid rgba(3, 3, 244, 1.3)";
-                    }
+        if (eff.t == "l") {
+            // look: 指定方向に2マス進んだセルを中心にハイライト
+            const neigh = neighbors();
+
+            if (eff.p == "cool" && cx !== false) {
+                let ccx = cx, ccy = cy;
+                for (let s = 0; s < 2; s++) {
+                    const dd = hexDirectionDelta(eff.d, ccx);
+                    ccx += dd.dx; ccy += dd.dy;
                 }
-                else if (msg.effect.p == "hot" && hx) {
-                    if (!(0 > (hx + x) || data[0].length - 1 < (hx + x) || 0 > (hy + y) || data.length - 1 < (hy + y))) {
-                        table.rows[hy + y].cells[hx + x].style.border = "2px solid rgba(3, 3, 244, 1.3)";
-                    }
+                if (ccx >= 0 && ccx < cols && ccy >= 0 && ccy < rows) markHex(ccy, ccx, "rgba(3,3,244,1.0)");
+                for (let dname of neigh) {
+                    const dd = hexDirectionDelta(dname, ccx);
+                    const nx = ccx + dd.dx, ny = ccy + dd.dy;
+                    if (ny >= 0 && ny < rows && nx >= 0 && nx < cols) markHex(ny, nx, "rgba(3,3,244,1.0)");
                 }
             }
-        }
 
-        x_range = [-1, 0, 1];
-        y_range = [-1, 0, 1];
-
-        for (var y of y_range) {
-            for (var x of x_range) {
-                if (msg.effect.p == "hot" && hx >= 0) {
-                    if (!(0 > (hx + x) || data[0].length - 1 < (hx + x) || 0 > (hy + y) || data.length - 1 < (hy + y))) {
-                        table.rows[hy + y].cells[hx + x].style.border = "2px solid rgba(3, 244, 3, 1.3)";
-                    }
+            if (eff.p == "hot" && hx !== false) {
+                let ccx = hx, ccy = hy;
+                for (let s = 0; s < 2; s++) {
+                    const dd = hexDirectionDelta(eff.d, ccx);
+                    ccx += dd.dx; ccy += dd.dy;
                 }
-                else if (msg.effect.p == "cool" && cx >= 0) {
-                    if (!(0 > (cx + x) || data[0].length - 1 < (cx + x) || 0 > (cy + y) || data.length - 1 < (cy + y))) {
-                        table.rows[cy + y].cells[cx + x].style.border = "2px solid rgba(3, 244, 3, 1.3)";
-                    }
+                if (ccx >= 0 && ccx < cols && ccy >= 0 && ccy < rows) markHex(ccy, ccx, "rgba(3,3,244,1.0)");
+                for (let dname of neigh) {
+                    const dd = hexDirectionDelta(dname, ccx);
+                    const nx = ccx + dd.dx, ny = ccy + dd.dy;
+                    if (ny >= 0 && ny < rows && nx >= 0 && nx < cols) markHex(ny, nx, "rgba(3,3,244,1.0)");
+                }
+            }
+        } else if (eff.t == "s") {
+            // search: 指定方向へ直進で最大7セルをハイライト
+            if (eff.p == "cool" && cx !== false) {
+                let sx = cx, sy = cy;
+                for (let step = 1; step <= 7; step++) {
+                    const dd = hexDirectionDelta(eff.d, sx);
+                    sx += dd.dx; sy += dd.dy;
+                    if (sy < 0 || sy >= rows || sx < 0 || sx >= cols) break;
+                    markHex(sy, sx, "rgba(3,3,244,1.0)");
+                }
+            }
+
+            if (eff.p == "hot" && hx !== false) {
+                let sx = hx, sy = hy;
+                for (let step = 1; step <= 7; step++) {
+                    const dd = hexDirectionDelta(eff.d, sx);
+                    sx += dd.dx; sy += dd.dy;
+                    if (sy < 0 || sy >= rows || sx < 0 || sx >= cols) break;
+                    markHex(sy, sx, "rgba(3,3,244,1.0)");
+                }
+            }
+        } else if (eff.t == "r") {
+            // get_ready: 中心と6近傍をハイライト
+            const neigh = neighbors();
+            if (eff.p == "cool" && cx !== false) {
+                if (cy >= 0 && cy < rows && cx >= 0 && cx < cols) markHex(cy, cx, "rgba(3,244,3,1.0)");
+                for (let dname of neigh) {
+                    const dd = hexDirectionDelta(dname, cx);
+                    const nx = cx + dd.dx, ny = cy + dd.dy;
+                    if (ny >= 0 && ny < rows && nx >= 0 && nx < cols) markHex(ny, nx, "rgba(3,244,3,1.0)");
+                }
+            }
+            if (eff.p == "hot" && hx !== false) {
+                if (hy >= 0 && hy < rows && hx >= 0 && hx < cols) markHex(hy, hx, "rgba(3,244,3,1.0)");
+                for (let dname of neigh) {
+                    const dd = hexDirectionDelta(dname, hx);
+                    const nx = hx + dd.dx, ny = hy + dd.dy;
+                    if (ny >= 0 && ny < rows && nx >= 0 && nx < cols) markHex(ny, nx, "rgba(3,244,3,1.0)");
                 }
             }
         }
@@ -295,7 +399,7 @@ function makeTable(msg, y, effect, tableId) {
     odiv.appendChild(hdiv);
 
 
-    document.getElementById(tableId).appendChild(table);
+    document.getElementById(tableId).appendChild(boardContainer);
     document.getElementById("game_info").appendChild(odiv);
 }
 

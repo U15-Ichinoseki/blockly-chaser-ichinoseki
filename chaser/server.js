@@ -1,5 +1,3 @@
-
-
 const logger = require('../bin/logger.js');
 
 //socket.io
@@ -344,74 +342,43 @@ function game_result_check(room, chara, effect_t = "r", effect_d = false, winer 
                     }
                 }
                 else {
-                    var c_t, c_b, c_r, c_l, h_t, h_b, h_r, h_l;
-
-                    if (rcx - 1 < 0) {
-                        c_l = 1;
-                        c_r = server_store[room].map_data[rcy][rcx + 1];
-                    }
-                    else if (rcx + 1 > server_store[room].map_size_x - 1) {
-                        c_l = server_store[room].map_data[rcy][rcx - 1];
-                        c_r = 1;
-                    }
-                    else {
-                        c_l = server_store[room].map_data[rcy][rcx - 1];
-                        c_r = server_store[room].map_data[rcy][rcx + 1];
-                    }
-
-                    if (rcy - 1 < 0) {
-                        c_t = 1;
-                        c_b = server_store[room].map_data[rcy + 1][rcx];
-                    }
-                    else if (rcy + 1 > server_store[room].map_size_y - 1) {
-                        c_t = server_store[room].map_data[rcy - 1][rcx];
-                        c_b = 1;
-                    }
-                    else {
-                        c_t = server_store[room].map_data[rcy - 1][rcx];
-                        c_b = server_store[room].map_data[rcy + 1][rcx];
+                    // 六方向（hex）で閉じ込め判定
+                    const neighDirs = neighbors();
+                    
+                    // cool の周囲6方向がすべてブロックか
+                    let coolBlockedAll = true;
+                    for (const dname of neighDirs) {
+                        const d = hexDirectionDelta(dname, rcx);
+                        const nx = rcx + d.dx;
+                        const ny = rcy + d.dy;
+                        if (! (nx < 0 || nx >= server_store[room].map_size_x || ny < 0 || ny >= server_store[room].map_size_y)
+                            && (server_store[room].map_data[ny][nx] != 1) ) {
+                                coolBlockedAll = false;
+                                break;
+                        }
                     }
 
-
-                    if (rhx - 1 < 0) {
-                        h_l = 1;
-                        h_r = server_store[room].map_data[rhy][rhx + 1];
-                    }
-                    else if (rhx + 1 > server_store[room].map_size_x - 1) {
-                        h_l = server_store[room].map_data[rhy][rhx - 1];
-                        h_r = 1;
-                    }
-                    else {
-                        h_l = server_store[room].map_data[rhy][rhx - 1];
-                        h_r = server_store[room].map_data[rhy][rhx + 1];
-                    }
-
-                    if (rhy - 1 < 0) {
-                        h_t = 1;
-                        h_b = server_store[room].map_data[rhy + 1][rhx];
-                    }
-                    else if (rhy + 1 > server_store[room].map_size_y - 1) {
-                        h_t = server_store[room].map_data[rhy - 1][rhx];
-                        h_b = 1;
-                    }
-                    else {
-                        h_t = server_store[room].map_data[rhy - 1][rhx];
-                        h_b = server_store[room].map_data[rhy + 1][rhx];
+                    // hot の周囲6方向がすべてブロックか
+                    let hotBlockedAll = true;
+                    for (const dname of neighDirs) {
+                        const d = hexDirectionDelta(dname, rhx);
+                        const nx = rhx + d.dx;
+                        const ny = rhy + d.dy;
+                        if ( !(nx < 0 || nx >= server_store[room].map_size_x || ny < 0 || ny >= server_store[room].map_size_y) 
+                            && (server_store[room].map_data[ny][nx] != 1) ) {
+                                hotBlockedAll = false;
+                                break;
+                        }
                     }
 
-
-                    if (c_t == 1 && c_b == 1 && c_r == 1 && c_l == 1) {
+                    if (coolBlockedAll && hotBlockedAll) {
+                        winer = "draw";
+                        winer_info = "ブロック閉じ込めにより";
+                    } else if (coolBlockedAll) {
                         winer = "hot";
                         winer_info = "ブロック閉じ込めにより";
-                    }
-
-                    if (h_t == 1 && h_b == 1 && h_r == 1 && h_l == 1) {
+                    } else if (hotBlockedAll) {
                         winer = "cool";
-                        winer_info = "ブロック閉じ込めにより";
-                    }
-
-                    if (c_t == 1 && c_b == 1 && c_r == 1 && c_l == 1 && h_t == 1 && h_b == 1 && h_r == 1 && h_l == 1) {
-                        winer = "draw";
                         winer_info = "ブロック閉じ込めにより";
                     }
                 }
@@ -482,116 +449,35 @@ function game_server_reset(room) {
 
 //player action
 function get_ready(room, chara, id = false) {
-    if(!server_store[room])
-    {
+    if(!server_store[room]) {
         console.error(`Error in get_ready:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
     if (server_store[room][chara].turn && server_store[room][chara].getready) {
-        var my_map_data = [];
-        var tmp_map_data = Array.from(server_store[room].map_data);
         var now_x = server_store[room][chara].x;
         var now_y = server_store[room][chara].y;
-        var load_map_size_x = server_store[room].map_size_x;
-        var load_map_size_y = server_store[room].map_size_y;
 
+        const surroundData = getSurroundData(room, chara, now_x, now_y);
 
-        for (var y of [-1, 0, 1]) {
-            if (0 > (now_y + y) || (load_map_size_y - 1) < (now_y + y)) {
-                for (var x of [-1, 0, 1]) {
-                    my_map_data.push(2);
-                }
-            }
-            else {
-                for (var x of [-1, 0, 1]) {
-                    if (0 > (now_x + x) || (load_map_size_x - 1) < (now_x + x)) {
-                        my_map_data.push(2);
-                    }
-                    else {
-                        if (tmp_map_data[now_y][now_x] == 3) {
-                            if (tmp_map_data[now_y + y][now_x + x] == 3) {
-                                my_map_data.push(0);
-                            }
-                            else if (tmp_map_data[now_y + y][now_x + x] == 4) {
-                                my_map_data.push(1);
-                            }
-                            else {
-                                if (tmp_map_data[now_y + y][now_x + x] == 0) {
-                                    my_map_data.push(tmp_map_data[now_y + y][now_x + x]);
-                                }
-                                else if (tmp_map_data[now_y + y][now_x + x] == 1) {
-                                    my_map_data.push(2);
-                                }
-                                else {
-                                    my_map_data.push(3);
-                                }
-                            }
-                        }
-                        else if (tmp_map_data[now_y][now_x] == 4) {
-                            if (tmp_map_data[now_y + y][now_x + x] == 3) {
-                                my_map_data.push(1);
-                            }
-                            else if (tmp_map_data[now_y + y][now_x + x] == 4) {
-                                my_map_data.push(0);
-                            }
-                            else {
-                                if (tmp_map_data[now_y + y][now_x + x] == 0) {
-                                    my_map_data.push(tmp_map_data[now_y + y][now_x + x]);
-                                }
-                                else if (tmp_map_data[now_y + y][now_x + x] == 1) {
-                                    my_map_data.push(2);
-                                }
-                                else {
-                                    my_map_data.push(3);
-                                }
-                            }
-                        }
-                        else {
-                            if (tmp_map_data[now_y + y][now_x + x] == 43 || tmp_map_data[now_y + y][now_x + x] == 34) {
-                                my_map_data.push(1);
-                            }
-                            else {
-                                if (tmp_map_data[now_y + y][now_x + x] == 0) {
-                                    my_map_data.push(tmp_map_data[now_y + y][now_x + x]);
-                                }
-                                else if (tmp_map_data[now_y + y][now_x + x] == 1) {
-                                    my_map_data.push(2);
-                                }
-                                else {
-                                    my_map_data.push(3);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         if (id) {
-            io.to(id).emit('get_ready_rec', {
-                "rec_data": my_map_data
-            });
+            io.to(id).emit('get_ready_rec', { "rec_data": surroundData });
             server_store[room][chara].getready = false;
-        }
-        else {
+        } else {
             server_store[room][chara].getready = false;
-            return my_map_data;
+            return surroundData;
         }
-    }
-    else {
+    } else {
         if (id) {
-            io.to(id).emit('get_ready_rec', {
-                "rec_data": server_store[room][chara].true
-            });
-        }
-        else {
+            io.to(id).emit('get_ready_rec', { "rec_data": server_store[room][chara].true });
+        } else {
             return false;
         }
     }
 }
 
+// move_player — 既存の動作を維持し，終了後に中心(現在位置)を基に7要素を emit/return
 function move_player(room, chara, msg, id = false) {
-    if(!server_store[room])
-    {
+    if(!server_store[room]) {
         console.error(`Error in move_player:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
@@ -605,8 +491,6 @@ function move_player(room, chara, msg, id = false) {
         var chara_num = { "cool": 3, "hot": 4 };
         var chara_num_diff = { "cool": 4, "hot": 3 };
 
-        var move_map_data = [];
-
         if (server_store[room].map_data[y][x] == 34) {
             server_store[room].map_data[y][x] = chara_num_diff[chara];
         }
@@ -614,33 +498,14 @@ function move_player(room, chara, msg, id = false) {
             server_store[room].map_data[y][x] = 0;
         }
 
-        if (msg === "top") {
-            if (0 <= y - 1) {
-                server_store[room][chara].y = y - 1;
-                y = y - 1;
-                xy_check = true;
-            }
-        }
-        else if (msg === "bottom") {
-            if (server_store[room].map_size_y > y + 1) {
-                server_store[room][chara].y = y + 1;
-                y = y + 1;
-                xy_check = true;
-            }
-        }
-        else if (msg === "left") {
-            if (0 <= x - 1) {
-                server_store[room][chara].x = x - 1;
-                x = x - 1;
-                xy_check = true;
-            }
-        }
-        else {
-            if (server_store[room].map_size_x > x + 1) {
-                server_store[room][chara].x = x + 1;
-                x = x + 1;
-                xy_check = true;
-            }
+        var d = hexDirectionDelta(msg, x);
+        var nx = x + d.dx;
+        var ny = y + d.dy;
+        if (0 <= nx && nx < server_store[room].map_size_x && 0 <= ny && ny < server_store[room].map_size_y) {
+            server_store[room][chara].x = nx;
+            server_store[room][chara].y = ny;
+            x = nx; y = ny;
+            xy_check = true;
         }
 
         if (xy_check) {
@@ -651,233 +516,110 @@ function move_player(room, chara, msg, id = false) {
                 server_store[room].map_data[y][x] = chara_num[chara];
                 server_store[room][chara].score += 1;
 
-                if (msg === "top") {
-                    server_store[room].map_data[y + 1][x] = 1;
+                var prev = { x: server_store[room][chara].x - d.dx, y: server_store[room][chara].y - d.dy };
+                if (0 <= prev.x && prev.x < server_store[room].map_size_x && 0 <= prev.y && prev.y < server_store[room].map_size_y) {
+                    server_store[room].map_data[prev.y][prev.x] = 1;
                 }
-                else if (msg === "bottom") {
-                    server_store[room].map_data[y - 1][x] = 1;
-                }
-                else if (msg === "left") {
-                    server_store[room].map_data[y][x + 1] = 1;
-                }
-                else {
-                    server_store[room].map_data[y][x - 1] = 1;
-                }
-
             }
             else if (server_store[room].map_data[y][x] == chara_num_diff[chara]) {
                 server_store[room].map_data[y][x] = 34;
             }
 
-            var tmp_map_data = Array.from(server_store[room].map_data);
-            var x_range = [-1, 0, 1];
-            var y_range = [-1, 0, 1];
-            var load_map_size_x = server_store[room].map_size_x;
-            var load_map_size_y = server_store[room].map_size_y;
-
-            for (var _y of y_range) {
-                for (var _x of x_range) {
-                    if (0 > (_x + x) || (load_map_size_x - 1) < (_x + x) || 0 > (_y + y) || (load_map_size_y - 1) < (_y + y)) {
-                        move_map_data.push(2);
-                    }
-                    else {
-                        if (tmp_map_data[_y + y][_x + x] == chara_num_diff[chara] || tmp_map_data[_y + y][_x + x] == 34) {
-                            move_map_data.push(1);
-                        }
-                        else {
-                            if (tmp_map_data[_y + y][_x + x] == 0 || tmp_map_data[_y + y][_x + x] == chara_num[chara]) {
-                                move_map_data.push(0);
-                            }
-                            else if (tmp_map_data[_y + y][_x + x] == 1) {
-                                move_map_data.push(2);
-                            }
-                            else {
-                                move_map_data.push(3);
-                            }
-                        }
-                    }
-                }
-            }
+            const surroundData = getSurroundData(room, chara, server_store[room][chara].x, server_store[room][chara].y);
             if (id) {
-                io.to(id).emit('move_rec', {
-                    "rec_data": move_map_data
-                });
+                io.to(id).emit('move_rec', { "rec_data": surroundData });
             }
         }
 
         game_result_check(room, chara);
 
         if (!id) {
-            return move_map_data;
+            return getSurroundData(room, chara, server_store[room][chara].x, server_store[room][chara].y);
         }
     }
 }
 
+// look: 指定方向に2歩進んだセルを中心に 7要素を返す
 function look(room, chara, msg, id = false) {
-    if(!server_store[room]){
+    if(!server_store[room]) {
         console.error(`Error in look:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
         server_store[room][chara].turn = false;
         server_store[room][chara].getready = true;
-        var x_range = [];
-        var y_range = [];
 
-        var tmp_map_data = Array.from(server_store[room].map_data);
         var now_x = server_store[room][chara].x;
         var now_y = server_store[room][chara].y;
-        var load_map_size_x = server_store[room].map_size_x;
-        var load_map_size_y = server_store[room].map_size_y;
 
-        var chara_num_diff = { "cool": 4, "hot": 3 };
+        // center: 指定方向に2ステップ（ステップ毎に行パリティを更新）
+        var cx = now_x, cy = now_y;
+        for (let s=0; s<2; s++) {
+            const d = hexDirectionDelta(msg, cx);
+            cx += d.dx; cy += d.dy;
+        }
 
-        if (msg == "top") {
-            x_range = [-1, 0, 1];
-            y_range = [-3, -2, -1];
-        } else if (msg == "bottom") {
-            x_range = [-1, 0, 1];
-            y_range = [1, 2, 3];
-        } else if (msg == "left") {
-            x_range = [-3, -2, -1];
-            y_range = [-1, 0, 1];
+        const surroundData = getSurroundData(room, chara, cx, cy);
+
+        if (id) {
+            io.to(id).emit('look_rec', { "rec_data": surroundData });
+            game_result_check(room, chara, "l", msg);
         } else {
-            x_range = [1, 2, 3];
-            y_range = [-1, 0, 1];
-        }
-        var look_map_data = [];
-
-        for (var y of y_range) {
-            for (var x of x_range) {
-                if (0 > (now_x + x) || (load_map_size_x - 1) < (now_x + x) || 0 > (now_y + y) || (load_map_size_y - 1) < (now_y + y)) {
-                    look_map_data.push(2);
-                }
-                else {
-                    if (tmp_map_data[now_y + y][now_x + x] == chara_num_diff[chara] || tmp_map_data[now_y + y][now_x + x] == 34) {
-                        look_map_data.push(1);
-                    }
-                    else {
-                        if (tmp_map_data[now_y + y][now_x + x] == 0) {
-                            look_map_data.push(tmp_map_data[now_y + y][now_x + x]);
-                        }
-                        else if (tmp_map_data[now_y + y][now_x + x] == 1) {
-                            look_map_data.push(2);
-                        }
-                        else {
-                            look_map_data.push(3);
-                        }
-                    }
-                }
-            }
-        }
-        if (id) {
-            io.to(id).emit('look_rec', {
-                "rec_data": look_map_data
-            });
             game_result_check(room, chara, "l", msg);
+            return surroundData;
         }
-        else {
-            game_result_check(room, chara, "l", msg);
-            return look_map_data;
-        }
-    }
-    else {
-        if (id) {
-            io.to(id).emit('look_rec', {
-                "rec_data": server_store[room][chara].true
-            });
-        }
-        else {
-            return false;
-        }
+    } else {
+        if (id) io.to(id).emit('look_rec', { "rec_data": server_store[room][chara].true });
+        else return false;
     }
 }
 
+// search: 自分の隣（1歩目）から指定方向に直進で7マス分の値を返す
 function search(room, chara, msg, id = false) {
-    if(!server_store[room])
-    {
+    if(!server_store[room]) {
         console.error(`Error in search:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
     if (server_store[room][chara].turn && server_store[room][chara].getready == false) {
         server_store[room][chara].turn = false;
         server_store[room][chara].getready = true;
-        var x_range = [];
-        var y_range = [];
 
-        var tmp_map_data = Array.from(server_store[room].map_data);
-        var now_x = server_store[room][chara].x;
-        var now_y = server_store[room][chara].y;
-        var load_map_size_x = server_store[room].map_size_x;
-        var load_map_size_y = server_store[room].map_size_y;
+        var tmp = server_store[room].map_data;
+        var x = server_store[room][chara].x;
+        var y = server_store[room][chara].y;
+        var maxX = server_store[room].map_size_x;
+        var maxY = server_store[room].map_size_y;
 
-        var chara_num_diff = { "cool": 4, "hot": 3 };
+        var search_map = [];
 
-        if (msg == "top") {
-            x_range = [0];
-            y_range = [-1, -2, -3, -4, -5, -6, -7, -8, -9];
-        } else if (msg == "bottom") {
-            x_range = [0];
-            y_range = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        } else if (msg == "left") {
-            x_range = [-1, -2, -3, -4, -5, -6, -7, -8, -9];
-            y_range = [0];
-        } else {
-            x_range = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-            y_range = [0];
-        }
-
-        var search_map_data = [];
-
-        for (var y of y_range) {
-            for (var x of x_range) {
-                if (0 > (now_x + x) || (load_map_size_x - 1) < (now_x + x) || 0 > (now_y + y) || (load_map_size_y - 1) < (now_y + y)) {
-                    search_map_data.push(2);
-                }
-                else {
-                    if (tmp_map_data[now_y + y][now_x + x] == chara_num_diff[chara] || tmp_map_data[now_y + y][now_x + x] == 34) {
-                        search_map_data.push(1);
-                    }
-                    else {
-                        if (tmp_map_data[now_y + y][now_x + x] == 0) {
-                            search_map_data.push(tmp_map_data[now_y + y][now_x + x]);
-                        }
-                        else if (tmp_map_data[now_y + y][now_x + x] == 1) {
-                            search_map_data.push(2);
-                        }
-                        else {
-                            search_map_data.push(3);
-                        }
-                    }
-                }
+        // 1..7 ステップ直進（最初のステップは隣のセル）
+        for (let step=1; step<=7; step++) {
+            const d = hexDirectionDelta(msg, x);
+            x += d.dx;
+            y += d.dy;
+            if (x < 0 || x >= maxX || y < 0 || y >= maxY) {
+                search_map.push(2);
+            } else {
+                search_map.push(mapCell(tmp[y][x], chara));
             }
         }
+
         if (id) {
-            io.to(id).emit('search_rec', {
-                "rec_data": search_map_data
-            });
+            io.to(id).emit('search_rec', { "rec_data": search_map });
             game_result_check(room, chara, "s", msg);
-        }
-        else {
+        } else {
             game_result_check(room, chara, "s", msg);
-            return search_map_data;
+            return search_map;
         }
-    }
-    else {
-        if (id) {
-            io.to(id).emit('search_rec', {
-                "rec_data": server_store[room][chara].true
-            });
-        }
-        else {
-            return false;
-        }
+    } else {
+        if (id) io.to(id).emit('search_rec', { "rec_data": server_store[room][chara].true });
+        else return false;
     }
 }
 
+// put_wall — 実行後に自分位置中心の7要素を返す
 function put_wall(room, chara, msg, id = false) {
-    if(!server_store[room])
-    {
+    if(!server_store[room]) {
         console.error(`Error in put_wall:: server_store is undefined for room "${room ?? 'unknown'}"`);
         return;
     }
@@ -889,29 +631,11 @@ function put_wall(room, chara, msg, id = false) {
 
         var put_check = false;
 
-        if (msg === "top") {
-            if (0 <= y - 1) {
-                y = y - 1;
-                put_check = true;
-            }
-        }
-        else if (msg === "bottom") {
-            if (server_store[room].map_size_y > y + 1) {
-                y = y + 1;
-                put_check = true;
-            }
-        }
-        else if (msg === "left") {
-            if (0 <= x - 1) {
-                x = x - 1;
-                put_check = true;
-            }
-        }
-        else {
-            if (server_store[room].map_size_x > x + 1) {
-                x = x + 1;
-                put_check = true;
-            }
+        var d = hexDirectionDelta(msg, x);
+        var tx = x + d.dx;
+        var ty = y + d.dy;
+        if (0 <= tx && tx < server_store[room].map_size_x && 0 <= ty && ty < server_store[room].map_size_y) {
+            put_check = true;
         }
 
         var chara_num = { "cool": 3, "hot": 4 };
@@ -919,50 +643,19 @@ function put_wall(room, chara, msg, id = false) {
         var player_put_chara = false;
 
         if (put_check) {
-            if (server_store[room].map_data[y][x] == chara_num_diff[chara]) {
+            if (server_store[room].map_data[ty][tx] == chara_num_diff[chara]) {
                 player_put_chara = true;
             }
-            server_store[room].map_data[y][x] = 1;
+            server_store[room].map_data[ty][tx] = 1;
         }
 
-        var tmp_map_data = Array.from(server_store[room].map_data);
-        var put_map_data = [];
-        var now_x = server_store[room][chara].x;
-        var now_y = server_store[room][chara].y;
-        var x_range = [-1, 0, 1];
-        var y_range = [-1, 0, 1];
-        var load_map_size_x = server_store[room].map_size_x;
-        var load_map_size_y = server_store[room].map_size_y;
-
-
-        for (var _y of y_range) {
-            for (var _x of x_range) {
-                if (0 > (_x + now_x) || (load_map_size_x - 1) < (_x + now_x) || 0 > (_y + now_y) || (load_map_size_y - 1) < (_y + now_y)) {
-                    put_map_data.push(2);
-                }
-                else {
-                    if (tmp_map_data[_y + now_y][_x + now_x] == chara_num_diff[chara] || tmp_map_data[_y + now_y][_x + now_x] == 34) {
-                        put_map_data.push(1);
-                    }
-                    else {
-                        if (tmp_map_data[_y + now_y][_x + now_x] == 0 || tmp_map_data[_y + now_y][_x + now_x] == chara_num[chara]) {
-                            put_map_data.push(0);
-                        }
-                        else if (tmp_map_data[_y + now_y][_x + now_x] == 1) {
-                            put_map_data.push(2);
-                        }
-                        else {
-                            put_map_data.push(3);
-                        }
-                    }
-                }
-            }
-        }
+        // ここで中心 = 自分位置 を基準に7要素を生成して送信/返却
+        const centerX = server_store[room][chara].x;
+        const centerY = server_store[room][chara].y;
+        const surroundData = getSurroundData(room, chara, centerX, centerY);
 
         if (id) {
-            io.to(id).emit('put_rec', {
-                "rec_data": put_map_data
-            });
+            io.to(id).emit('put_rec', { "rec_data": surroundData });
             if (player_put_chara) {
                 game_result_check(room, chara, "r", false, false, "putより");
             }
@@ -977,7 +670,7 @@ function put_wall(room, chara, msg, id = false) {
             else {
                 game_result_check(room, chara);
             }
-            return put_map_data;
+            return surroundData;
         }
     }
 }
@@ -1137,7 +830,7 @@ io.on('connection', function (socket) {
                 "cool_name": server_store[msg.room_id].cool.name,
                 "hot_name": server_store[msg.room_id].hot.name
             });
-
+            
 
             if (server_store[msg.room_id].hot.status) {
                 var game_start_timer = function (room) {
@@ -1594,58 +1287,36 @@ exports.io = io;
 //cpu
 function cpu(room, level, chara) {
 
-    var cpu_map_date = get_ready(room, chara);
+    var cpu_map_date = get_ready(room, chara); // now returns 7-element: [center, neighbour(1)..neighbour(6)]
     const delay_time = 100;
 
     if (cpu_map_date) {
-        //levelの変数の型が文字列の場合は数値に変換
         if (typeof level == "string") {
-            if (level[0] == "0") {
-                level = 0;
-            }
-            else if (level[0] == "1") {
-                level = 1;
-            }
-            else if (level[0] == "2") {
-                level = 2;
-            }
-            else {
-                level = 0;
-            }
+            if (level[0] == "0") level = 0;
+            else if (level[0] == "1") level = 1;
+            else if (level[0] == "2") level = 2;
+            else level = 0;
         }
-        //ずっと上を確認する
+
         if (level == 0) {
-            setTimeout(look, delay_time, room, chara, "top");
+            // 既存互換: top -> look upward の意味は曖昧なので keep original behavior by mapping to a direction
+            setTimeout(look, delay_time, room, chara, "topright");
         }
-
-        //壁じゃない方向にランダムに移動する
         else if (level == 1) {
+            // 壁でない隣接方向を全て列挙してランダムに移動
             var random_list = [];
-            if (cpu_map_date[1] != 2) {
-                random_list.push('top');
+            // cpu_map_date indices: 0=top, 1=topright,2=bottomright,3=bottom, 4=bottomleft,5=topleft,6=center
+            const neighDirs = neighbors();
+            for (let i=0;i<6;i++) {
+                if (cpu_map_date[i] != 2) random_list.push(neighDirs[i]);
             }
-            if (cpu_map_date[3] != 2) {
-                random_list.push('left');
-            }
-            if (cpu_map_date[5] != 2) {
-                random_list.push('right');
-            }
-            if (cpu_map_date[7] != 2) {
-                random_list.push('bottom');
-            }
-
-            if (random_list) {
+            if (random_list.length) {
                 var random = Math.floor(Math.random() * random_list.length);
                 setTimeout(move_player, delay_time, room, chara, random_list[random]);
             }
-
         }
-
-        //別関数に移動，関数内でCPUの行動を決定
         else if (level == 2) {
-            next_action = cpu_action(room, cpu_map_date);//CPU関数による行動決定
-            //console.log(next_action);
-
+            next_action = cpu_action(room, cpu_map_date);
             if (next_action[0] == "attack") {
                 setTimeout(put_wall, delay_time, room, chara, next_action[1]);
             }
@@ -1655,7 +1326,6 @@ function cpu(room, level, chara) {
             else {
                 setTimeout(look, delay_time, room, chara, next_action[1]);
             }
-
         }
         else {
             setTimeout(look, delay_time, room, chara, "top");
@@ -1663,448 +1333,169 @@ function cpu(room, level, chara) {
     }
 }
 
-//与えられた周辺情報を元に、CPUの行動を決定する
+// cpu_action — get_ready の 7要素フォーマットに合わせる
 function cpu_action(room, map_data) {
-    //map_dataの中身は自分を中心とした周囲9マスの情報
-    //map_data[4]が自分の情報, map_data[0]が左上の情報, map_data[8]が右下の情報
-
-    //server_store[room]で部屋のcpu_levelを取得可能
-    //=0:何もない， =2:壁，=3:アイテム，=1or2:自分または敵
+    // map_data: [top, topright, bottomright, bottom, bottomleft, topleft, center]
     item_num = 3;
     wall_num = 2;
-
-    //roomのaction_historyを取得
-    //もしkeyとしてroomが存在する場合はその値を，存在しない場合は初期値を格納
+    // 隣接に敵がいるか (indices 0..5)
+    var enemy_present = false;
+    for (let i=0;i<6;i++) if (map_data[i] == 1) enemy_present = true;
+    var enemy_num = enemy_present ? 1 : 1; // 保守的に 1 を使用
 
     if (room in room_info && room_info[room]?.cpu?.action_history != undefined) {
-
-        action_history = room_info[room].cpu.action_history;//過去の行動を取得
-
+        action_history = room_info[room].cpu.action_history;
     } else {
         action_history = ["mode_direction", "mode_direction", "mode_direction", "mode_direction", "mode_direction"];
         cpu_info = {};
         cpu_level = server_store[room].cpu.level;
-
-        if (typeof cpu_level == "string") {
-            //後ろのパラメータを取得　ex/"2?item=10&holdAttack=3"
-            //まずは?移行があるかどうかを確認
-            if (cpu_level.indexOf("?") != -1) {
-                //?以降を取得
-                paramater = cpu_level.split("?")[1];
-                //&で分割
-                paramater_list = paramater.split("&");
-
-                for (i = 0; i < paramater_list.length; i++) {
-                    //=で分割
-                    paramater_key = paramater_list[i].split("=")[0];
-                    paramater_value = parseInt(paramater_list[i].split("=")[1], 10);
-                    cpu_info[paramater_key] = paramater_value;
-                }
+        if (typeof cpu_level == "string" && cpu_level.indexOf("?") != -1) {
+            paramater = cpu_level.split("?")[1];
+            paramater_list = paramater.split("&");
+            for (i = 0; i < paramater_list.length; i++) {
+                paramater_key = paramater_list[i].split("=")[0];
+                paramater_value = parseInt(paramater_list[i].split("=")[1], 10);
+                cpu_info[paramater_key] = paramater_value;
             }
         }
         room_info[room] = { "cpu": cpu_info };
         room_info[room].cpu.now_item = 0;
         room_info[room].turn = 0;
-        room_info[room].cpu.wall3 = 0;//前ターンに3面壁処理が行われたかどうか
+        room_info[room].cpu.wall3 = 0;
     }
 
-    //turnのカウント
     room_info[room].turn += 1;
-    //アイテム獲得可能状態かどうか
     can_get_item = false;
-    if (Math.floor(room_info[room].turn / room_info[room].cpu.item) + 1 > room_info[room].cpu.now_item ||room_info[room].cpu.item == undefined) {
+    if (Math.floor(room_info[room].turn / room_info[room].cpu.item) + 1 > room_info[room].cpu.now_item || room_info[room].cpu.item == undefined) {
         can_get_item = true;
     }
 
-    //historyが6以上の場合は最初の行動を削除
-    if (action_history.length >= 6) {
-        action_history.shift();
-    }
+    if (action_history.length >= 6) action_history.shift();
 
-    //相手の数字を判別
-    if (map_data[4] == 1) {
-        enemy_num = 2;
-    } else {
-        enemy_num = 1;
-    }
-
-    //基本行動1：敵が上下左右にいる場合は攻撃
-    if (map_data[1] == enemy_num || map_data[3] == enemy_num || map_data[5] == enemy_num || map_data[7] == enemy_num) {
-        //アタック保留状態でない場合、攻撃
-        if (cpu_info.holdAttack == undefined) {
-            if (map_data[1] == enemy_num) {
-                action_history.push("attack_top");
-                return ["attack", "top"];
-            } else if (map_data[3] == enemy_num) {
-                action_history.push("attack_left");
-                return ["attack", "left"];
-            } else if (map_data[5] == enemy_num) {
-                action_history.push("attack_right");
-                return ["attack", "right"];
-            } else if (map_data[7] == enemy_num) {
-                action_history.push("attack_bottom");
-                return ["attack", "bottom"];
-            }
-        }
-        else {
-            //アタック保留状態の場合は移動可能な方向に敵から逃げる形で移動
-            cpu_info.holdAttack -= 1;
-            if (cpu_info.holdAttack == 0) {
-                cpu_info.holdAttack = undefined;
-            }
-            can_move_list = [];
-            if (map_data[1] == enemy_num) {
-                if (map_data[3] != wall_num) {
-                    can_move_list.push("left");
-                }
-                if (map_data[5] != wall_num) {
-                    can_move_list.push("right");
-                }
-                if (map_data[7] != wall_num) {
-                    can_move_list.push("bottom");
-                }
-
-                //can_move_listの中からランダムで選択
-                var random = Math.floor(Math.random() * can_move_list.length);
-                action_history.push("move_" + can_move_list[random]);
-                return ["move", can_move_list[random]];
-            }
-            else if (map_data[3] == enemy_num) {
-                if (map_data[1] != wall_num) {
-                    can_move_list.push("top");
-                }
-                if (map_data[5] != wall_num) {
-                    can_move_list.push("right");
-                }
-                if (map_data[7] != wall_num) {
-                    can_move_list.push("bottom");
-                }
-
-                //can_move_listの中からランダムで選択
-                var random = Math.floor(Math.random() * can_move_list.length);
-                action_history.push("move_" + can_move_list[random]);
-                return ["move", can_move_list[random]];
-            }
-            else if (map_data[5] == enemy_num) {
-                if (map_data[1] != wall_num) {
-                    can_move_list.push("top");
-                }
-                if (map_data[3] != wall_num) {
-                    can_move_list.push("left");
-                }
-                if (map_data[7] != wall_num) {
-                    can_move_list.push("bottom");
-                }
-
-                //can_move_listの中からランダムで選択
-                var random = Math.floor(Math.random() * can_move_list.length);
-                action_history.push("move_" + can_move_list[random]);
-                return ["move", can_move_list[random]];
-            }
-            else if (map_data[7] == enemy_num) {
-                if (map_data[1] != wall_num) {
-                    can_move_list.push("top");
-                }
-                if (map_data[3] != wall_num) {
-                    can_move_list.push("left");
-                }
-                if (map_data[5] != wall_num) {
-                    can_move_list.push("right");
-                }
-
-                //can_move_listの中からランダムで選択
-                var random = Math.floor(Math.random() * can_move_list.length);
-                action_history.push("move_" + can_move_list[random]);
-                //room_infoに情報を格納
-                if (room in room_info) {
-                    room_info[room].cpu.action_history = action_history;
-                }
-                else {
-                    room_info[room] = { "cpu": { "action_history": action_history } };
-                }
-                return ["move", can_move_list[random]];
+    var directions = neighbors();
+    // 隣接に敵がいる場合は攻撃
+    for (let i = 0; i < 6; i++) {
+        if (map_data[i] == 1) {
+            if (cpu_info.holdAttack == undefined) {
+                action_history.push("attack_" + directions[i]);
+                if (room in room_info) room_info[room].cpu.action_history = action_history;
+                return ["attack", directions[i]];
             }
         }
     }
 
-
-    //基本行動2：周辺情報から行動を決定
-    //移動できる割合を格納する辞書
-    can_move_dic = { "top": 100, "left": 100, "bottom": 100, "right": 100 };
-
-
-    //敵が斜めにいる場合は索敵で1ターン稼ぐ
-    if (map_data[0] == enemy_num || map_data[2] == enemy_num || map_data[6] == enemy_num || map_data[8] == enemy_num) {
-        //直前の行動が索敵でない場合は索敵
-        
-        if (action_history[action_history.length - 1].split("_")[0] != "search") {
-            action_history.push("search_randam");
-            //room_infoに情報を格納
-            if (room in room_info) {
-                room_info[room].cpu.action_history = action_history;
-            }
-            else {
-                room_info[room] = { "cpu": { "action_history": action_history } };
-            }
-
-            return ["search", "bottom"];
-        }
-        //直近の行動が索敵の場合はcan_move_listの更新
-        //敵がいない方向に移動する
-        else {
-            if (map_data[0] == enemy_num) {
-                can_move_dic["top"] -= 200;
-                can_move_dic["left"] -= 200;
-            }
-            if (map_data[2] == enemy_num) {
-                can_move_dic["top"] -= 200;
-                can_move_dic["right"] -= 200;
-
-            }
-            if (map_data[6] == enemy_num) {
-                can_move_dic["bottom"] -= 200;
-                can_move_dic["left"] -= 200;
-            }
-            if (map_data[8] == enemy_num) {
-                can_move_dic["bottom"] -= 200;
-                can_move_dic["right"] -= 200;
-            }
-        }
+    if (cpu_info.holdAttack != undefined) {
+        cpu_info.holdAttack -= 1;
+        if (cpu_info.holdAttack == 0) cpu_info.holdAttack = undefined;
     }
 
-    //斜めにアイテムがある場合は優先度を上げる
-    if (cpu_info.naname != 0) {
-        if (map_data[0] == item_num) {
-            can_move_dic["top"] += 50;
-            can_move_dic["left"] += 50;
-        }
-        if (map_data[2] == item_num) {
-            can_move_dic["top"] += 50;
-            can_move_dic["right"] += 50;
-        }
-        if (map_data[6] == item_num) {
-            can_move_dic["bottom"] += 50;
-            can_move_dic["left"] += 50;
-        }
-        if (map_data[8] == item_num) {
-            can_move_dic["bottom"] += 50;
-            can_move_dic["right"] += 50;
-        }
-        
+    // 周囲方向の評価（map_data indices 1..6）
+    can_move_dic = {
+        "top":         100,
+        "topright":    100,
+        "bottomright": 100,
+        "bottom":      100,
+        "bottomleft":  100,
+        "topleft":     100
+    };
+
+    for (let i = 0; i < 6; i++) {
+        if (map_data[i] == item_num && can_get_item) can_move_dic[neighbor(i)] += 50;
     }
 
-    //アイテムがあり，進行可能な場合は優先
-    //ただし，アイテムの前後に敵がいるor壁がある場合は除外
-    if (map_data[1] == item_num) {
-        //map_data[0]と[3] に敵がいない　かつ　map_data[0]とmap_data[3]の両方に壁がない(片方に壁がある場合はOK)
-        if (map_data[0] != enemy_num && map_data[2] != enemy_num) {
-            if (!(map_data[0] == wall_num && map_data[2] == wall_num)) {
-                if (can_get_item) {
-                    can_move_dic["top"] += 50;
-                } else {
-                    can_move_dic["top"] -= 50;
-                }
-            }
-        }
-    }
-    if (map_data[3] == item_num) {
-        if (map_data[0] != enemy_num && map_data[6] != enemy_num) {
-            if (!(map_data[0] == wall_num && map_data[6] == wall_num)) {
-                if (can_get_item) {
-                    can_move_dic["left"] += 50;
-                } else {
-                    can_move_dic["left"] -= 50;
-                }
-            }
-        }
-    }
-    if (map_data[5] == item_num) {
-        if (map_data[2] != enemy_num && map_data[8] != enemy_num) {
-            if (!(map_data[2] == wall_num && map_data[8] == wall_num)) {
-                if (can_get_item) {
-                    can_move_dic["right"] += 50;
-                }
-                else {
-                    can_move_dic["right"] -= 50;
-                }
-            }
-        }
-
-    }
-    if (map_data[7] == item_num) {
-        if (map_data[6] != enemy_num && map_data[8] != enemy_num) {
-            if (!(map_data[6] == wall_num && map_data[8] == wall_num)) {
-
-                if (can_get_item) {
-                    can_move_dic["bottom"] += 50;
-                }
-                else {
-                    can_move_dic["bottom"] -= 50;
-                }
-            }
-        }
+    for (let i = 0; i < 6; i++) {
+        if (map_data[i] == wall_num) can_move_dic[neighbor(i)] = 0;
     }
 
-    if (room_info[room].cpu.wall3 == 1) {
-        //3面壁処理が行われた場合は次のターンにリセット
-        room_info[room].cpu.wall3 = 0;
-        //1つ前の移動を参考に，その方向とは別の方向に移動する
-        before_action = action_history[action_history.length - 1];
-        before_action_name = before_action.split("_")[0];
-        before_action_direction = before_action.split("_")[1];
-        //console.log(before_action);
-        if (before_action_name == "move") {
-            if (before_action_direction == "top") {
-                can_move_dic["left"] += 50;
-                can_move_dic["right"] += 50;
-            }
-            else if (before_action_direction == "left") {
-                can_move_dic["top"] += 50;
-                can_move_dic["bottom"] += 50;
-            }
-            else if (before_action_direction == "right") {
-                can_move_dic["top"] += 50;
-                can_move_dic["bottom"] += 50;
-            }
-            else if (before_action_direction == "bottom") {
-                can_move_dic["left"] += 50;
-                can_move_dic["right"] += 50;
-            }
-        }
+    for (let i = 1; i < Math.min(5, action_history.length); i++) {
+        let before_action = action_history[action_history.length - i];
+        let before_dir = before_action.split("_")[1];
+        if (before_dir && can_move_dic[before_dir] > 0) can_move_dic[before_dir] += 20 / (i * i);
     }
 
-    //斜め含めて直線状に壁がある場合は外周の可能性が高いので優先度を下げる
-    if (map_data[0] == wall_num && map_data[1] == wall_num && map_data[2] == wall_num) {
-        //上側が全て壁の場合
-        can_move_dic["top"] -= 100;
-        //左右にも移動したくない
-        can_move_dic["left"] -= 50;
-        can_move_dic["right"] -= 50;
-        can_move_dic["bottom"] += 50;
-        room_info[room].cpu.wall3 = 1;
-    }
-    else if (map_data[0] == wall_num && map_data[3] == wall_num && map_data[6] == wall_num) {
-        //左側が全て壁の場合
-        can_move_dic["left"] -= 100;
-        //上下にも移動したくない
-        can_move_dic["top"] -= 50;
-        can_move_dic["bottom"] -= 50;
-        can_move_dic["right"] += 50;
-        room_info[room].cpu.wall3 = 1;
-    }
-    else if (map_data[2] == wall_num && map_data[5] == wall_num && map_data[8] == wall_num) {
-        //右側が全て壁の場合
-        can_move_dic["right"] -= 100;
-        //上下にも移動したくない
-        can_move_dic["top"] -= 50;
-        can_move_dic["bottom"] -= 50;
-        can_move_dic["left"] += 50;
-        room_info[room].cpu.wall3 = 1;
-    }
-    else if (map_data[6] == wall_num && map_data[7] == wall_num && map_data[8] == wall_num) {
-        //下側が全て壁の場合
-        can_move_dic["bottom"] -= 100;
-        //左右にも移動したくない
-        can_move_dic["left"] -= 50;
-        can_move_dic["right"] -= 50;
-        can_move_dic["top"] += 50;
-        room_info[room].cpu.wall3 = 1;
-    }
-    else {
-        //can_move_dicとaction_historyを元に移動方向を決定
-        //直前4回分の行動から評価を変化させる
-        for (i = 1; i < 5; i++) {
-            before_action = action_history[action_history.length - i];
-            before_action_name = before_action.split("_")[0];
-            before_action_direction = before_action.split("_")[1];
-            if (before_action_name == "move") {
-                can_move_dic[before_action_direction] += 20 / (i * i);
-            }
-            if (before_action_direction == "top") {
-                can_move_dic["bottom"] -= 20 / (i * i);
-            }
-            if (before_action_direction == "left") {
-                can_move_dic["right"] -= 20 / (i * i);
-            }
-            if (before_action_direction == "right") {
-                can_move_dic["left"] -= 20 / (i * i);
-            }
-            if (before_action_direction == "bottom") {
-                can_move_dic["top"] -= 20 / (i * i);
-            }
-        }
-    }
-    //周囲にブロックがある場合は移動方向を除外
-    if (map_data[1] == wall_num) {
-        if(can_move_dic["top"] > 0){
-        can_move_dic["top"] = 0;
-        }
-    }
-    if (map_data[3] == wall_num) {
-        if(can_move_dic["left"] > 0){
-        can_move_dic["left"] = 0;
-        }
-    }
-    if (map_data[5] == wall_num) {
-        if(can_move_dic["right"] > 0){
-        can_move_dic["right"] = 0;
-        }
-    }
-    if (map_data[7] == wall_num) {
-        if(can_move_dic["bottom"] > 0){
-        can_move_dic["bottom"] = 0;
-        }
-    }
-    //console.log("last:",can_move_dic);
-    //dicの評価値が最大のものを取得
     var max_key = Object.keys(can_move_dic).reduce((a, b) => can_move_dic[a] > can_move_dic[b] ? a : b);
-    //最大のものが複数ある場合はランダムで選択
-    var max_list = [];
-    for (key in can_move_dic) {
-        if (can_move_dic[key] == can_move_dic[max_key]) {
-            max_list.push(key);
-        }
-    }
-    var max_key = max_list[Math.floor(Math.random() * max_list.length)];
-    //評価値が30以上の場合はその行動を実施
+    var max_list = Object.keys(can_move_dic).filter(k => can_move_dic[k] == can_move_dic[max_key]);
+    max_key = max_list[Math.floor(Math.random() * max_list.length)];
+
     if (can_move_dic[max_key] >= 30) {
         action_history.push("move_" + max_key);
-        //room_infoに情報を格納
-        if (room in room_info) {
-            room_info[room].cpu.action_history = action_history;
-        }
-        else {
-            room_info[room] = { "cpu": { "action_history": action_history } };
-        }
+        if (room in room_info) room_info[room].cpu.action_history = action_history;
+        else room_info[room] = { "cpu": { "action_history": action_history } };
 
-        //移動が決定した先にアイテムがある場合はカウントを増やす
-        if (map_data[1] == item_num && max_key == "top") {
-            room_info[room].cpu.now_item += 1;
+        for (let i = 0; i < 6; i++) {
+            if (map_data[i] == item_num && directions[i] == max_key) {
+                room_info[room].cpu.now_item += 1;
+            }
         }
-        else if (map_data[3] == item_num && max_key == "left") {
-            room_info[room].cpu.now_item += 1;
-        }
-        else if (map_data[5] == item_num && max_key == "right") {
-            room_info[room].cpu.now_item += 1;
-        }
-        else if (map_data[7] == item_num && max_key == "bottom") {
-            room_info[room].cpu.now_item += 1;
-        }
-
-
         return ["move", max_key];
     }
 
-
-    //ここまで来た場合は移動できない場合
-    //索敵を行う
-    action_history.push("search_randam");
-    //room_infoに情報を格納
-    if (room in room_info) {
-        room_info[room].cpu.action_history = action_history;
-    }
-    else {
-        room_info[room] = { "cpu": { "action_history": action_history } };
-    }
+    action_history.push("search_random");
+    if (room in room_info) room_info[room].cpu.action_history = action_history;
+    else room_info[room] = { "cpu": { "action_history": action_history } };
     return ["search", "top"];
+}
+
+// セル値マッピング (0:空/自分, 1:相手, 2:壁/範囲外, 3:アイテム)
+function mapCell(v, chara) {
+    if (v === undefined) return 2;
+    const enemyNum = (chara === "cool") ? 4 : 3;
+    if (v == enemyNum || v == 34 || v == 43) return 1;
+    if (v == 1) return 2;
+    if (v == 2) return 3;
+    return 0;
+}
+
+
+function neighbor(i) {
+    switch (i) {
+        case 0: return "top";
+        case 1: return "topright";
+        case 2: return "bottomright";
+        case 3: return "bottom";
+        case 4: return "bottomleft";
+        case 5: return "topleft";
+        default: return null;
+    }
+}
+
+function neighbors() {
+    return ["top", "topright", "bottomright", "bottom", "bottomleft", "topleft"];
+}
+
+// へクス隣接 delta (flat-top, even-q offset)
+function hexDirectionDelta(dir, col) {
+    const col_is_even = (col % 2) === 0;
+    switch (dir) {
+        case "top":          return { dx:  0, dy: -1 };
+        case "bottom":       return { dx:  0, dy:  1 };
+        case "topright":     return { dx:  1, dy: (col_is_even ? 0 :  -1) }
+        case "bottomright":  return { dx:  1, dy: (col_is_even ? 1 :   0) }
+        case "topleft":      return { dx: -1, dy: (col_is_even ? 0 :  -1) }
+        case "bottomleft":   return { dx: -1, dy: (col_is_even ? 1 :   0) }
+        default:             return { dx:  0, dy: 0 };
+    }
+}
+
+// 中心セル(cx,cy)を基準に6近傍 + center の7要素を生成するヘルパー
+function getSurroundData(room, chara, cx, cy) {
+    const tmp = server_store[room].map_data;
+    const maxX = server_store[room].map_size_x;
+    const maxY = server_store[room].map_size_y;
+    const surround = [];
+    const neigh = neighbors();
+
+    // neighbors
+    for (let dname of neigh) {
+        const d = hexDirectionDelta(dname, cx);
+        const nx = cx + d.dx;
+        const ny = cy + d.dy;
+        if (nx < 0 || nx >= maxX || ny < 0 || ny >= maxY) surround.push(2);
+        else surround.push(mapCell(tmp[ny][nx], chara));
+    }
+    // center
+    if (cx < 0 || cx >= maxX || cy < 0 || cy >= maxY) surround.push(2);
+    else surround.push(mapCell(tmp[cy][cx], chara));
+
+    return surround;
 }

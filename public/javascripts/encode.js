@@ -5,9 +5,10 @@ var outputArea = document.getElementById('output');
 var runButton = document.getElementById('runButton');
 var myInterpreter = null;
 var runner;
-var map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-var look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-var search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+var map_info = [0, 0, 0, 0, 0, 0, 0];
+var look_info = [0, 0, 0, 0, 0, 0, 0];
+var search_info = [0, 0, 0, 0, 0, 0, 0];
 
 
 class ObjInterpreter extends Interpreter {
@@ -117,7 +118,6 @@ function initApi(interpreter, scope) {
 
   var wrapper = function (direction, callback) {
     if (my_turn) {
-      direction = direction ? direction.toString() : '';
       look_search_data = false;
       var getDate = function () {
         if (look_search_data) {
@@ -145,7 +145,6 @@ function initApi(interpreter, scope) {
 
   var wrapper = function (direction, callback) {
     if (my_turn) {
-      direction = direction ? direction.toString() : '';
       look_search_data = false;
       var getDate = function () {
         if (look_search_data) {
@@ -320,9 +319,10 @@ function resetVar() {
   }
   my_turn = false;
   server_connect_status = false;
-  map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  map_info = [0, 0, 0, 0, 0, 0, 0];
+  look_info = [0, 0, 0, 0, 0, 0, 0];
+  search_info = [0, 0, 0, 0, 0, 0, 0];
 }
 
 var step_flag = false;

@@ -3,9 +3,9 @@ Blockly.JavaScript.addReservedWords('exit');
 
 var myInterpreter = null;
 var runner;
-var map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-var look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-var search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+var map_info = [0, 0, 0, 0, 0, 0, 0];
+var look_info = [0, 0, 0, 0, 0, 0, 0];
+var search_info = [0, 0, 0, 0, 0, 0, 0];
 
 
 class ObjInterpreter extends Interpreter {
@@ -313,9 +313,9 @@ function resetVar() {
   }
   my_turn = false;
   server_connect_status = false;
-  map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  map_info = [0, 0, 0, 0, 0, 0, 0];
+  look_info = [0, 0, 0, 0, 0, 0, 0];
+  search_info = [0, 0, 0, 0, 0, 0, 0];
 }
 
 var step_flag = false;

@@ -1,24 +1,3 @@
-table {
-  border-collapse: separate;
-  border-spacing: 1px;
-  margin: 0 auto;
-  padding: 0;
-  border: none;
-  font-size: 0px;
-  height: 100%;
-}
-
-td {
-  padding: 0;
-  border: solid 2px #6c6c6c;
-  vertical-align: top;
-  background-size: contain;
-}
-
-td img {
-  width: 100%;
-}
-
 #fullscreenButton {
   border: 2px solid #ffffff;
   background-color: #5d5d5d;
@@ -132,11 +111,28 @@ td img {
 
 #game_board {
   position: relative;
+  width:  calc(100% - 450px - 20px);
   height: calc(100% - 20px);
   margin: 10px;
 
   display: flex;
   align-items: center;
+}
+
+#game_board_hex {
+  position: relative;
+  margin: 0 auto 0;
+  box-Sizing: border-box;
+}
+
+.hex {
+  position: absolute;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  -webkit-clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); /* Safari対応 */
+  box-sizing: border-box;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: inline-block;
 }
 
 #game_info {

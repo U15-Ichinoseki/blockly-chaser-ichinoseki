@@ -86,43 +86,88 @@ function createserverList(get_list) {
 
 function server_info(id, get_list) {
 
-  var data = get_list[id].map_data;
-  var c = document.getElementById("map_table");
+  var data = get_list[id].map_data || [];
+
+  var c = document.getElementById("game_board_hex");
   if (c) {
     c.parentNode.removeChild(c);
   }
-  var rows = [];
-  var table = document.createElement("table");
-  table.setAttribute("id", "map_table");
 
-  for (i = 0; i < data.length; i++) {
-    rows.push(table.insertRow(-1));
-    for (j = 0; j < data[0].length; j++) {
-      cell = rows[i].insertCell(-1);
-      if (data[i][j] == 0) {
-        cell.classList.add("field_img");
+  // 表示領域取得（フォールバックあり）
+  var parentEl = document.getElementById("watching_info") || document.body;
+
+  // 親コンテナ
+  var boardContainer = document.createElement("div");
+  boardContainer.id = "game_board_hex";
+  parentEl.appendChild(boardContainer);
+
+  if (data.length) {
+      const rows = data.length;
+      const cols = data[0].length;
+
+      // 表示領域取得
+      var containerWidth  = boardContainer.clientWidth;
+      var containerHeight = boardContainer.clientHeight;
+      // 最小限のサイズ保証
+      containerWidth  = Math.max(200, containerWidth);
+      containerHeight = Math.max(200, containerHeight);
+
+      // flat-top hex レイアウト（隙間なく）
+      // size = 半径 (center->corner)
+      // width = 2 * size, height = sqrt(3) * size
+      // 横方向中心間隔 = 1.5 * size, 縦方向中心間隔 = height
+      const maxSizeFromWidth = containerWidth / (1.5 * cols + 0.5);
+      const maxSizeFromHeight = containerHeight / (Math.sqrt(3) * (rows + 1.5));
+      const size = Math.max(4, Math.min(maxSizeFromWidth, maxSizeFromHeight));
+      const hexWidth = 2 * size;
+      const hexHeight = Math.sqrt(3) * size;
+      const stepX = 1.5 * size;
+      const stepY = hexHeight;
+      const colOffsetY = hexHeight / 2;
+
+      // マップタイルヘルパ
+      function getMapTile(v) {
+          if (v == 0) return "field_img";
+          if (v == 1) return "wall_img";
+          if (v == 2) return "hart_img";
+          if (v == 3) return "cool_img";
+          if (v == 4) return "hot_img";
+          if (v == 34) return "ch_img";
+          if (v == 43) return "hc_img";
+          return "field_img";
       }
-      else if (data[i][j] == 1) {
-        cell.classList.add("wall_img");
+
+      // 中央寄せ基点（中心座標原点）
+      const boardPixelWidth = stepX * (cols - 1) + hexWidth;
+      const boardPixelHeight = stepY * rows;
+      const originX = (containerWidth - boardPixelWidth) / 2 + hexWidth / 2;
+      const originY = (containerHeight - boardPixelHeight) / 2 + hexHeight / 2;
+
+      // 六角セル生成
+      for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+              const val = data[r][c];
+              const hex = document.createElement("div");
+              hex.classList.add("hex");
+              hex.classList.add(getMapTile(val));
+
+              // flat-top クリップパス（左右が平らな六角形）
+              hex.style.width = hexWidth + "px";
+              hex.style.height = hexHeight + "px";
+
+              hex.id = `hex_${r}_${c}`;
+
+              // 中心座標算出（flat-top, even-q）
+              const centerX = originX + c * stepX;
+              const centerY = originY + r * stepY + ((c % 2 === 0) ? colOffsetY : 0);
+              hex.style.left = (centerX - hexWidth / 2) + "px";
+              hex.style.top = (centerY - hexHeight / 2) + "px";
+
+              boardContainer.appendChild(hex);
+          }
       }
-      else if (data[i][j] == 2) {
-        cell.classList.add("hart_img");
-      }
-      else if (data[i][j] == 3) {
-        cell.classList.add("cool_img");
-      }
-      else if (data[i][j] == 4) {
-        cell.classList.add("hot_img");
-      }
-      else if (data[i][j] == 34) {
-        cell.classList.add("ch_img");
-      }
-      else if (data[i][j] == 43) {
-        cell.classList.add("hc_img");
-      }
-    }
   }
-
+  
 
   c = document.getElementById("server_info_div");
   if (c) {
@@ -171,7 +216,7 @@ function server_info(id, get_list) {
   server_info_map.setAttribute("id", "server_info_map");
   var map_status = lng_list["FIXITY"];
   if (!get_list[id].map_data.length) {
-    table.classList.add("auto_create_map");
+    boardContainer.classList.add("auto_create_map");
     map_status = lng_list["AUTOMATIC_GENERATION"];
     if (get_list[id].auto_symmetry) {
       map_status += lng_list["SYMMETRY"];
@@ -244,7 +289,7 @@ function server_info(id, get_list) {
   server_access_div.appendChild(server_watch_button);
   server_access_div.appendChild(server_token_input);
 
-  document.getElementById("watching_info").appendChild(table);
+  document.getElementById("watching_info").appendChild(boardContainer);
   document.getElementById("watching_info").appendChild(server_info_div);
   document.getElementById("watching_info").appendChild(server_access_div);
   document.getElementById("menu_area").appendChild(server_info_name);

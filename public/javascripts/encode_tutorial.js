@@ -6,9 +6,9 @@ var runButton = document.getElementById('runButton');
 var reloadButton = document.getElementById('reloadButton');
 var myInterpreter = null;
 var runner;
-var map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-var look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-var search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+var map_info = [0, 0, 0, 0, 0, 0, 0];
+var look_info = [0, 0, 0, 0, 0, 0, 0];
+var search_info = [0, 0, 0, 0, 0, 0, 0];
 
 
 class ObjInterpreter extends Interpreter {
@@ -289,9 +289,9 @@ function resetInterpreter() {
 
 function resetVar() {
   my_turn = false;
-  map_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  look_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  search_info = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  map_info = [0, 0, 0, 0, 0, 0, 0];
+  look_info = [0, 0, 0, 0, 0, 0, 0];
+  search_info = [0, 0, 0, 0, 0, 0, 0];
 }
 
 var step_flag = false;

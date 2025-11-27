@@ -72,9 +72,14 @@ Blockly.Blocks['get_ready'] = {
 Blockly.Blocks['move_player'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
-      [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
-        "move")
+      .appendField(new Blockly.FieldDropdown([
+        ["上",   '"top"'],
+        ["右上", '"topright"'],
+        ["右下", '"bottomright"'],
+        ["下",   '"bottom"'],
+        ["左下", '"bottomleft"'],
+        ["左上", '"topleft"']
+      ]), "move")
       .appendField("方向" + Blockly.Msg["MOVE_MSG"]);
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
@@ -101,9 +106,14 @@ Blockly.Blocks['random_move'] = {
 Blockly.Blocks['put_wall'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
-      [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
-        "put_wall")
+      .appendField(new Blockly.FieldDropdown([
+        ["上",   '"top"'],
+        ["右上", '"topright"'],
+        ["右下", '"bottomright"'],
+        ["下",   '"bottom"'],
+        ["左下", '"bottomleft"'],
+        ["左上", '"topleft"']
+      ]), "put_wall")
       .appendField("方向" + Blockly.Msg["PUT_MSG"]);
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
@@ -117,10 +127,14 @@ Blockly.Blocks['put_wall'] = {
 Blockly.Blocks['look'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
-      [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
-
-        "look")
+      .appendField(new Blockly.FieldDropdown([
+        ["上",   '"top"'],
+        ["右上", '"topright"'],
+        ["右下", '"bottomright"'],
+        ["下",   '"bottom"'],
+        ["左下", '"bottomleft"'],
+        ["左上", '"topleft"']
+      ]), "look")
       .appendField("方向" + Blockly.Msg["LOOK_MSG"]);
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
@@ -137,10 +151,14 @@ Blockly.Blocks['look'] = {
 Blockly.Blocks['search'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
-      [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
-
-        "search")
+      .appendField(new Blockly.FieldDropdown([
+        ["上",   '"top"'],
+        ["右上", '"topright"'],
+        ["右下", '"bottomright"'],
+        ["下",   '"bottom"'],
+        ["左下", '"bottomleft"'],
+        ["左上", '"topleft"']
+      ]), "search")
       .appendField("方向" + Blockly.Msg["SEARCH_MSG"]);
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
@@ -158,11 +176,11 @@ Blockly.Blocks['get_value'] = {
   init: function () {
     this.appendDummyInput()
       .appendField(Blockly.Msg["MYSELF"])
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "7"],
-      [Blockly.Msg["POSISION_COMMAND_LEFT"], "3"], [Blockly.Msg["POSISION_COMMAND_RIGHT"], "5"],
-      [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "0"], [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "2"],
-      [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "6"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "8"],
-      [Blockly.Msg["POSISION_COMMAND_CENTER"], "4"]]),
+      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "0"],
+        [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "2"],
+        [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "3"], 
+        [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "4"], [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "5"],
+        [Blockly.Msg["POSISION_COMMAND_CENTER"], "6"]]),
         "map_position")
       .appendField("の" + Blockly.Msg["MAP_VALUE_INFO"]);
     this.setInputsInline(true);
@@ -177,11 +195,11 @@ Blockly.Blocks['get_look_value'] = {
   init: function () {
     this.appendDummyInput()
       .appendField(Blockly.Msg["LOOK_VAL"])
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "7"],
-      [Blockly.Msg["POSISION_COMMAND_LEFT"], "3"], [Blockly.Msg["POSISION_COMMAND_RIGHT"], "5"],
-      [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "0"], [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "2"],
-      [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "6"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "8"],
-      [Blockly.Msg["POSISION_COMMAND_CENTER"], "4"]]),
+      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "0"],
+        [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "2"],
+        [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "3"], 
+        [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "4"], [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "5"],
+        [Blockly.Msg["POSISION_COMMAND_CENTER"], "6"]]),
         "map_position")
       .appendField("の" + Blockly.Msg["MAP_VALUE_INFO"]);
     this.setInputsInline(true);
@@ -210,11 +228,11 @@ Blockly.Blocks['if_value'] = {
   init: function () {
     this.appendDummyInput()
       .appendField(Blockly.Msg["MYSELF"])
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "7"],
-      [Blockly.Msg["POSISION_COMMAND_LEFT"], "3"], [Blockly.Msg["POSISION_COMMAND_RIGHT"], "5"],
-      [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "0"], [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "2"],
-      [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "6"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "8"],
-      [Blockly.Msg["POSISION_COMMAND_CENTER"], "4"]]),
+      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "0"],
+        [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "2"],
+        [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "3"], 
+        [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "4"], [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "5"],
+        [Blockly.Msg["POSISION_COMMAND_CENTER"], "6"]]),
         "map_position")
       .appendField("の" + Blockly.Msg["MAP_VALUE_INFO"] + "が")
       .appendField(new Blockly.FieldDropdown([["アイテム", "3"], ["ブロック", "2"], ["プレイヤー", "1"], ["なにもない", "0"]]), "map_item")
@@ -231,11 +249,11 @@ Blockly.Blocks['if_look_value'] = {
   init: function () {
     this.appendDummyInput()
       .appendField(Blockly.Msg["LOOK_VAL"])
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "7"],
-      [Blockly.Msg["POSISION_COMMAND_LEFT"], "3"], [Blockly.Msg["POSISION_COMMAND_RIGHT"], "5"],
-      [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "0"], [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "2"],
-      [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "6"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "8"],
-      [Blockly.Msg["POSISION_COMMAND_CENTER"], "4"]]),
+      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "0"],
+        [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "2"],
+        [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "3"], 
+        [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "4"], [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "5"],
+        [Blockly.Msg["POSISION_COMMAND_CENTER"], "6"]]),
         "map_position")
       .appendField("の" + Blockly.Msg["MAP_VALUE_INFO"] + "が")
       .appendField(new Blockly.FieldDropdown([["アイテム", "3"], ["ブロック", "2"], ["プレイヤー", "1"], ["なにもない", "0"]]), "map_item")
@@ -281,48 +299,52 @@ Blockly.Blocks['infinite_loop'] = {
 
 // expert mode
 
-Blockly.Blocks['direction4_value'] = {
+Blockly.Blocks['direction6_value'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["DIRECTION_COMMAND_TOP"], '"top"'], [Blockly.Msg["DIRECTION_COMMAND_BOTTOM"], '"bottom"'],
-      [Blockly.Msg["DIRECTION_COMMAND_LEFT"], '"left"'], [Blockly.Msg["DIRECTION_COMMAND_RIGHT"], '"right"']]),
-        "direction_value")
+      .appendField(new Blockly.FieldDropdown([
+        ["上",   '"top"'],
+        ["右上", '"topright"'],
+        ["右下", '"bottomright"'],
+        ["下",   '"bottom"'],
+        ["左下", '"bottomleft"'],
+        ["左上", '"topleft"']
+      ]), "direction_value")
       .appendField("方向");
     this.setInputsInline(true);
-    this.setOutput(true, "Direction4");
+    this.setOutput(true, "Direction6");
     this.setColour(90);
     this.setTooltip("");
     this.setHelpUrl("");
   }
 };
 
-Blockly.Blocks['position9_value'] = {
+Blockly.Blocks['position7_value'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "7"],
-      [Blockly.Msg["POSISION_COMMAND_LEFT"], "3"], [Blockly.Msg["POSISION_COMMAND_RIGHT"], "5"],
-      [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "0"], [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "2"],
-      [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "6"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "8"],
-      [Blockly.Msg["POSISION_COMMAND_CENTER"], "4"]]),
+      .appendField(new Blockly.FieldDropdown([[Blockly.Msg["POSISION_COMMAND_TOP"], "0"],
+        [Blockly.Msg["POSISION_COMMAND_TOPRIGHT"], "1"], [Blockly.Msg["POSISION_COMMAND_BOTTOMRIGHT"], "2"],
+        [Blockly.Msg["POSISION_COMMAND_BOTTOM"], "3"], 
+        [Blockly.Msg["POSISION_COMMAND_BOTTOMLEFT"], "4"], [Blockly.Msg["POSISION_COMMAND_TOPLEFT"], "5"],
+        [Blockly.Msg["POSISION_COMMAND_CENTER"], "6"]]),
         "position_value")
       .appendField("の");
     this.setInputsInline(true);
-    this.setOutput(true, "Position9");
+    this.setOutput(true, "position7");
     this.setColour(150);
     this.setTooltip("");
     this.setHelpUrl("");
   }
 };
 
-Blockly.Blocks['position9_num_value'] = {
+Blockly.Blocks['position7_num_value'] = {
   init: function () {
     this.appendDummyInput()
-      .appendField(new Blockly.FieldDropdown([["1", "0"], ["2", "1"], ["3", "2"], ["4", "3"],
-      ["5", "4"], ["6", "5"], ["7", "6"], ["8", "7"], ["9", "8"]]),
+      .appendField(new Blockly.FieldDropdown([["1", "0"], ["2", "1"], ["3", "2"], ["4", "3"],["5", "4"], ["6", "5"]]),
         "position_num_value")
       .appendField("番目の");
     this.setInputsInline(true);
-    this.setOutput(true, "Position9_num");
+    this.setOutput(true, "position7_num");
     this.setColour(150);
     this.setTooltip("");
     this.setHelpUrl("");
@@ -345,7 +367,7 @@ Blockly.Blocks['item4_value'] = {
 Blockly.Blocks['move_player_exp'] = {
   init: function () {
     this.appendValueInput("move")
-      .setCheck("Direction4");
+      .setCheck("Direction6");
     this.appendDummyInput()
       .appendField(Blockly.Msg["MOVE_MSG"]);
     this.setInputsInline(true);
@@ -360,7 +382,7 @@ Blockly.Blocks['move_player_exp'] = {
 Blockly.Blocks['put_wall_exp'] = {
   init: function () {
     this.appendValueInput("put_wall")
-      .setCheck("Direction4");
+      .setCheck("Direction6");
     this.appendDummyInput()
       .appendField(Blockly.Msg["PUT_MSG"]);
     this.setInputsInline(true);
@@ -375,7 +397,7 @@ Blockly.Blocks['put_wall_exp'] = {
 Blockly.Blocks['look_exp'] = {
   init: function () {
     this.appendValueInput("look")
-      .setCheck("Direction4");
+      .setCheck("Direction6");
     this.appendDummyInput()
       .appendField(Blockly.Msg["LOOK_MSG"]);
     this.setInputsInline(true);
@@ -390,11 +412,10 @@ Blockly.Blocks['look_exp'] = {
   }
 };
 
-
 Blockly.Blocks['search_exp'] = {
   init: function () {
     this.appendValueInput("search")
-      .setCheck("Direction4");
+      .setCheck("Direction6");
     this.appendDummyInput()
       .appendField(Blockly.Msg["SEARCH_MSG"]);
     this.setInputsInline(true);
@@ -451,7 +472,7 @@ Blockly.Blocks['get_value_exp'] = {
     this.appendDummyInput()
       .appendField(Blockly.Msg["MYSELF"]);
     this.appendValueInput("map_position")
-      .setCheck("Position9");
+      .setCheck("position7");
     this.appendDummyInput()
       .appendField(Blockly.Msg["MAP_VALUE_INFO"]);
     this.appendDummyInput();
@@ -468,7 +489,7 @@ Blockly.Blocks['get_look_value_exp'] = {
     this.appendDummyInput()
       .appendField(Blockly.Msg["LOOK_VAL"]);
     this.appendValueInput("map_position")
-      .setCheck("Position9");
+      .setCheck("position7");
     this.appendDummyInput()
       .appendField(Blockly.Msg["MAP_VALUE_INFO"]);
     this.appendDummyInput();
@@ -485,7 +506,7 @@ Blockly.Blocks['get_search_value_exp'] = {
     this.appendDummyInput()
       .appendField(Blockly.Msg["SEARCH_VAL"])
     this.appendValueInput("map_position")
-      .setCheck("Position9_num");
+      .setCheck("position7_num");
     this.appendDummyInput()
       .appendField(Blockly.Msg["MAP_VALUE_INFO"]);
     this.setInputsInline(true);
@@ -501,7 +522,7 @@ Blockly.Blocks['if_value_exp'] = {
     this.appendDummyInput()
       .appendField(Blockly.Msg["MYSELF"]);
     this.appendValueInput("map_position")
-      .setCheck("Position9");
+      .setCheck("position7");
     this.appendDummyInput()
       .appendField(Blockly.Msg["MAP_VALUE_INFO"] + "が");
     this.appendValueInput("map_item")
@@ -521,7 +542,7 @@ Blockly.Blocks['if_look_value_exp'] = {
     this.appendDummyInput()
       .appendField(Blockly.Msg["LOOK_VAL"])
     this.appendValueInput("map_position")
-      .setCheck("Position9");
+      .setCheck("position7");
     this.appendDummyInput()
       .appendField(Blockly.Msg["MAP_VALUE_INFO"] + "が")
     this.appendValueInput("map_item")
@@ -541,7 +562,7 @@ Blockly.Blocks['if_search_value_exp'] = {
     this.appendDummyInput()
       .appendField(Blockly.Msg["SEARCH_VAL"])
     this.appendValueInput("map_position")
-      .setCheck("Position9_num");
+      .setCheck("position7_num");
     this.appendDummyInput()
       .appendField(Blockly.Msg["MAP_VALUE_INFO"] + "が")
     this.appendValueInput("map_item")

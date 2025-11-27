@@ -1,11 +1,11 @@
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
 
 
-    <block type="direction4_value"></block>
+    <block type="direction6_value"></block>
 
       <block type="move_player_exp">
         <value name="move">
-          <shadow type="direction4_value">
+          <shadow type="direction6_value">
             <field name="direction_value">"top"</field>
           </shadow>
         </value>
@@ -13,7 +13,7 @@
 
       <block type="search_exp">
         <value name="search">
-          <shadow type="direction4_value">
+          <shadow type="direction6_value">
             <field name="direction_value">"top"</field>
           </shadow>
         </value>
@@ -44,7 +44,7 @@
     <block type="variables_set">
       <field name="VAR">移動方向</field>
       <value name="VALUE">
-        <shadow type="direction4_value">
+        <shadow type="direction6_value">
           <field name="direction_value">"top"</field>
         </shadow>
       </value>

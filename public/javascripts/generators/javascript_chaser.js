@@ -39,7 +39,7 @@ javascript.javascriptGenerator.forBlock['get_ready'] = function (block) {
   return code;
 };
 
-javascript.javascriptGenerator.forBlock['direction4_value'] = function (block) {
+javascript.javascriptGenerator.forBlock['direction6_value'] = function (block) {
   var dropdown_direction = block.getFieldValue('direction_value').toString();
   // TODO: Assemble JavaScript into code variable.
   code = dropdown_direction;
@@ -48,7 +48,7 @@ javascript.javascriptGenerator.forBlock['direction4_value'] = function (block) {
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-javascript.javascriptGenerator.forBlock['position9_value'] = function (block) {
+javascript.javascriptGenerator.forBlock['position7_value'] = function (block) {
   var dropdown_position = block.getFieldValue('position_value').toString();
   // TODO: Assemble JavaScript into code variable.
   code = dropdown_position;
@@ -57,7 +57,7 @@ javascript.javascriptGenerator.forBlock['position9_value'] = function (block) {
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
-javascript.javascriptGenerator.forBlock['position9_num_value'] = function (block) {
+javascript.javascriptGenerator.forBlock['position7_num_value'] = function (block) {
   var dropdown_position = block.getFieldValue('position_num_value').toString();
   // TODO: Assemble JavaScript into code variable.
   code = dropdown_position;
@@ -89,17 +89,23 @@ javascript.javascriptGenerator.forBlock['random_move'] = function (block) {
   // TODO: Assemble JavaScript into code variable.
   var code = '';
   code = code + '__noblock = [];\n';
-  code = code + 'if (map_info[1] != 2) {\n';
+  code = code + 'if (map_info[0] != 2) {\n';
   code = code + Blockly.JavaScript.INDENT + '__noblock.push("top");\n';
   code = code + '}\n';
-  code = code + 'if (map_info[7] != 2) {\n';
-  code = code + Blockly.JavaScript.INDENT + '__noblock.push("bottom");\n';
+  code = code + 'if (map_info[1] != 2) {\n';
+  code = code + Blockly.JavaScript.INDENT + '__noblock.push("topright");\n';
+  code = code + '}\n';
+  code = code + 'if (map_info[2] != 2) {\n';
+  code = code + Blockly.JavaScript.INDENT + '__noblock.push("bottomright");\n';
   code = code + '}\n';
   code = code + 'if (map_info[3] != 2) {\n';
-  code = code + Blockly.JavaScript.INDENT + '__noblock.push("left");\n';
+  code = code + Blockly.JavaScript.INDENT + '__noblock.push("bottom");\n';
+  code = code + '}\n';
+  code = code + 'if (map_info[4] != 2) {\n';
+  code = code + Blockly.JavaScript.INDENT + '__noblock.push("bottomleft");\n';
   code = code + '}\n';
   code = code + 'if (map_info[5] != 2) {\n';
-  code = code + Blockly.JavaScript.INDENT + '__noblock.push("right");\n';
+  code = code + Blockly.JavaScript.INDENT + '__noblock.push("topleft");\n';
   code = code + '}\n';
   code = code + 'map_info = move_player(__noblock[Math.floor(Math.random() * __noblock.length)]);\n';
 

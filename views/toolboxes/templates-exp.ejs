@@ -17,11 +17,11 @@
             <value name="IF0">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">1</field>
+                  <block type="position7_value">
+                    <field name="position_value">0</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -38,7 +38,7 @@
               <block type="variables_set">
                 <field name="VAR">進行方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"top"</field>
                   </block>
                 </value>
@@ -47,11 +47,11 @@
             <value name="IF1">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">7</field>
+                  <block type="position7_value">
+                    <field name="position_value">1</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -68,8 +68,8 @@
               <block type="variables_set">
                 <field name="VAR">進行方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"bottom"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"topright"</field>
                   </block>
                 </value>
               </block>
@@ -77,11 +77,11 @@
             <value name="IF2">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">3</field>
+                  <block type="position7_value">
+                    <field name="position_value">2</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -98,8 +98,8 @@
               <block type="variables_set">
                 <field name="VAR">進行方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"left"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottomright"</field>
                   </block>
                 </value>
               </block>
@@ -107,11 +107,11 @@
             <value name="IF3">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">5</field>
+                  <block type="position7_value">
+                    <field name="position_value">3</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -128,53 +128,28 @@
               <block type="variables_set">
                 <field name="VAR">進行方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"right"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottom"</field>
                   </block>
                 </value>
               </block>
             </statement>
             <value name="IF4">
-              <block type="logic_operation">
-                <field name="OP">OR</field>
-                <value name="A">
-                  <block type="if_value_exp">
-                    <value name="map_position">
-                      <shadow type="position9_value">
-                        <field name="position_value">1</field>
-                      </shadow>
-                      <block type="position9_value">
-                        <field name="position_value">0</field>
-                      </block>
-                    </value>
-                    <value name="map_item">
-                      <shadow type="item4_value">
-                        <field name="item_value">3</field>
-                      </shadow>
-                      <block type="item4_value">
-                        <field name="item_value">3</field>
-                      </block>
-                    </value>
+              <block type="if_value_exp">
+                <value name="map_position">
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
+                  </shadow>
+                  <block type="position7_value">
+                    <field name="position_value">4</field>
                   </block>
                 </value>
-                <value name="B">
-                  <block type="if_value_exp">
-                    <value name="map_position">
-                      <shadow type="position9_value">
-                        <field name="position_value">1</field>
-                      </shadow>
-                      <block type="position9_value">
-                        <field name="position_value">2</field>
-                      </block>
-                    </value>
-                    <value name="map_item">
-                      <shadow type="item4_value">
-                        <field name="item_value">3</field>
-                      </shadow>
-                      <block type="item4_value">
-                        <field name="item_value">3</field>
-                      </block>
-                    </value>
+                <value name="map_item">
+                  <shadow type="item4_value">
+                    <field name="item_value">3</field>
+                  </shadow>
+                  <block type="item4_value">
+                    <field name="item_value">3</field>
                   </block>
                 </value>
               </block>
@@ -183,53 +158,28 @@
               <block type="variables_set">
                 <field name="VAR">進行方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"top"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottomleft"</field>
                   </block>
                 </value>
               </block>
             </statement>
             <value name="IF5">
-              <block type="logic_operation">
-                <field name="OP">OR</field>
-                <value name="A">
-                  <block type="if_value_exp">
-                    <value name="map_position">
-                      <shadow type="position9_value">
-                        <field name="position_value">1</field>
-                      </shadow>
-                      <block type="position9_value">
-                        <field name="position_value">6</field>
-                      </block>
-                    </value>
-                    <value name="map_item">
-                      <shadow type="item4_value">
-                        <field name="item_value">3</field>
-                      </shadow>
-                      <block type="item4_value">
-                        <field name="item_value">3</field>
-                      </block>
-                    </value>
+              <block type="if_value_exp">
+                <value name="map_position">
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
+                  </shadow>
+                  <block type="position7_value">
+                    <field name="position_value">5</field>
                   </block>
                 </value>
-                <value name="B">
-                  <block type="if_value_exp">
-                    <value name="map_position">
-                      <shadow type="position9_value">
-                        <field name="position_value">1</field>
-                      </shadow>
-                      <block type="position9_value">
-                        <field name="position_value">8</field>
-                      </block>
-                    </value>
-                    <value name="map_item">
-                      <shadow type="item4_value">
-                        <field name="item_value">3</field>
-                      </shadow>
-                      <block type="item4_value">
-                        <field name="item_value">3</field>
-                      </block>
-                    </value>
+                <value name="map_item">
+                  <shadow type="item4_value">
+                    <field name="item_value">3</field>
+                  </shadow>
+                  <block type="item4_value">
+                    <field name="item_value">3</field>
                   </block>
                 </value>
               </block>
@@ -238,8 +188,8 @@
               <block type="variables_set">
                 <field name="VAR">進行方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"bottom"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"topleft"</field>
                   </block>
                 </value>
               </block>
@@ -263,7 +213,7 @@
                 <statement name="DO0">
                   <block type="move_player_exp">
                     <value name="move">
-                      <shadow type="direction4_value">
+                      <shadow type="direction6_value">
                         <field name="direction_value">"top"</field>
                       </shadow>
                       <block type="variables_get">
@@ -293,15 +243,15 @@
         </value>
         <next>
           <block type="controls_if">
-            <mutation elseif="3"></mutation>
+            <mutation elseif="5"></mutation>
             <value name="IF0">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">1</field>
+                  <block type="position7_value">
+                    <field name="position_value">0</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -318,7 +268,7 @@
               <block type="variables_set">
                 <field name="VAR">設置場所</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"top"</field>
                   </block>
                 </value>
@@ -327,11 +277,11 @@
             <value name="IF1">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">7</field>
+                  <block type="position7_value">
+                    <field name="position_value">1</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -348,8 +298,8 @@
               <block type="variables_set">
                 <field name="VAR">設置場所</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"bottom"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"topright"</field>
                   </block>
                 </value>
               </block>
@@ -357,11 +307,11 @@
             <value name="IF2">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">3</field>
+                  <block type="position7_value">
+                    <field name="position_value">2</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -378,8 +328,8 @@
               <block type="variables_set">
                 <field name="VAR">設置場所</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"left"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottomright"</field>
                   </block>
                 </value>
               </block>
@@ -387,11 +337,11 @@
             <value name="IF3">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
-                  <block type="position9_value">
-                    <field name="position_value">5</field>
+                  <block type="position7_value">
+                    <field name="position_value">3</field>
                   </block>
                 </value>
                 <value name="map_item">
@@ -408,8 +358,68 @@
               <block type="variables_set">
                 <field name="VAR">設置場所</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"right"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottom"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <value name="IF4">
+              <block type="if_value_exp">
+                <value name="map_position">
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
+                  </shadow>
+                  <block type="position7_value">
+                    <field name="position_value">4</field>
+                  </block>
+                </value>
+                <value name="map_item">
+                  <shadow type="item4_value">
+                    <field name="item_value">1</field>
+                  </shadow>
+                  <block type="item4_value">
+                    <field name="item_value">1</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO4">
+              <block type="variables_set">
+                <field name="VAR">設置場所</field>
+                <value name="VALUE">
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottomleft"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <value name="IF5">
+              <block type="if_value_exp">
+                <value name="map_position">
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
+                  </shadow>
+                  <block type="position7_value">
+                    <field name="position_value">5</field>
+                  </block>
+                </value>
+                <value name="map_item">
+                  <shadow type="item4_value">
+                    <field name="item_value">1</field>
+                  </shadow>
+                  <block type="item4_value">
+                    <field name="item_value">1</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO5">
+              <block type="variables_set">
+                <field name="VAR">設置場所</field>
+                <value name="VALUE">
+                  <block type="direction6_value">
+                    <field name="direction_value">"topleft"</field>
                   </block>
                 </value>
               </block>
@@ -433,7 +443,7 @@
                 <statement name="DO0">
                   <block type="put_wall_exp">
                     <value name="put_wall">
-                      <shadow type="direction4_value">
+                      <shadow type="direction6_value">
                         <field name="direction_value">"top"</field>
                       </shadow>
                       <block type="variables_get">
@@ -442,101 +452,6 @@
                     </value>
                   </block>
                 </statement>
-                <value name="ELSE">
-                  <block type="controls_if">
-                    <mutation elseif="1" else="1"></mutation>
-                    <value name="IF0">
-                      <block type="logic_operation">
-                        <field name="OP">OR</field>
-                        <value name="A">
-                          <block type="if_value_exp">
-                            <value name="map_position">
-                              <shadow type="position9_value">
-                                <field name="position_value">1</field>
-                              </shadow>
-                              <block type="position9_value">
-                                <field name="position_value">0</field>
-                              </block>
-                            </value>
-                            <value name="map_item">
-                              <shadow type="item4_value">
-                                <field name="item_value">3</field>
-                              </shadow>
-                              <block type="item4_value">
-                                <field name="item_value">1</field>
-                              </block>
-                            </value>
-                          </block>
-                        </value>
-                        <value name="B">
-                          <block type="if_value_exp">
-                            <value name="map_position">
-                              <shadow type="position9_value">
-                                <field name="position_value">1</field>
-                              </shadow>
-                              <block type="position9_value">
-                                <field name="position_value">2</field>
-                              </block>
-                            </value>
-                            <value name="map_item">
-                              <shadow type="item4_value">
-                                <field name="item_value">3</field>
-                              </shadow>
-                              <block type="item4_value">
-                                <field name="item_value">1</field>
-                              </block>
-                            </value>
-                          </block>
-                        </value>
-                      </block>
-                    </value>
-                    <value name="IF1">
-                      <block type="logic_operation">
-                        <field name="OP">OR</field>
-                        <value name="A">
-                          <block type="if_value_exp">
-                            <value name="map_position">
-                              <shadow type="position9_value">
-                                <field name="position_value">1</field>
-                              </shadow>
-                              <block type="position9_value">
-                                <field name="position_value">6</field>
-                              </block>
-                            </value>
-                            <value name="map_item">
-                              <shadow type="item4_value">
-                                <field name="item_value">3</field>
-                              </shadow>
-                              <block type="item4_value">
-                                <field name="item_value">1</field>
-                              </block>
-                            </value>
-                          </block>
-                        </value>
-                        <value name="B">
-                          <block type="if_value_exp">
-                            <value name="map_position">
-                              <shadow type="position9_value">
-                                <field name="position_value">1</field>
-                              </shadow>
-                              <block type="position9_value">
-                                <field name="position_value">8</field>
-                              </block>
-                            </value>
-                            <value name="map_item">
-                              <shadow type="item4_value">
-                                <field name="item_value">3</field>
-                              </shadow>
-                              <block type="item4_value">
-                                <field name="item_value">1</field>
-                              </block>
-                            </value>
-                          </block>
-                        </value>
-                      </block>
-                    </value>
-                  </block>
-                </value>
               </block>
             </next>
           </block>
@@ -546,7 +461,7 @@
   </block>
 
   <variables>
-    <variable>進行方向</variable>
+    <variable>ブロックのない方向</variable>
   </variables>
   <block type="comment_block">
     <field name="COMMENT">ブロックなし</field>
@@ -558,17 +473,17 @@
         </value>
         <next>
           <block type="controls_if">
-            <mutation elseif="3"></mutation>
+            <mutation elseif="5"></mutation>
             <value name="IF0">
               <block type="logic_negate">
                 <value name="BOOL">
                   <block type="if_value_exp">
                     <value name="map_position">
-                      <shadow type="position9_value">
-                        <field name="position_value">1</field>
+                      <shadow type="position7_value">
+                        <field name="position_value">0</field>
                       </shadow>
-                      <block type="position9_value">
-                        <field name="position_value">1</field>
+                      <block type="position7_value">
+                        <field name="position_value">0</field>
                       </block>
                     </value>
                     <value name="map_item">
@@ -587,7 +502,7 @@
               <block type="variables_set">
                 <field name="VAR">ブロックのない方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"top"</field>
                   </block>
                 </value>
@@ -598,11 +513,11 @@
                 <value name="BOOL">
                   <block type="if_value_exp">
                     <value name="map_position">
-                      <shadow type="position9_value">
-                        <field name="position_value">1</field>
+                      <shadow type="position7_value">
+                        <field name="position_value">0</field>
                       </shadow>
-                      <block type="position9_value">
-                        <field name="position_value">7</field>
+                      <block type="position7_value">
+                        <field name="position_value">1</field>
                       </block>
                     </value>
                     <value name="map_item">
@@ -621,8 +536,8 @@
               <block type="variables_set">
                 <field name="VAR">ブロックのない方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"bottom"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"topright"</field>
                   </block>
                 </value>
               </block>
@@ -632,11 +547,11 @@
                 <value name="BOOL">
                   <block type="if_value_exp">
                     <value name="map_position">
-                      <shadow type="position9_value">
-                        <field name="position_value">1</field>
+                      <shadow type="position7_value">
+                        <field name="position_value">0</field>
                       </shadow>
-                      <block type="position9_value">
-                        <field name="position_value">3</field>
+                      <block type="position7_value">
+                        <field name="position_value">2</field>
                       </block>
                     </value>
                     <value name="map_item">
@@ -655,8 +570,8 @@
               <block type="variables_set">
                 <field name="VAR">ブロックのない方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"left"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottomright"</field>
                   </block>
                 </value>
               </block>
@@ -666,11 +581,11 @@
                 <value name="BOOL">
                   <block type="if_value_exp">
                     <value name="map_position">
-                      <shadow type="position9_value">
-                        <field name="position_value">1</field>
+                      <shadow type="position7_value">
+                        <field name="position_value">0</field>
                       </shadow>
-                      <block type="position9_value">
-                        <field name="position_value">5</field>
+                      <block type="position7_value">
+                        <field name="position_value">3</field>
                       </block>
                     </value>
                     <value name="map_item">
@@ -689,8 +604,76 @@
               <block type="variables_set">
                 <field name="VAR">ブロックのない方向</field>
                 <value name="VALUE">
-                  <block type="direction4_value">
-                    <field name="direction_value">"right"</field>
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottom"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <value name="IF4">
+              <block type="logic_negate">
+                <value name="BOOL">
+                  <block type="if_value_exp">
+                    <value name="map_position">
+                      <shadow type="position7_value">
+                        <field name="position_value">0</field>
+                      </shadow>
+                      <block type="position7_value">
+                        <field name="position_value">4</field>
+                      </block>
+                    </value>
+                    <value name="map_item">
+                      <shadow type="item4_value">
+                        <field name="item_value">3</field>
+                      </shadow>
+                      <block type="item4_value">
+                        <field name="item_value">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO4">
+              <block type="variables_set">
+                <field name="VAR">ブロックのない方向</field>
+                <value name="VALUE">
+                  <block type="direction6_value">
+                    <field name="direction_value">"bottomleft"</field>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <value name="IF5">
+              <block type="logic_negate">
+                <value name="BOOL">
+                  <block type="if_value_exp">
+                    <value name="map_position">
+                      <shadow type="position7_value">
+                        <field name="position_value">0</field>
+                      </shadow>
+                      <block type="position7_value">
+                        <field name="position_value">5</field>
+                      </block>
+                    </value>
+                    <value name="map_item">
+                      <shadow type="item4_value">
+                        <field name="item_value">3</field>
+                      </shadow>
+                      <block type="item4_value">
+                        <field name="item_value">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO5">
+              <block type="variables_set">
+                <field name="VAR">ブロックのない方向</field>
+                <value name="VALUE">
+                  <block type="direction6_value">
+                    <field name="direction_value">"topleft"</field>
                   </block>
                 </value>
               </block>
@@ -713,7 +696,7 @@
                 <statement name="DO0">
                   <block type="move_player_exp">
                     <value name="move">
-                      <shadow type="direction4_value">
+                      <shadow type="direction6_value">
                         <field name="direction_value">"top"</field>
                       </shadow>
                       <block type="variables_get">
@@ -730,7 +713,7 @@
     </next>
   </block>
 
-  <variables>
+    <variables>
     <variable>ブロックのない方向</variable>
   </variables>
   <block type="comment_block">
@@ -750,8 +733,8 @@
                 <value name="BOOL">
                   <block type="if_value_exp">
                     <value name="map_position">
-                      <block type="position9_value">
-                        <field name="position_value">1</field>
+                      <block type="position7_value">
+                        <field name="position_value">0</field>
                       </block>
                     </value>
                     <value name="map_item">
@@ -774,7 +757,7 @@
                   </block>
                 </value>
                 <value name="TO">
-                  <block type="direction4_value">
+                  <block type="direction6_value">
                     <field name="direction_value">"top"</field>
                   </block>
                 </value>
@@ -787,8 +770,8 @@
                     <value name="BOOL">
                       <block type="if_value_exp">
                         <value name="map_position">
-                          <block type="position9_value">
-                            <field name="position_value">7</field>
+                          <block type="position7_value">
+                            <field name="position_value">1</field>
                           </block>
                         </value>
                         <value name="map_item">
@@ -811,8 +794,8 @@
                       </block>
                     </value>
                     <value name="TO">
-                      <block type="direction4_value">
-                        <field name="direction_value">"bottom"</field>
+                      <block type="direction6_value">
+                        <field name="direction_value">"topright"</field>
                       </block>
                     </value>
                   </block>
@@ -824,8 +807,8 @@
                         <value name="BOOL">
                           <block type="if_value_exp">
                             <value name="map_position">
-                              <block type="position9_value">
-                                <field name="position_value">3</field>
+                              <block type="position7_value">
+                                <field name="position_value">2</field>
                               </block>
                             </value>
                             <value name="map_item">
@@ -848,8 +831,8 @@
                           </block>
                         </value>
                         <value name="TO">
-                          <block type="direction4_value">
-                            <field name="direction_value">"left"</field>
+                          <block type="direction6_value">
+                            <field name="direction_value">"bottomright"</field>
                           </block>
                         </value>
                       </block>
@@ -861,8 +844,8 @@
                             <value name="BOOL">
                               <block type="if_value_exp">
                                 <value name="map_position">
-                                  <block type="position9_value">
-                                    <field name="position_value">5</field>
+                                  <block type="position7_value">
+                                    <field name="position_value">3</field>
                                   </block>
                                 </value>
                                 <value name="map_item">
@@ -885,26 +868,104 @@
                               </block>
                             </value>
                             <value name="TO">
-                              <block type="direction4_value">
-                                <field name="direction_value">"right"</field>
+                              <block type="direction6_value">
+                                <field name="direction_value">"bottom"</field>
                               </block>
                             </value>
                           </block>
                         </statement>
                         <next>
-                          <block type="move_player_exp">
-                            <value name="move">
-                              <block type="lists_getIndex">
-                                <mutation statement="false" at="false"></mutation>
-                                <field name="MODE">GET</field>
-                                <field name="WHERE">RANDOM</field>
-                                <value name="VALUE">
-                                  <block type="variables_get">
-                                    <field name="VAR">ブロックのない方向</field>
+                          <block type="controls_if">
+                            <value name="IF0">
+                              <block type="logic_negate">
+                                <value name="BOOL">
+                                  <block type="if_value_exp">
+                                    <value name="map_position">
+                                      <block type="position7_value">
+                                        <field name="position_value">4</field>
+                                      </block>
+                                    </value>
+                                    <value name="map_item">
+                                      <block type="item4_value">
+                                        <field name="item_value">2</field>
+                                      </block>
+                                    </value>
                                   </block>
                                 </value>
                               </block>
                             </value>
+                            <statement name="DO0">
+                              <block type="lists_setIndex">
+                                <mutation at="false"></mutation>
+                                <field name="MODE">INSERT</field>
+                                <field name="WHERE">LAST</field>
+                                <value name="LIST">
+                                  <block type="variables_get">
+                                    <field name="VAR">ブロックのない方向</field>
+                                  </block>
+                                </value>
+                                <value name="TO">
+                                  <block type="direction6_value">
+                                    <field name="direction_value">"bottomleft"</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </statement>
+                            <next>
+                              <block type="controls_if">
+                                <value name="IF0">
+                                  <block type="logic_negate">
+                                    <value name="BOOL">
+                                      <block type="if_value_exp">
+                                        <value name="map_position">
+                                          <block type="position7_value">
+                                            <field name="position_value">5</field>
+                                          </block>
+                                        </value>
+                                        <value name="map_item">
+                                          <block type="item4_value">
+                                            <field name="item_value">2</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <statement name="DO0">
+                                  <block type="lists_setIndex">
+                                    <mutation at="false"></mutation>
+                                    <field name="MODE">INSERT</field>
+                                    <field name="WHERE">LAST</field>
+                                    <value name="LIST">
+                                      <block type="variables_get">
+                                        <field name="VAR">ブロックのない方向</field>
+                                      </block>
+                                    </value>
+                                    <value name="TO">
+                                      <block type="direction6_value">
+                                        <field name="direction_value">"topleft"</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </statement>
+                                <next>
+                                  <block type="move_player_exp">
+                                    <value name="move">
+                                      <block type="lists_getIndex">
+                                        <mutation statement="false" at="false"></mutation>
+                                        <field name="MODE">GET</field>
+                                        <field name="WHERE">RANDOM</field>
+                                        <value name="VALUE">
+                                          <block type="variables_get">
+                                            <field name="VAR">ブロックのない方向</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
                           </block>
                         </next>
                       </block>
@@ -919,15 +980,18 @@
     </next>
   </block>
 
-
   <variables>
+    <variable>前の</variable>
     <variable>進行方向</variable>
     <variable>右手方向</variable>
-    <variable>左手方向</variable>
     <variable>後退方向</variable>
-    <variable>前の</variable>
+    <variable>左手方向</variable>
+    <variable>左後方向</variable>
+    <variable>右後方向</variable>
     <variable>右側の</variable>
     <variable>左側の</variable>
+    <variable>左後側の</variable>
+    <variable>右後側の</variable>
   </variables>
   <block type="comment_block">
     <field name="COMMENT">ブロックにあたるまで直進</field>
@@ -939,8 +1003,8 @@
             <value name="IF0">
               <block type="if_value_exp">
                 <value name="map_position">
-                  <shadow type="position9_value">
-                    <field name="position_value">1</field>
+                  <shadow type="position7_value">
+                    <field name="position_value">0</field>
                   </shadow>
                   <block type="variables_get">
                     <field name="VAR">前の</field>
@@ -958,14 +1022,14 @@
             </value>
             <statement name="DO0">
               <block type="controls_if">
-                <mutation elseif="1" else="1"></mutation>
+                <mutation elseif="3" else="1"></mutation>
                 <value name="IF0">
                   <block type="logic_negate">
                     <value name="BOOL">
                       <block type="if_value_exp">
                         <value name="map_position">
-                          <shadow type="position9_value">
-                            <field name="position_value">1</field>
+                          <shadow type="position7_value">
+                            <field name="position_value">0</field>
                           </shadow>
                           <block type="variables_get">
                             <field name="VAR">右側の</field>
@@ -998,8 +1062,8 @@
                     <value name="BOOL">
                       <block type="if_value_exp">
                         <value name="map_position">
-                          <shadow type="position9_value">
-                            <field name="position_value">1</field>
+                          <shadow type="position7_value">
+                            <field name="position_value">0</field>
                           </shadow>
                           <block type="variables_get">
                             <field name="VAR">左側の</field>
@@ -1027,6 +1091,74 @@
                     </value>
                   </block>
                 </statement>
+                <value name="IF2">
+                  <block type="logic_negate">
+                    <value name="BOOL">
+                      <block type="if_value_exp">
+                        <value name="map_position">
+                          <shadow type="position7_value">
+                            <field name="position_value">0</field>
+                          </shadow>
+                          <block type="variables_get">
+                            <field name="VAR">左後側の</field>
+                          </block>
+                        </value>
+                        <value name="map_item">
+                          <shadow type="item4_value">
+                            <field name="item_value">3</field>
+                          </shadow>
+                          <block type="item4_value">
+                            <field name="item_value">2</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO2">
+                  <block type="variables_set">
+                    <field name="VAR">進行方向</field>
+                    <value name="VALUE">
+                      <block type="variables_get">
+                        <field name="VAR">左後方向</field>
+                      </block>
+                    </value>
+                  </block>
+                </statement>
+                <value name="IF3">
+                  <block type="logic_negate">
+                    <value name="BOOL">
+                      <block type="if_value_exp">
+                        <value name="map_position">
+                          <shadow type="position7_value">
+                            <field name="position_value">0</field>
+                          </shadow>
+                          <block type="variables_get">
+                            <field name="VAR">右後側の</field>
+                          </block>
+                        </value>
+                        <value name="map_item">
+                          <shadow type="item4_value">
+                            <field name="item_value">3</field>
+                          </shadow>
+                          <block type="item4_value">
+                            <field name="item_value">2</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO3">
+                  <block type="variables_set">
+                    <field name="VAR">進行方向</field>
+                    <value name="VALUE">
+                      <block type="variables_get">
+                        <field name="VAR">右後方向</field>
+                      </block>
+                    </value>
+                  </block>
+                </statement>
                 <statement name="ELSE">
                   <block type="variables_set">
                     <field name="VAR">進行方向</field>
@@ -1041,7 +1173,7 @@
             </statement>
             <next>
               <block type="controls_if">
-                <mutation elseif="2" else="1"></mutation>
+                <mutation elseif="4" else="1"></mutation>
                 <value name="IF0">
                   <block type="logic_compare">
                     <field name="OP">EQ</field>
@@ -1051,7 +1183,7 @@
                       </block>
                     </value>
                     <value name="B">
-                      <block type="direction4_value">
+                      <block type="direction6_value">
                         <field name="direction_value">"top"</field>
                       </block>
                     </value>
@@ -1059,52 +1191,92 @@
                 </value>
                 <statement name="DO0">
                   <block type="variables_set">
-                    <field name="VAR">前の</field>
+                    <field name="VAR">右手方向</field>
                     <value name="VALUE">
-                      <block type="position9_value">
-                        <field name="position_value">1</field>
+                      <block type="direction6_value">
+                        <field name="direction_value">"topright"</field>
                       </block>
                     </value>
                     <next>
                       <block type="variables_set">
-                        <field name="VAR">右側の</field>
+                        <field name="VAR">右後方向</field>
                         <value name="VALUE">
-                          <block type="position9_value">
-                            <field name="position_value">5</field>
+                          <block type="direction6_value">
+                            <field name="direction_value">"bottomright"</field>
                           </block>
                         </value>
                         <next>
                           <block type="variables_set">
-                            <field name="VAR">左側の</field>
+                            <field name="VAR">後退方向</field>
                             <value name="VALUE">
-                              <block type="position9_value">
-                                <field name="position_value">3</field>
+                              <block type="direction6_value">
+                                <field name="direction_value">"bottom"</field>
                               </block>
                             </value>
                             <next>
                               <block type="variables_set">
-                                <field name="VAR">右手方向</field>
+                                <field name="VAR">左後方向</field>
                                 <value name="VALUE">
-                                  <block type="direction4_value">
-                                    <field name="direction_value">"right"</field>
+                                  <block type="direction6_value">
+                                    <field name="direction_value">"bottomleft"</field>
                                   </block>
                                 </value>
                                 <next>
                                   <block type="variables_set">
                                     <field name="VAR">左手方向</field>
                                     <value name="VALUE">
-                                      <block type="direction4_value">
-                                        <field name="direction_value">"left"</field>
+                                      <block type="direction6_value">
+                                        <field name="direction_value">"topleft"</field>
                                       </block>
                                     </value>
                                     <next>
                                       <block type="variables_set">
-                                        <field name="VAR">後退方向</field>
+                                        <field name="VAR">前の</field>
                                         <value name="VALUE">
-                                          <block type="direction4_value">
-                                            <field name="direction_value">"bottom"</field>
+                                          <block type="position7_value">
+                                            <field name="position_value">0</field>
                                           </block>
                                         </value>
+                                        <next>
+                                          <block type="variables_set">
+                                            <field name="VAR">右側の</field>
+                                            <value name="VALUE">
+                                              <block type="position7_value">
+                                                <field name="position_value">1</field>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="variables_set">
+                                                <field name="VAR">右後側の</field>
+                                                <value name="VALUE">
+                                                  <block type="position7_value">
+                                                    <field name="position_value">2</field>
+                                                  </block>
+                                                </value>
+                                                <next>
+                                                  <block type="variables_set">
+                                                    <field name="VAR">左後側の</field>
+                                                    <value name="VALUE">
+                                                      <block type="position7_value">
+                                                        <field name="position_value">4</field>
+                                                      </block>
+                                                    </value>
+                                                    <next>
+                                                      <block type="variables_set">
+                                                        <field name="VAR">左側の</field>
+                                                        <value name="VALUE">
+                                                          <block type="position7_value">
+                                                            <field name="position_value">5</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </next>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </next>
                                       </block>
                                     </next>
                                   </block>
@@ -1126,60 +1298,100 @@
                       </block>
                     </value>
                     <value name="B">
-                      <block type="direction4_value">
-                        <field name="direction_value">"bottom"</field>
+                      <block type="direction6_value">
+                        <field name="direction_value">"topright"</field>
                       </block>
                     </value>
                   </block>
                 </value>
                 <statement name="DO1">
                   <block type="variables_set">
-                    <field name="VAR">前の</field>
+                    <field name="VAR">右手方向</field>
                     <value name="VALUE">
-                      <block type="position9_value">
-                        <field name="position_value">7</field>
+                      <block type="direction6_value">
+                        <field name="direction_value">"bottomright"</field>
                       </block>
                     </value>
                     <next>
                       <block type="variables_set">
-                        <field name="VAR">右側の</field>
+                        <field name="VAR">右後方向</field>
                         <value name="VALUE">
-                          <block type="position9_value">
-                            <field name="position_value">3</field>
+                          <block type="direction6_value">
+                            <field name="direction_value">"bottom"</field>
                           </block>
                         </value>
                         <next>
                           <block type="variables_set">
-                            <field name="VAR">左側の</field>
+                            <field name="VAR">後退方向</field>
                             <value name="VALUE">
-                              <block type="position9_value">
-                                <field name="position_value">5</field>
+                              <block type="direction6_value">
+                                <field name="direction_value">"bottomleft"</field>
                               </block>
                             </value>
                             <next>
                               <block type="variables_set">
-                                <field name="VAR">右手方向</field>
+                                <field name="VAR">左後方向</field>
                                 <value name="VALUE">
-                                  <block type="direction4_value">
-                                    <field name="direction_value">"left"</field>
+                                  <block type="direction6_value">
+                                    <field name="direction_value">"topleft"</field>
                                   </block>
                                 </value>
                                 <next>
                                   <block type="variables_set">
                                     <field name="VAR">左手方向</field>
                                     <value name="VALUE">
-                                      <block type="direction4_value">
-                                        <field name="direction_value">"right"</field>
+                                      <block type="direction6_value">
+                                        <field name="direction_value">"top"</field>
                                       </block>
                                     </value>
                                     <next>
                                       <block type="variables_set">
-                                        <field name="VAR">後退方向</field>
+                                        <field name="VAR">前の</field>
                                         <value name="VALUE">
-                                          <block type="direction4_value">
-                                            <field name="direction_value">"top"</field>
+                                          <block type="position7_value">
+                                            <field name="position_value">1</field>
                                           </block>
                                         </value>
+                                        <next>
+                                          <block type="variables_set">
+                                            <field name="VAR">右側の</field>
+                                            <value name="VALUE">
+                                              <block type="position7_value">
+                                                <field name="position_value">2</field>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="variables_set">
+                                                <field name="VAR">右後側の</field>
+                                                <value name="VALUE">
+                                                  <block type="position7_value">
+                                                    <field name="position_value">3</field>
+                                                  </block>
+                                                </value>
+                                                <next>
+                                                  <block type="variables_set">
+                                                    <field name="VAR">左後側の</field>
+                                                    <value name="VALUE">
+                                                      <block type="position7_value">
+                                                        <field name="position_value">5</field>
+                                                      </block>
+                                                    </value>
+                                                    <next>
+                                                      <block type="variables_set">
+                                                        <field name="VAR">左側の</field>
+                                                        <value name="VALUE">
+                                                          <block type="position7_value">
+                                                            <field name="position_value">0</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </next>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </next>
                                       </block>
                                     </next>
                                   </block>
@@ -1201,41 +1413,41 @@
                       </block>
                     </value>
                     <value name="B">
-                      <block type="direction4_value">
-                        <field name="direction_value">"left"</field>
+                      <block type="direction6_value">
+                        <field name="direction_value">"bottomright"</field>
                       </block>
                     </value>
                   </block>
                 </value>
                 <statement name="DO2">
                   <block type="variables_set">
-                    <field name="VAR">前の</field>
+                    <field name="VAR">右手方向</field>
                     <value name="VALUE">
-                      <block type="position9_value">
-                        <field name="position_value">3</field>
+                      <block type="direction6_value">
+                        <field name="direction_value">"bottom"</field>
                       </block>
                     </value>
                     <next>
                       <block type="variables_set">
-                        <field name="VAR">右側の</field>
+                        <field name="VAR">右後方向</field>
                         <value name="VALUE">
-                          <block type="position9_value">
-                            <field name="position_value">1</field>
+                          <block type="direction6_value">
+                            <field name="direction_value">"bottomleft"</field>
                           </block>
                         </value>
                         <next>
                           <block type="variables_set">
-                            <field name="VAR">左側の</field>
+                            <field name="VAR">後退方向</field>
                             <value name="VALUE">
-                              <block type="position9_value">
-                                <field name="position_value">7</field>
+                              <block type="direction6_value">
+                                <field name="direction_value">"topleft"</field>
                               </block>
                             </value>
                             <next>
                               <block type="variables_set">
-                                <field name="VAR">右手方向</field>
+                                <field name="VAR">左後方向</field>
                                 <value name="VALUE">
-                                  <block type="direction4_value">
+                                  <block type="direction6_value">
                                     <field name="direction_value">"top"</field>
                                   </block>
                                 </value>
@@ -1243,18 +1455,288 @@
                                   <block type="variables_set">
                                     <field name="VAR">左手方向</field>
                                     <value name="VALUE">
-                                      <block type="direction4_value">
+                                      <block type="direction6_value">
+                                        <field name="direction_value">"topright"</field>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="variables_set">
+                                        <field name="VAR">前の</field>
+                                        <value name="VALUE">
+                                          <block type="position7_value">
+                                            <field name="position_value">2</field>
+                                          </block>
+                                        </value>
+                                        <next>
+                                          <block type="variables_set">
+                                            <field name="VAR">右側の</field>
+                                            <value name="VALUE">
+                                              <block type="position7_value">
+                                                <field name="position_value">3</field>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="variables_set">
+                                                <field name="VAR">右後側の</field>
+                                                <value name="VALUE">
+                                                  <block type="position7_value">
+                                                    <field name="position_value">4</field>
+                                                  </block>
+                                                </value>
+                                                <next>
+                                                  <block type="variables_set">
+                                                    <field name="VAR">左後側の</field>
+                                                    <value name="VALUE">
+                                                      <block type="position7_value">
+                                                        <field name="position_value">0</field>
+                                                      </block>
+                                                    </value>
+                                                    <next>
+                                                      <block type="variables_set">
+                                                        <field name="VAR">左側の</field>
+                                                        <value name="VALUE">
+                                                          <block type="position7_value">
+                                                            <field name="position_value">1</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </next>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <value name="IF3">
+                  <block type="logic_compare">
+                    <field name="OP">EQ</field>
+                    <value name="A">
+                      <block type="variables_get">
+                        <field name="VAR">進行方向</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="direction6_value">
+                        <field name="direction_value">"bottom"</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO3">
+                  <block type="variables_set">
+                    <field name="VAR">右手方向</field>
+                    <value name="VALUE">
+                      <block type="direction6_value">
+                        <field name="direction_value">"bottomleft"</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set">
+                        <field name="VAR">右後方向</field>
+                        <value name="VALUE">
+                          <block type="direction6_value">
+                            <field name="direction_value">"topleft"</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="variables_set">
+                            <field name="VAR">後退方向</field>
+                            <value name="VALUE">
+                              <block type="direction6_value">
+                                <field name="direction_value">"top"</field>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="variables_set">
+                                <field name="VAR">左後方向</field>
+                                <value name="VALUE">
+                                  <block type="direction6_value">
+                                    <field name="direction_value">"topright"</field>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="variables_set">
+                                    <field name="VAR">左手方向</field>
+                                    <value name="VALUE">
+                                      <block type="direction6_value">
+                                        <field name="direction_value">"bottomright"</field>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="variables_set">
+                                        <field name="VAR">前の</field>
+                                        <value name="VALUE">
+                                          <block type="position7_value">
+                                            <field name="position_value">3</field>
+                                          </block>
+                                        </value>
+                                        <next>
+                                          <block type="variables_set">
+                                            <field name="VAR">右側の</field>
+                                            <value name="VALUE">
+                                              <block type="position7_value">
+                                                <field name="position_value">4</field>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="variables_set">
+                                                <field name="VAR">右後側の</field>
+                                                <value name="VALUE">
+                                                  <block type="position7_value">
+                                                    <field name="position_value">5</field>
+                                                  </block>
+                                                </value>
+                                                <next>
+                                                  <block type="variables_set">
+                                                    <field name="VAR">左後側の</field>
+                                                    <value name="VALUE">
+                                                      <block type="position7_value">
+                                                        <field name="position_value">1</field>
+                                                      </block>
+                                                    </value>
+                                                    <next>
+                                                      <block type="variables_set">
+                                                        <field name="VAR">左側の</field>
+                                                        <value name="VALUE">
+                                                          <block type="position7_value">
+                                                            <field name="position_value">2</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </next>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <value name="IF4">
+                  <block type="logic_compare">
+                    <field name="OP">EQ</field>
+                    <value name="A">
+                      <block type="variables_get">
+                        <field name="VAR">進行方向</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="direction6_value">
+                        <field name="direction_value">"bottomleft"</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO4">
+                  <block type="variables_set">
+                    <field name="VAR">右手方向</field>
+                    <value name="VALUE">
+                      <block type="direction6_value">
+                        <field name="direction_value">"topleft"</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set">
+                        <field name="VAR">右後方向</field>
+                        <value name="VALUE">
+                          <block type="direction6_value">
+                            <field name="direction_value">"top"</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="variables_set">
+                            <field name="VAR">後退方向</field>
+                            <value name="VALUE">
+                              <block type="direction6_value">
+                                <field name="direction_value">"topright"</field>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="variables_set">
+                                <field name="VAR">左後方向</field>
+                                <value name="VALUE">
+                                  <block type="direction6_value">
+                                    <field name="direction_value">"bottomright"</field>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="variables_set">
+                                    <field name="VAR">左手方向</field>
+                                    <value name="VALUE">
+                                      <block type="direction6_value">
                                         <field name="direction_value">"bottom"</field>
                                       </block>
                                     </value>
                                     <next>
                                       <block type="variables_set">
-                                        <field name="VAR">後退方向</field>
+                                        <field name="VAR">前の</field>
                                         <value name="VALUE">
-                                          <block type="direction4_value">
-                                            <field name="direction_value">"right"</field>
+                                          <block type="position7_value">
+                                            <field name="position_value">4</field>
                                           </block>
                                         </value>
+                                        <next>
+                                          <block type="variables_set">
+                                            <field name="VAR">右側の</field>
+                                            <value name="VALUE">
+                                              <block type="position7_value">
+                                                <field name="position_value">5</field>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="variables_set">
+                                                <field name="VAR">右後側の</field>
+                                                <value name="VALUE">
+                                                  <block type="position7_value">
+                                                    <field name="position_value">0</field>
+                                                  </block>
+                                                </value>
+                                                <next>
+                                                  <block type="variables_set">
+                                                    <field name="VAR">左後側の</field>
+                                                    <value name="VALUE">
+                                                      <block type="position7_value">
+                                                        <field name="position_value">2</field>
+                                                      </block>
+                                                    </value>
+                                                    <next>
+                                                      <block type="variables_set">
+                                                        <field name="VAR">左側の</field>
+                                                        <value name="VALUE">
+                                                          <block type="position7_value">
+                                                            <field name="position_value">3</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </next>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </next>
                                       </block>
                                     </next>
                                   </block>
@@ -1268,53 +1750,98 @@
                   </block>
                 </statement>
                 <statement name="ELSE">
-                  <block type="variables_set">
-                    <field name="VAR">前の</field>
-                    <value name="VALUE">
-                      <block type="position9_value">
-                        <field name="position_value">5</field>
-                      </block>
-                    </value>
+                  <block type="comment_block">
+                    <field name="COMMENT">進行方向＝左上方向</field>
                     <next>
                       <block type="variables_set">
-                        <field name="VAR">右側の</field>
+                        <field name="VAR">右手方向</field>
                         <value name="VALUE">
-                          <block type="position9_value">
-                            <field name="position_value">7</field>
+                          <block type="direction6_value">
+                            <field name="direction_value">"top"</field>
                           </block>
                         </value>
                         <next>
                           <block type="variables_set">
-                            <field name="VAR">左側の</field>
+                            <field name="VAR">右後方向</field>
                             <value name="VALUE">
-                              <block type="position9_value">
-                                <field name="position_value">1</field>
+                              <block type="direction6_value">
+                                <field name="direction_value">"topright"</field>
                               </block>
                             </value>
                             <next>
                               <block type="variables_set">
-                                <field name="VAR">右手方向</field>
+                                <field name="VAR">後退方向</field>
                                 <value name="VALUE">
-                                  <block type="direction4_value">
-                                    <field name="direction_value">"bottom"</field>
+                                  <block type="direction6_value">
+                                    <field name="direction_value">"bottomright"</field>
                                   </block>
                                 </value>
                                 <next>
                                   <block type="variables_set">
-                                    <field name="VAR">左手方向</field>
+                                    <field name="VAR">左後方向</field>
                                     <value name="VALUE">
-                                      <block type="direction4_value">
-                                        <field name="direction_value">"top"</field>
+                                      <block type="direction6_value">
+                                        <field name="direction_value">"bottom"</field>
                                       </block>
                                     </value>
                                     <next>
                                       <block type="variables_set">
-                                        <field name="VAR">後退方向</field>
+                                        <field name="VAR">左手方向</field>
                                         <value name="VALUE">
-                                          <block type="direction4_value">
-                                            <field name="direction_value">"left"</field>
+                                          <block type="direction6_value">
+                                            <field name="direction_value">"bottomleft"</field>
                                           </block>
                                         </value>
+                                        <next>
+                                          <block type="variables_set">
+                                            <field name="VAR">前の</field>
+                                            <value name="VALUE">
+                                              <block type="position7_value">
+                                                <field name="position_value">5</field>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="variables_set">
+                                                <field name="VAR">右側の</field>
+                                                <value name="VALUE">
+                                                  <block type="position7_value">
+                                                    <field name="position_value">0</field>
+                                                  </block>
+                                                </value>
+                                                <next>
+                                                  <block type="variables_set">
+                                                    <field name="VAR">右後側の</field>
+                                                    <value name="VALUE">
+                                                      <block type="position7_value">
+                                                        <field name="position_value">1</field>
+                                                      </block>
+                                                    </value>
+                                                    <next>
+                                                      <block type="variables_set">
+                                                        <field name="VAR">左後側の</field>
+                                                        <value name="VALUE">
+                                                          <block type="position7_value">
+                                                            <field name="position_value">3</field>
+                                                          </block>
+                                                        </value>
+                                                        <next>
+                                                          <block type="variables_set">
+                                                            <field name="VAR">左側の</field>
+                                                            <value name="VALUE">
+                                                              <block type="position7_value">
+                                                                <field name="position_value">4</field>
+                                                              </block>
+                                                            </value>
+                                                          </block>
+                                                        </next>
+                                                      </block>
+                                                    </next>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </next>
                                       </block>
                                     </next>
                                   </block>
@@ -1330,7 +1857,7 @@
                 <next>
                   <block type="move_player_exp">
                     <value name="move">
-                      <shadow type="direction4_value">
+                      <shadow type="direction6_value">
                         <field name="direction_value">"top"</field>
                       </shadow>
                       <block type="variables_get">

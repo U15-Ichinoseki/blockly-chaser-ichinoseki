@@ -5,7 +5,7 @@
     "level" : 4,
     "mode" : "gethart",
     "get_hart_value" : 1,
-    "block_limit" : 20,
+    "block_limit" : 30,
     "load_workspace" : "04.xml",
     "map_size_x": 15,
     "map_size_y": 17,
@@ -30,10 +30,11 @@
     "cool_y": 8,
     "variant_stage": true,
     "spon_item": true,
-    "spon_item_pos": [[[8,0]],
-                      [[8,14]],
-                      [[0,7]],
-                      [[16,7]] ],
-
+    "spon_item_pos": [[[4,0]],
+                      [[11,0]],
+                      [[4,14]],
+                      [[11,14]],
+                      [[1,7]],
+                      [[15,7]] ],
     "turn":100
 }

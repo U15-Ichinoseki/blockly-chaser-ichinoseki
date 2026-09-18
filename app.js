@@ -23,6 +23,7 @@ var server_data = require('./tool/server_data_load');
 var tutorial_data = require('./tool/tutorial_data_load');
 var bgm_data = require('./tool/bgm_data_load');
 var config_load = require('./tool/config_data_load');
+var config = require('./config/config');
 
 var chaser = require('./chaser/server.js');
 
@@ -38,6 +39,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(morgan('dev'));
+
+app.use((req, res) => {
+  res.redirect(config.redirectUrl);
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
